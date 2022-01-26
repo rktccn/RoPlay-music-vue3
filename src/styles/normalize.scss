@@ -1,0 +1,111 @@
+@import "color.scss";
+@import "fontStyle.scss";
+@import "_variable.scss";
+
+* {
+  border: none;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
+    Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  color: var(--text-color-primary);
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var,
+i {
+  font-style: normal;
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+  color: #666;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+input::-ms-reveal {
+  display: none;
+}
+
+input {
+  -webkit-appearance: none;
+  margin: 0;
+  outline: none;
+  padding: 0;
+}
+
+/* --清除谷歌浏览器下的叉号 */
+
+input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* --清除IE下的叉号 */
+
+input[type="search"]::-ms-clear {
+  display: none;
+}
+
+input::-webkit-input-placeholder {
+  color: #ccc;
+}
+
+input::-ms-input-placeholder {
+  color: #ccc;
+}
+
+input::-moz-placeholder {
+  color: #ccc;
+}
+
+input[type="submit"],
+input[type="button"] {
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+img {
+  border: none;
+}
+
+ul,
+ol,
+li {
+  list-style-type: none;
+}
+
+/*公共方法*/
+
+.w {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
