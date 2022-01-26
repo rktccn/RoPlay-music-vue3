@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookie from "js-cookie";
 
-let baseURL = "https://apimusic.rokeey.cn/";
+let baseURL = import.meta.env.VITE_BASE_URL;
 let timestamp = new Date().getTime();
 
 const service = axios.create({
