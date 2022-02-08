@@ -15,7 +15,12 @@ import HeaderVue from "./views/header.vue";
         <HeaderVue></HeaderVue>
       </el-header>
       <el-main>
-        <router-view></router-view>
+        <router-view v-slot="{ Component }" v-if="$route.meta.keepAlive">
+          <keep-alive :max="10">
+            <component :is="Component" />
+          </keep-alive>
+        </router-view>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -23,10 +28,11 @@ import HeaderVue from "./views/header.vue";
 
 <style lang="scss" scoped>
 @mixin display-center {
-  padding: 0 calc(5vw + 20px);
-  width: 100%;
+  padding: 0;
+  width: $view-size;
   max-width: 1680px;
   margin: 0 auto;
+  overflow: visible;
 }
 
 .wrap {
@@ -37,13 +43,10 @@ import HeaderVue from "./views/header.vue";
 .el-header {
   background-color: var(--background-color-secondary);
   color: var(--el-text-color-primary);
-  text-align: center;
-  line-height: 23px;
   @include display-center;
 }
 
 .el-footer {
-  line-height: 23px;
   @include display-center;
 }
 
@@ -55,9 +58,6 @@ import HeaderVue from "./views/header.vue";
 .el-main {
   background-color: var(--background-color-secondary);
   color: var(--el-text-color-primary);
-  text-align: center;
-  line-height: 23px;
-
   @include display-center;
 }
 

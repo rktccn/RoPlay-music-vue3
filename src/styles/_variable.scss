@@ -1,8 +1,16 @@
 $border-radius-default: 5px;
+// 页面显示范围
+$view-size: calc((100vw - 220px) - (5vw + 20px) * 2);
+
+// 栅格,自适应宽度
+$grid-default: calc($view-size / 10);
+
+@mixin calc-width($w) {
+  width: calc($grid-default * $w);
+}
 
 // 断点
-$xs: 768px;
 $sm: 768px;
 $md: 992px;
-$lg: 1200px;
+$lg: 1250px;
 $xl: 1920px;

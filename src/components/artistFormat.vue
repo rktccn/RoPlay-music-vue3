@@ -1,0 +1,48 @@
+<template>
+  <div class="artist">
+    <template v-for="(artist, j) in artistList" :key="j">
+      <a
+        :href="'https://music.163.com/#/artist?id=' + artist.id"
+        class="font-size-12"
+        >{{ artist.name }}</a
+      ><em class="font-size-12">/</em>
+    </template>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    artistList: { type: Object, require: true },
+    fontSize: { type: String, default: "12px" },
+    discribeInfo: { type: String, default: null },
+  },
+};
+</script>
+
+<style lang="less" scoped>
+// 歌手
+.artist {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  a {
+    color: var(--text-color-secondary);
+
+    &:hover {
+      color: var(--main-color);
+    }
+  }
+  em {
+    margin: 0px 2px;
+  }
+
+  &:last-child {
+    em {
+      display: none;
+    }
+  }
+}
+</style>

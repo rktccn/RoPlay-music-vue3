@@ -32,7 +32,6 @@ export default {
 
     getBanner().then((res) => {
       data.bannerList = res.banners;
-      console.log(res);
     });
 
     return { ...toRefs(data) };
@@ -73,7 +72,6 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-$gap: null;
 .section-focus {
   display: flex;
   margin-top: 8px;
@@ -98,6 +96,7 @@ $gap: null;
 
           background-repeat: no-repeat;
           background-position: center;
+          background-size: contain;
         }
       }
 
@@ -119,23 +118,21 @@ $gap: null;
   .category {
     display: grid;
 
-    @mixin grid-size {
+    @mixin grid-size($gap) {
       grid-template-columns: ($gap * 6.5) ($gap * 6.5);
       grid-gap: $gap;
       margin-left: $gap;
     }
 
     @media screen and (min-width: $lg) {
-      $gap: 16.5px !global;
-      @include grid-size;
+      @include grid-size($gap: 16.5px);
     }
     @media screen and (min-width: 1440px) {
-      $gap: 20px !global;
-      @include grid-size;
+      @include grid-size($gap: 20px);
     }
 
     @media screen and (max-width: $lg) {
-      $gap: 20px !global;
+      $gap: 20px;
       grid-template-columns: repeat(4, ($gap * 6.5));
       grid-gap: $gap;
       height: $gap * 6.5;

@@ -1,12 +1,14 @@
 <script setup>
 import Banner from "./components/banner.vue";
+import RecomendPlaylist from "./components/recomendPlaylist.vue";
 </script>
 
 <template>
   <div>
-    <Banner> </Banner>
+    <Banner class="section"> </Banner>
 
     <!-- 推荐歌单 -->
+    <RecomendPlaylist class="section"></RecomendPlaylist>
 
     <!-- 推荐电台,音乐-->
 
@@ -18,4 +20,8 @@ import Banner from "./components/banner.vue";
   </div>
 </template>
 
-<style lang=""></style>
+<style lang="scss" scoped>
+.section {
+  margin-bottom: 24px;
+}
+</style>
