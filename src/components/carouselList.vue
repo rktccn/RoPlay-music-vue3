@@ -1,6 +1,9 @@
 <template>
   <section>
     <div class="container">
+      {{ active }}
+      {{ pageSize }}
+      {{ itemLength }}
       <span
         class="material-icons-round font-size-24 btn-prev"
         @click="changePage('prev')"
@@ -52,7 +55,7 @@ export default {
 
       let carouselWidth = carousel.value.offsetWidth;
       let itemwidth = carousel.value.children[0].offsetWidth;
-      let pageSize = Math.round(carouselWidth / itemwidth);
+      let pageSize = Math.floor(carouselWidth / itemwidth);
       data.pageSize = pageSize;
     };
 
@@ -72,7 +75,7 @@ export default {
       let slider = carousel.value;
       let products = carousel.value.children[0];
       // 左侧已显示内容数量
-      let active = Math.round(slider.scrollLeft / products.offsetWidth);
+      let active = Math.ceil(slider.scrollLeft / products.offsetWidth);
 
       data.active = active;
     };
