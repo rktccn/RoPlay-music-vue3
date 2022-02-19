@@ -15,12 +15,14 @@ import HeaderVue from "./views/header.vue";
         <HeaderVue></HeaderVue>
       </el-header>
       <el-main>
-        <router-view v-slot="{ Component }" v-if="$route.meta.keepAlive">
-          <keep-alive :max="10">
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
-        <router-view v-if="!$route.meta.keepAlive"></router-view>
+        <main class="main-inner">
+          <router-view v-slot="{ Component }" v-if="$route.meta.keepAlive">
+            <keep-alive :max="10">
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
+          <router-view v-if="!$route.meta.keepAlive"></router-view>
+        </main>
       </el-main>
     </el-container>
   </el-container>
@@ -58,7 +60,12 @@ import HeaderVue from "./views/header.vue";
 .el-main {
   background-color: var(--background-color-secondary);
   color: var(--el-text-color-primary);
-  @include display-center;
+  overflow-y: scroll;
+
+  .main-inner {
+    height: 100%;
+    @include display-center;
+  }
 }
 
 body > .el-container {

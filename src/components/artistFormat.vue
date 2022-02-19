@@ -5,7 +5,7 @@
         :href="'https://music.163.com/#/artist?id=' + artist.id"
         class="font-size-12"
         >{{ artist.name }}</a
-      ><em class="font-size-12">/</em>
+      ><em class="font-size-12" v-if="artistList.length !== j + 1">/</em>
     </template>
   </div>
 </template>
@@ -37,12 +37,6 @@ export default {
   }
   em {
     margin: 0px 2px;
-  }
-
-  &:last-child {
-    em {
-      display: none;
-    }
   }
 }
 </style>

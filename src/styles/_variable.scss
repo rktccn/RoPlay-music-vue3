@@ -7,6 +7,7 @@ $grid-default: calc($view-size / 10);
 
 @mixin calc-width($w) {
   width: calc($grid-default * $w);
+  max-width: calc(1680px / 10 * $w);
 }
 
 // 断点

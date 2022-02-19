@@ -1,6 +1,7 @@
 <script setup>
 import Banner from "./components/banner.vue";
 import RecomendPlaylist from "./components/recomendPlaylist.vue";
+import RecomendOther from "./components/recomendOther.vue";
 </script>
 
 <template>
@@ -10,13 +11,38 @@ import RecomendPlaylist from "./components/recomendPlaylist.vue";
     <!-- 推荐歌单 -->
     <RecomendPlaylist class="section"></RecomendPlaylist>
 
-    <!-- 推荐电台,音乐-->
+    <!-- 推荐mv,音乐-->
+    <RecomendOther class="section"></RecomendOther>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 
     <!-- 排行榜 -->
 
     <!-- 新单，新歌 -->
 
-    <!-- 推荐mv -->
+    <!-- 推荐电台 -->
   </div>
 </template>
 
