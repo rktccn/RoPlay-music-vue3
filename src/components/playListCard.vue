@@ -1,9 +1,19 @@
 <template>
-  <div class="card">
+  <div class="card" :class="{ video: type === 'video' }">
     <div class="card-inner" :style="setWidth()">
       <div class="cover">
         <div class="cover-inner">
-          <img :src="`${imgUrl}?param=240y240`" alt="" />
+          <img
+            :src="`${imgUrl}?param=480y480`"
+            alt=""
+            v-if="type !== 'video'"
+          />
+          <img
+            :src="`${imgUrl}?param=480y270`"
+            alt=""
+            v-if="type === 'video'"
+          />
+
           <div class="mask">
             <span class="material-icons-round"> play_arrow </span>
           </div>
@@ -25,7 +35,7 @@
       <div class="dec">
         <div class="tit text-truncate">{{ title }}</div>
         <ArtistFormat
-          v-if="showArtist && type === 'album'"
+          v-if="showArtist && type !== 'playlist'"
           :artistList="artists"
         />
         <div class="info text-truncate font-size-12" v-html="setInfo()"></div>
@@ -34,10 +44,8 @@
   </div>
 </template>
 <script>
-import { onMounted, reactive, toRefs } from "vue";
+import { reactive, toRefs } from "vue";
 
-import { getPlaylistDetail } from "../apis/playlist";
-import { getAlbum } from "../apis/album";
 import { dateFormat } from "../utils/other";
 import ArtistFormat from "./artistFormat.vue";
 
@@ -59,6 +67,7 @@ export default {
       artists: null,
       title: null,
       info: null,
+      id: null,
     });
 
     if (props.type === "playlist") {
@@ -79,6 +88,16 @@ export default {
       data.publishTime = date;
       data.artists = album.artists;
       data.title = album.name;
+    } else if (props.type === "video") {
+      const video = props.item;
+
+      data.imgUrl = video.cover;
+      data.playCount = video.mv.plays;
+      data.publishTime = video.mv.publishTime;
+      data.artists = video.mv.artists;
+      data.title = video.mv.title;
+      data.info = video.mv.name;
+      data.id = video.id;
     }
 
     function setInfo() {
@@ -110,6 +129,13 @@ export default {
 
   max-width: 280px;
 }
+
+.card.video {
+  @include calc-width(3);
+
+  max-width: 420px;
+}
+
 .card-inner {
   text-align: left;
   margin: 8px 12px;

@@ -11,19 +11,18 @@
       <span
         class="material-icons-round font-size-24 btn-next"
         @click="changePage('next')"
-        v-show="active !== length - pageSize"
+        v-show="itemLength !== active + pageSize && itemLength >= pageSize"
       >
         chevron_right
       </span>
 
-      <div class="row" ref="row">
+      <div class="carousel" ref="carousel" :style="setRow()">
         <slot></slot>
       </div>
     </div>
   </section>
 </template>
 <script>
-import { topPlaylist } from "../apis/playlist";
 import { reactive, ref, toRefs, onMounted } from "vue";
 import PlayListCard from "./playListCard.vue";
 
@@ -33,25 +32,33 @@ export default {
       type: Number,
       required: true,
     },
+    rows: {
+      type: Number,
+      default: 1,
+    },
   },
   setup(props) {
-    const row = ref(null);
+    const carousel = ref(null);
 
     const data = reactive({
       pageSize: null,
       active: 0,
+      itemLength: 0,
     });
 
-    let calcPageSize = () => {
-      let rowWidth = row.value.offsetWidth;
-      let itemwidth = row.value.childNodes[2].offsetWidth;
-      let pageSize = Math.round(rowWidth / itemwidth);
+    // 计算页面容量
+    const calcPageSize = () => {
+      data.itemLength = Math.ceil(props.length / props.rows);
+
+      let carouselWidth = carousel.value.offsetWidth;
+      let itemwidth = carousel.value.children[0].offsetWidth;
+      let pageSize = Math.round(carouselWidth / itemwidth);
       data.pageSize = pageSize;
     };
 
-    let changePage = (direction) => {
-      let slider = row.value;
-      let products = row.value.childNodes[2];
+    const changePage = (direction) => {
+      let slider = carousel.value;
+      let products = carousel.value.children[0];
 
       if (direction === "next") {
         slider.scrollLeft += data.pageSize * products.offsetWidth;
@@ -60,25 +67,33 @@ export default {
       }
     };
 
-    let setActive = () => {
-      let slider = row.value;
-      let products = row.value.childNodes[2];
-
+    // 设置控件显示
+    const setActive = () => {
+      let slider = carousel.value;
+      let products = carousel.value.children[0];
+      // 左侧已显示内容数量
       let active = Math.round(slider.scrollLeft / products.offsetWidth);
 
       data.active = active;
-      console.log(props.length - data.pageSize);
+    };
+
+    const setRow = () => {
+      let styles = { gridTemplateRows: null };
+      styles.gridTemplateRows = `repeat(${props.rows}, 1fr)`;
+
+      return styles;
     };
 
     onMounted(() => {
       calcPageSize();
-      row.value.addEventListener("scroll", setActive);
+      // watcheff();
+      carousel.value.addEventListener("scroll", setActive);
       window.onresize = () => {
         calcPageSize();
       };
     });
 
-    return { row, ...toRefs(data), changePage };
+    return { carousel, ...toRefs(data), changePage, setRow };
   },
   components: { PlayListCard },
 };
@@ -91,9 +106,9 @@ export default {
     display: none;
   }
 
-  @mixin button-style($rate) {
+  @mixin button-style() {
     position: absolute;
-    top: calc(($rate * $grid-default) / 2);
+    top: 50%;
     padding: 8px;
     background-color: var(--background-color-primary);
     border-radius: 50px;
@@ -106,29 +121,32 @@ export default {
 
   .btn-prev,
   .btn-next {
-    @include button-style(2);
+    @include button-style();
 
     @media screen and (max-width: $lg) {
-      @include button-style(2.5);
+      @include button-style();
     }
   }
 
   .btn-prev {
     left: 0;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -80%);
   }
 
   .btn-next {
     right: 0;
-    transform: translate(50%, -50%);
+    transform: translate(50%, -80%);
   }
 }
-.row {
-  display: flex;
+.carousel {
+  display: grid;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   white-space: nowrap;
   overflow-y: hidden;
+
+  grid-auto-flow: column;
+  grid-template-columns: 1fr;
 }
 </style>
