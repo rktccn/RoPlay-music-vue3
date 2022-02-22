@@ -15,28 +15,6 @@ import RecomendOther from "./components/recomendOther.vue";
     <RecomendOther class="section"></RecomendOther>
     <br />
     <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
 
     <!-- 排行榜 -->
 
