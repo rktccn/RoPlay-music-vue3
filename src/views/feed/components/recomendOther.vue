@@ -37,7 +37,6 @@ export default {
     const data = reactive({
       video: null,
       song: null,
-      numm: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       songRows: 0,
       songItemHeight: "64px",
     });
@@ -60,6 +59,7 @@ export default {
     const setSongRows = () => {
       if (window.innerWidth < 1250) {
         data.songRows = 2;
+        data.songItemHeight = null;
         return;
       }
       console.log(data.songRows);
