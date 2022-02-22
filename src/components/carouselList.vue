@@ -1,9 +1,9 @@
 <template>
   <section>
     <div class="container">
-      {{ active }}
+      <!-- {{ active }}
       {{ pageSize }}
-      {{ itemLength }}
+      {{ itemLength }} -->
       <span
         class="material-icons-round font-size-24 btn-prev"
         @click="changePage('prev')"
@@ -26,10 +26,11 @@
   </section>
 </template>
 <script>
-import { reactive, ref, toRefs, onMounted } from "vue";
+import { reactive, ref, toRefs, onMounted, watch, nextTick } from "vue";
 import PlayListCard from "./playListCard.vue";
 
 export default {
+  name: "carouselList",
   props: {
     length: {
       type: Number,
@@ -46,7 +47,7 @@ export default {
     const data = reactive({
       pageSize: null,
       active: 0,
-      itemLength: 0,
+      itemLength: 1,
     });
 
     // 计算页面容量
@@ -55,7 +56,12 @@ export default {
 
       let carouselWidth = carousel.value.offsetWidth;
       let itemwidth = carousel.value.children[0].offsetWidth;
-      let pageSize = Math.floor(carouselWidth / itemwidth);
+      let pageSize = Math.round(carouselWidth / itemwidth);
+
+      if (pageSize - carouselWidth / itemwidth >= 0.05 && pageSize !== 1) {
+        pageSize = pageSize - 1;
+      }
+
       data.pageSize = pageSize;
     };
 
@@ -76,24 +82,19 @@ export default {
       let products = carousel.value.children[0];
       // 左侧已显示内容数量
       let active = Math.ceil(slider.scrollLeft / products.offsetWidth);
-
       data.active = active;
     };
 
     const setRow = () => {
       let styles = { gridTemplateRows: null };
       styles.gridTemplateRows = `repeat(${props.rows}, 1fr)`;
-
       return styles;
     };
 
     onMounted(() => {
       calcPageSize();
-      // watcheff();
       carousel.value.addEventListener("scroll", setActive);
-      window.onresize = () => {
-        calcPageSize();
-      };
+      window.addEventListener("resize", () => calcPageSize(), false);
     });
 
     return { carousel, ...toRefs(data), changePage, setRow };
@@ -150,6 +151,6 @@ export default {
   overflow-y: hidden;
 
   grid-auto-flow: column;
-  grid-template-columns: 1fr;
+  // grid-template-columns: 1fr;
 }
 </style>

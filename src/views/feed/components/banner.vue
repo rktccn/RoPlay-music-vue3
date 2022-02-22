@@ -59,15 +59,20 @@ export default {
         </el-carousel>
       </div>
       <div class="category">
-        <template v-for="(item, index) in category" :key="index">
+        <div
+          class="category-inner"
+          v-for="(item, index) in category"
+          :key="index"
+        >
           <span class="category-item">
-            <span class="category-icon material-icons-round font-size-48"> {{ item.iconName }} </span>
+            <span class="category-icon material-icons-round font-size-48">
+              {{ item.iconName }}
+            </span>
             <em>{{ item.name }}</em>
           </span>
-        </template>
+        </div>
       </div>
     </section>
-   
   </div>
 </template>
 
@@ -132,32 +137,20 @@ export default {
     }
 
     @media screen and (max-width: $lg) {
-      $gap: 20px;
-      grid-template-columns: repeat(4, ($gap * 6.5));
+      max-width: 580px;
+      $gap: 3%;
+      grid-template-columns: repeat(4, 1fr);
       grid-gap: $gap;
-      height: $gap * 6.5;
       margin-top: $gap;
-
-      // overflow-x: scroll;
     }
 
-    .category-item {
+    .category-inner {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
       background-color: var(--background-color-primary);
       border-radius: $border-radius-default;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      cursor: pointer;
       transition: all 0.15s;
-
-      em,
-      .category-icon {
-        transform: translateY(3px);
-        transition: all 0.15s;
-      }
 
       &:hover {
         background-color: var(--main-color);
@@ -166,6 +159,33 @@ export default {
         .category-icon {
           color: #fff;
         }
+      }
+    }
+
+    .category-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      border-radius: $border-radius-default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+      transition: all 0.15s;
+
+      @media screen and (max-width: $md) {
+        transform: scale(0.9);
+      }
+
+      em,
+      .category-icon {
+        transform: translateY(3px);
+        transition: all 0.15s;
       }
     }
   }

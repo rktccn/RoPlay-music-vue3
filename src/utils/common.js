@@ -30,3 +30,13 @@ export function dateFormat(time, showMin = true) {
     return hash[o];
   });
 }
+
+export function timeFormat(value) {
+  if (!value) return "";
+  value = value / 1000;
+  let min = ~~((value / 60) % 60);
+  if (min < 10) min = "0" + min;
+
+  let sec = (~~(value % 60)).toString().padStart(2, "0");
+  return `${min}:${sec}`;
+}

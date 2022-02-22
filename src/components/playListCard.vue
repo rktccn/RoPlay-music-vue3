@@ -2,7 +2,9 @@
   <div class="card" :class="{ video: type === 'video' }">
     <div class="card-inner" :style="setWidth()">
       <div class="cover">
-        <div class="cover-inner">
+        <div class="cover-inner" :class="{ video: type === 'video' }">
+          <div class="placeholder" :class="{ video: type === 'video' }"></div>
+
           <img
             :src="`${imgUrl}?param=480y480`"
             alt=""
@@ -13,17 +15,23 @@
             alt=""
             v-if="type === 'video'"
           />
-
           <div class="mask">
             <span class="material-icons-round"> play_arrow </span>
           </div>
           <div class="played-count font-size-12">
             <span
-              v-if="type === 'playlist'"
+              v-if="type !== 'video'"
               class="material-icons-round font-size-12"
             >
               headphones
             </span>
+            <span
+              v-if="type === 'video'"
+              class="material-icons-round font-size-12"
+            >
+              smart_display
+            </span>
+
             {{
               playCount > 10000
                 ? parseInt(playCount / 1000) / 10 + "万"
@@ -46,7 +54,7 @@
 <script>
 import { reactive, toRefs } from "vue";
 
-import { dateFormat } from "../utils/other";
+import { dateFormat } from "../utils/common.js";
 import ArtistFormat from "./artistFormat.vue";
 
 export default {
@@ -142,13 +150,25 @@ export default {
 }
 .cover-inner {
   position: relative;
-
   border-radius: $border-radius-default;
   overflow: hidden;
-
   cursor: pointer;
 
+  .placeholder {
+    width: 100%;
+    padding-top: 100%;
+    background-color: pink;
+
+    &.video {
+      padding-top: 56.25%;
+    }
+  }
+
   img {
+    position: absolute;
+    top: 0;
+    left: 0;
+
     display: block;
     width: 100%;
     transition: all 0.15s;

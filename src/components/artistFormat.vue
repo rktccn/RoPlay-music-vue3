@@ -1,11 +1,10 @@
 <template>
-  <div class="artist">
+  <div class="artist" :style="setStyle()">
     <template v-for="(artist, j) in artistList" :key="j">
-      <a
-        :href="'https://music.163.com/#/artist?id=' + artist.id"
-        class="font-size-12"
-        >{{ artist.name }}</a
-      ><em class="font-size-12" v-if="artistList.length !== j + 1">/</em>
+      <a :href="'https://music.163.com/#/artist?id=' + artist.id">{{
+        artist.name
+      }}</a
+      ><em v-if="artistList.length !== j + 1">/</em>
     </template>
   </div>
 </template>
@@ -17,6 +16,17 @@ export default {
     fontSize: { type: String, default: "12px" },
     discribeInfo: { type: String, default: null },
   },
+  setup(props) {
+    const setStyle = () => {
+      let styles = {
+        fontSize: props.fontSize,
+        lineHeight: props.fontSize,
+      };
+      return styles;
+    };
+
+    return { setStyle };
+  },
 };
 </script>
 
@@ -27,6 +37,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  margin-top: 2px;
 
   a {
     color: var(--text-color-secondary);

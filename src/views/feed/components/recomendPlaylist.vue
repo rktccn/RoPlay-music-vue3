@@ -1,7 +1,12 @@
 <template>
   <section>
     <h4 class="text-style-title">推荐歌单</h4>
-    <CarouselList v-if="playlist" :length="playlist.length">
+    <CarouselList
+      v-if="playlist"
+      :length="playlist.length"
+      key="palylist"
+      class="playlist"
+    >
       <template v-for="(item, index) in playlist" :key="index">
         <div>
           <PlayListCard :item="item" type="playlist"></PlayListCard>
