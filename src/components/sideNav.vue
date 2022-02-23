@@ -5,27 +5,29 @@ const list = reactive([
     listName: "发现音乐",
     needLog: false,
     listItem: [
-      { itemName: "推荐", path: "/recommend", needLog: true },
-      { itemName: "探索", path: "/", needLog: false },
+      { itemName: "推荐", path: "/recommend", icon: "home", needLog: true },
+      { itemName: "探索", path: "/", icon: "home", needLog: false },
       {
         itemName: "视频",
         path: "/video",
+        icon: "home",
         needLog: false,
       },
-      { itemName: "电台", path: "/radio", needLog: false },
+      { itemName: "电台", path: "/radio", icon: "home", needLog: false },
     ],
   },
   {
     listName: "我的音乐",
     needLog: false,
     listItem: [
-      { itemName: "收藏", path: "/like", needLog: true },
+      { itemName: "收藏", path: "/like", icon: "home", needLog: true },
       {
         itemName: "最近播放",
         path: "/recent",
+        icon: "home",
         needLog: false,
       },
-      { itemName: "云盘", path: "/cloud", needLog: true },
+      { itemName: "云盘", path: "/cloud", icon: "home", needLog: true },
     ],
   },
   {
@@ -42,10 +44,17 @@ const list = reactive([
     <div class="list">
       <template v-for="(item, i) in list" :key="i">
         <ul v-if="item.needLog ? true : true">
-          <span class="list-title white"> {{ item.listName }}</span>
+          <ol class="list-title white">
+            {{
+              item.listName
+            }}
+          </ol>
           <template v-for="(value, j) in item.listItem" :key="j">
             <li class="list-item" v-if="value.needLog ? true : true">
               <router-link :to="value.path" class="item-link">
+                <span class="material-icons-round">
+                  {{ value.icon }}
+                </span>
                 {{ value.itemName }}
               </router-link>
             </li>
@@ -92,6 +101,7 @@ const list = reactive([
   .list-item {
     color: var(--el-text-color-primary);
     font-size: 16px;
+
     .item-link {
       display: block;
       width: 100%;
@@ -100,6 +110,10 @@ const list = reactive([
       margin: 6px 0;
       margin-left: -6px;
       border-radius: 6px;
+      display: flex;
+      span {
+        margin-right: 8px;
+      }
 
       &:hover {
         background-color: var(--hover-color);
@@ -110,6 +124,10 @@ const list = reactive([
       position: relative;
       background-color: var(--main-color) !important;
       color: #fff !important;
+
+      span {
+        color: #fff !important;
+      }
 
       &::after {
         content: "";

@@ -1,17 +1,26 @@
-$border-radius-default: 5px;
-// 页面显示范围
-$view-size: calc((100vw - 220px) - (5vw + 20px) * 2);
-
-// 栅格,自适应宽度
-$grid-default: calc($view-size / 10);
-
-@mixin calc-width($w) {
-  width: calc($grid-default * $w);
-  max-width: calc(1680px / 10 * $w);
-}
-
 // 断点
 $sm: 768px;
 $md: 1000px;
 $lg: 1250px;
 $xl: 1920px;
+
+$border-radius-default: 5px;
+
+// 页面显示范围
+:root {
+  --view-size: calc((100vw - 220px) - (5vw + 20px) * 2);
+
+  @media screen and (max-width: $sm) {
+    --view-size: calc(100vw - (20px) * 2);
+  }
+}
+
+$view-size: calc((100vw - 220px) - (5vw + 20px) * 2);
+
+// 栅格,自适应宽度
+$grid-default: calc(var(--view-size) / 10);
+
+@mixin calc-width($w) {
+  width: calc($grid-default * $w);
+  max-width: calc(1680px / 10 * $w);
+}

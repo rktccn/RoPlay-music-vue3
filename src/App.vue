@@ -31,7 +31,7 @@ import HeaderVue from "./views/header.vue";
 <style lang="scss" scoped>
 @mixin display-center {
   padding: 0;
-  width: $view-size;
+  width: var(--view-size);
   max-width: 1680px;
   margin: 0 auto;
   overflow: visible;
@@ -53,6 +53,20 @@ import HeaderVue from "./views/header.vue";
 }
 
 .el-aside {
+  @media screen and (min-width: 2160px) {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-220px - 855px, -50%);
+    height: 90%;
+    border-radius: 25px;
+    z-index: 999;
+  }
+
+  @media screen and (max-width: $sm) {
+    display: none;
+  }
+
   background-color: var(--background-color-primary);
   color: var(--el-text-color-primary);
 }
