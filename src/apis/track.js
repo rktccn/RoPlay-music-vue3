@@ -1,6 +1,6 @@
 import req from "../utils/http";
 
-import { mapTrackPlayableStatus } from "../utils/common";
+// import { mapTrackPlayableStatus } from "../utils/common";
 
 /**
  * 获取音乐 url
@@ -8,13 +8,11 @@ import { mapTrackPlayableStatus } from "../utils/common";
  * !!!未登录状态返回试听片段(返回字段包含被截取的正常歌曲的开始时间和结束时间)
  * @param {string} id - 音乐的 id，例如 id=405998841,33894312
  */
-export function getMP3(id) {
+export function getMP3(id, br = 320000) {
   // let br =
   //   store.state.settings?.musicQuality !== undefined
   //     ? store.state.settings.musicQuality
   //     : 320000;
-  let br = 320000;
-
   return req
     .get("/song/url", {
       params: {
@@ -39,40 +37,40 @@ export async function getTrackDetail(ids) {
         ids,
       },
     })
-    .then((data) => {
-      return data.data;
+    .then((res) => {
+      return res;
     });
 
   //缓存
-  const fetchLatest = () => {
-    return request({
-      url: "/song/detail",
-      method: "get",
-      params: {
-        ids,
-      },
-    }).then((data) => {
-      data.songs.map((song) => {
-        const privileges = data.privileges.find((t) => t.id === song.id);
-        cacheTrackDetail(song, privileges);
-      });
-      data.songs = mapTrackPlayableStatus(data.songs, data.privileges);
-      return data;
-    });
-  };
-  fetchLatest();
+  // const fetchLatest = () => {
+  //   return request({
+  //     url: "/song/detail",
+  //     method: "get",
+  //     params: {
+  //       ids,
+  //     },
+  //   }).then((data) => {
+  //     data.songs.map((song) => {
+  //       const privileges = data.privileges.find((t) => t.id === song.id);
+  //       cacheTrackDetail(song, privileges);
+  //     });
+  //     data.songs = mapTrackPlayableStatus(data.songs, data.privileges);
+  //     return data;
+  //   });
+  // };
+  // fetchLatest();
 
-  let idsInArray = [String(ids)];
-  if (typeof ids === "string") {
-    idsInArray = ids.split(",");
-  }
+  // let idsInArray = [String(ids)];
+  // if (typeof ids === "string") {
+  //   idsInArray = ids.split(",");
+  // }
 
-  return getTrackDetailFromCache(idsInArray).then((result) => {
-    if (result) {
-      result.songs = mapTrackPlayableStatus(result.songs, result.privileges);
-    }
-    return result ?? fetchLatest();
-  });
+  // return getTrackDetailFromCache(idsInArray).then((result) => {
+  //   if (result) {
+  //     result.songs = mapTrackPlayableStatus(result.songs, result.privileges);
+  //   }
+  //   return result ?? fetchLatest();
+  // });
 }
 
 /**

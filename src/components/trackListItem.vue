@@ -1,39 +1,34 @@
 <template lang="">
   <div class="track-list-item" ref="refItem" :style="setStyle()">
     <div class="inner">
-      <img
-        class="cover"
-        :src="`${song.imgUrl}?param=48y48`"
-        alt=""
-        v-if="song"
-      />
+      <img class="cover" :src="`${imgUrl}?param=48y48`" alt="" v-if="imgUrl" />
       <div class="title">
         <div class="container">
-          <div v-if="song" class="text-truncate">{{ song.title }}</div>
+          <div v-if="artists" class="text-truncate">{{ title }}</div>
           <ArtistFormat
-            :artistList="song.artists"
+            :artistList="artists"
             v-show="itemWidth >= 2"
           ></ArtistFormat>
           <div></div>
         </div>
       </div>
       <div class="artist" v-show="itemWidth <= 1">
-        <div v-if="song">
-          <ArtistFormat :artistList="song.artists"></ArtistFormat>
+        <div v-if="artists">
+          <ArtistFormat :artistList="artists"></ArtistFormat>
         </div>
       </div>
 
-      <div class="album" v-show="itemWidth === 0">
-        <div v-if="song.album" class="text-truncate">{{ song.album.name }}</div>
+      <div class="describe" v-show="itemWidth === 0">
+        <div v-if="describe" class="text-truncate">{{ describe.name }}</div>
       </div>
 
       <div class="more">
-        <div class="duration" v-if="song">
+        <div class="duration" v-if="duration">
           <span v-show="itemWidth <= 2">
-            {{ song.duration }}
+            {{ duration }}
           </span>
         </div>
-        <div class="like">
+        <div class="like" :class="{ normal: itemWidth <= 2 }">
           <span class="material-icons-round"> favorite_border </span>
         </div>
       </div>
@@ -56,33 +51,19 @@ export default {
   setup(props) {
     const data = reactive({
       itemWidth: 0,
-      song: {
-        imgUrl: null,
-        artists: null,
-        title: null,
-        id: null,
-        duration: 0,
-        isLiked: false,
-        canPlay: 0,
-        album: null,
-      },
+      imgUrl: null,
+      artists: null,
+      title: null,
+      id: null,
+      duration: 0,
+      isLiked: false,
+      canPlay: 0,
+      describe: null,
     });
 
+    const track = props.item;
+
     const refItem = ref(null);
-
-    // 初始化数据
-    const initData = () => {
-      const value = props.item;
-
-      data.song.imgUrl = value.picUrl;
-      data.song.artists = value.song.artists;
-      data.song.title = value.name;
-      data.song.id = value.id;
-      data.song.duration = timeFormat(value.song.duration);
-      data.song.canPlay = value.song.fee; // 0: 免费或无版权  1: VIP 歌曲   4: 购买专辑   8: 非会员可免费播放低音质，会员可播放高音质及下载
-      data.song.album = value.song.album;
-      // data.isLiked =
-    };
 
     const calcWidth = () => {
       let width = refItem.value.offsetWidth;
@@ -106,6 +87,49 @@ export default {
       return styles;
     };
 
+    const getArtists = () => {
+      data.artists = track?.artists ?? track?.ar;
+    };
+
+    const getImgUrl = () => {
+      // if (props.showImg === false) {
+      //   return "";
+      // }
+
+      data.imgUrl =
+        track?.al?.picUrl ??
+        track?.album?.picUrl ??
+        "https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg";
+    };
+
+    const getDuration = () => {
+      const dt = track?.duration ?? track?.dt ?? "null";
+
+      data.duration = timeFormat(dt);
+    };
+
+    const getDescribe = () => {
+      switch (props.type) {
+        case "song":
+          data.describe = track?.album ?? track?.al;
+          break;
+        default:
+          data.describe = null;
+      }
+    };
+
+    // 初始化数据
+    const initData = () => {
+      getArtists();
+      getImgUrl();
+      getDuration();
+      getDescribe();
+      data.title = track.name;
+      data.id = track.id;
+      data.canPlay = track.fee; // 0: 免费或无版权  1: VIP 歌曲   4: 购买专辑   8: 非会员可免费播放低音质，会员可播放高音质及下载
+      // data.isLiked =
+    };
+
     initData();
 
     onMounted(() => {
@@ -120,7 +144,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .track-list-item {
   border-radius: $border-radius-default;
   padding: 8px;
@@ -143,7 +167,7 @@ export default {
 
     .more {
       .duration {
-        display: none;
+        opacity: 0;
       }
       .like {
         display: block;
@@ -178,14 +202,18 @@ export default {
 }
 
 .more {
+  display: flex;
   overflow: hidden;
   position: relative;
   user-select: none;
 
   .like {
-    // position: absolute;
-    // left: 0;
-    // top: 0;
+    &.normal {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
     display: none;
     cursor: pointer;
   }

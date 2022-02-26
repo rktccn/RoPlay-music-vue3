@@ -16,7 +16,7 @@
       <div class="right-song">
         <CarouselList :length="song.length" v-if="song && songRows !== 0" :rows="songRows" key="song" >
           <template v-for="(value, index) in song" :key="index">
-            <TrackListItem class="track-item" :height="songItemHeight" :item="value"></TrackListItem>
+            <TrackListItem class="track-item" :height="songItemHeight" :item="value.song"></TrackListItem>
           </template>
         </CarouselList>
       </div>
@@ -51,6 +51,7 @@ export default {
 
     recommendNewSong().then((res) => {
       data.song = res.result;
+      console.log(res.result);
     });
 
     const videoItem = ref(null);
