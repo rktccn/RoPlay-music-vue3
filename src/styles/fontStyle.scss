@@ -2,7 +2,7 @@
   .font-size-#{$i * 2} {
     font-size: 2px * $i;
     @media screen and(max-width:$sm) {
-      font-size: 2px * $i + 10px;
+      font-size: 2px * $i;
     }
   }
 }

@@ -99,7 +99,7 @@ export default {
 .left-video {
   @include calc-width(6.9);
   @media (max-width: $lg) {
-    @include calc-width(10);
+    width: 100%;
   }
 
   .video-container {
@@ -113,13 +113,10 @@ export default {
   @include calc-width(2.9);
   @media (max-width: $lg) {
     margin-top: 12px;
-    @include calc-width(10);
+    width: 100%;
   }
   .track-item {
     @include calc-width(2.5);
-    @media (max-width: $lg) {
-      @include calc-width(4.8);
-    }
   }
 }
 </style>
