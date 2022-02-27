@@ -4,12 +4,15 @@
 
 * {
   border: none;
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑",
-    Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
   color: var(--text-color-primary);
+
+  // font-size: 100px;
 }
 
 html,

@@ -15,12 +15,15 @@ $border-radius-default: 5px;
   }
 }
 
-$view-size: calc((100vw - 220px) - (5vw + 20px) * 2);
-
 // 栅格,自适应宽度
 $grid-default: calc(var(--view-size) / 10);
 
 @mixin calc-width($w) {
   width: calc($grid-default * $w);
   max-width: calc(1680px / 10 * $w);
+
+  @media screen and (max-width: $sm) {
+    width: calc($grid-default * $w * 2);
+    max-width: calc(1680px / 10 * $w * 2);
+  }
 }

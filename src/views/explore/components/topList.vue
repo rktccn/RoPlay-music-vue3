@@ -38,7 +38,7 @@ export default {
 
     const setBackGround = () => {
       let styles = {
-        backgroundImage: `url(${data.topList.al.picUrl}?imageView&param=120y120&blur=10x5)`,
+        backgroundImage: `url(${data.topList.al.picUrl}?imageView&param=120y120&blur=40x20)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };

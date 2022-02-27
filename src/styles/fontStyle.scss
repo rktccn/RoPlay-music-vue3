@@ -1,6 +1,9 @@
 @for $i from 6 through 24 {
   .font-size-#{$i * 2} {
     font-size: 2px * $i;
+    @media screen and(max-width:$sm) {
+      font-size: 1px * $i;
+    }
   }
 }
 
