@@ -12,7 +12,9 @@
   box-sizing: border-box;
   color: var(--text-color-primary);
 
-  // font-size: 100px;
+  @media screen and (max-width: $sm) {
+    user-select: none !important;
+  }
 }
 
 html,
@@ -111,6 +113,12 @@ li {
   content: "";
   display: block;
   clear: both;
+}
+
+.block {
+  background-color: var(--background-color-primary);
+  border-radius: $border-radius-default;
+  padding: 8px 12px;
 }
 
 // 设定滚动条

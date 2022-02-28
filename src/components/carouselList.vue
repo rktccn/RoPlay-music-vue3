@@ -14,7 +14,7 @@
       <span
         class="material-icons-round font-size-24 btn-next"
         @click="changePage('next')"
-        v-show="itemLength !== active + pageSize && itemLength >= pageSize"
+        v-show="itemLength >= pageSize && !(itemLength <= active + pageSize)"
       >
         chevron_right
       </span>
@@ -26,7 +26,7 @@
   </section>
 </template>
 <script>
-import { reactive, ref, toRefs, onMounted, watch, nextTick } from "vue";
+import { reactive, ref, toRefs, onMounted } from "vue";
 import PlayListCard from "./playListCard.vue";
 
 export default {
@@ -51,10 +51,9 @@ export default {
     });
 
     // 计算页面容量
-    const calcPageSize = () => {
+    const calcPageSize = (carouselWidth) => {
       data.itemLength = Math.ceil(props.length / props.rows);
 
-      let carouselWidth = carousel.value.offsetWidth;
       let itemwidth = carousel.value.children[0].offsetWidth;
       let pageSize = Math.round(carouselWidth / itemwidth);
 
@@ -82,6 +81,9 @@ export default {
       let products = carousel.value.children[0];
       // 左侧已显示内容数量
       let active = Math.ceil(slider.scrollLeft / products.offsetWidth);
+
+      console.log(slider.scrollLeft / products.offsetWidth);
+
       data.active = active;
     };
 
@@ -91,10 +93,18 @@ export default {
       return styles;
     };
 
+    const ro = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const cr = entry.contentRect;
+        calcPageSize(cr.width);
+      }
+    });
+
     onMounted(() => {
       calcPageSize();
       carousel.value.addEventListener("scroll", setActive);
-      window.addEventListener("resize", () => calcPageSize(), false);
+
+      ro.observe(carousel.value);
     });
 
     return { carousel, ...toRefs(data), changePage, setRow };
@@ -127,8 +137,8 @@ export default {
   .btn-next {
     @include button-style();
 
-    @media screen and (max-width: $lg) {
-      @include button-style();
+    @media screen and(max-width:$sm) {
+      display: none;
     }
   }
 
@@ -151,6 +161,8 @@ export default {
   overflow-y: hidden;
 
   grid-auto-flow: column;
-  // grid-template-columns: 1fr;
+
+  @media screen and(max-width:$sm) {
+  }
 }
 </style>

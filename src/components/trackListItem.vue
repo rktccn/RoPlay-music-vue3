@@ -65,8 +65,8 @@ export default {
 
     const refItem = ref(null);
 
-    const calcWidth = () => {
-      let width = refItem.value.offsetWidth;
+    const calcWidth = (width) => {
+      // let width = refItem.value.offsetWidth;
 
       if (width >= 800) {
         data.itemWidth = 0;
@@ -92,10 +92,6 @@ export default {
     };
 
     const getImgUrl = () => {
-      // if (props.showImg === false) {
-      //   return "";
-      // }
-
       data.imgUrl =
         track?.al?.picUrl ??
         track?.album?.picUrl ??
@@ -132,9 +128,16 @@ export default {
 
     initData();
 
+    const ro = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const cr = entry.contentRect;
+        calcWidth(cr.width);
+      }
+    });
+
     onMounted(() => {
       calcWidth();
-      window.addEventListener("resize", () => calcWidth(), false);
+      ro.observe(refItem.value);
     });
 
     return { ...toRefs(data), refItem, calcWidth, setStyle };
@@ -183,7 +186,7 @@ export default {
 }
 
 .title {
-  flex: 3;
+  flex: 4 1 0;
   overflow: hidden;
   .container {
     display: flex;
@@ -192,20 +195,23 @@ export default {
 }
 
 .artist {
-  flex: 2;
+  flex: 2 1 0;
   overflow: hidden;
 }
 
-.album {
-  flex: 2;
+.describe {
+  flex: 2 1 0;
   overflow: hidden;
 }
 
 .more {
   display: flex;
-  overflow: hidden;
   position: relative;
   user-select: none;
+
+  @media screen and(max-width:$sm) {
+    display: none;
+  }
 
   .like {
     &.normal {

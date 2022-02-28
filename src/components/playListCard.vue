@@ -18,7 +18,7 @@
           <div class="mask">
             <span class="material-icons-round"> play_arrow </span>
           </div>
-          <div class="played-count font-size-12">
+          <div class="played-count font-size-12" v-if="playCount">
             <span
               v-if="type !== 'video'"
               class="material-icons-round font-size-12"
@@ -46,7 +46,7 @@
           v-if="showArtist && type !== 'playlist'"
           :artistList="artists"
         />
-        <div class="info text-truncate font-size-12" v-html="setInfo()"></div>
+        <div class="info text-truncate font-size-12"></div>
       </div>
     </div>
   </div>
@@ -63,7 +63,7 @@ export default {
     // id: { type: Number, required: true },
     size: { type: String, default: null },
     showDec: { type: Boolean, default: true },
-    showTime: { type: Boolean, default: true },
+    showTime: { type: Boolean, default: false },
     showArtist: { type: Boolean, default: true },
     item: { type: Object, required: true },
   },

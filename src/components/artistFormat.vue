@@ -20,7 +20,6 @@ export default {
     const setStyle = () => {
       let styles = {
         fontSize: props.fontSize,
-        lineHeight: props.fontSize,
       };
       return styles;
     };

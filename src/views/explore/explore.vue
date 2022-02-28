@@ -2,7 +2,9 @@
 import Banner from "./components/banner.vue";
 import RecomendPlaylist from "./components/recomendPlaylist.vue";
 import RecomendOther from "./components/recomendOther.vue";
-import TopList from "./components/topList.vue";
+import PlayListTrack from "./components/playListTrack.vue";
+import LatestAlbum from "./components/latestAlbum.vue";
+import RecomendFM from "./components/recomendFM.vue";
 </script>
 
 <template>
@@ -16,14 +18,21 @@ import TopList from "./components/topList.vue";
     <RecomendOther class="section"></RecomendOther>
 
     <!-- 排行榜 -->
-    <section class="charts section">
-      <TopList></TopList>
-      <TopList></TopList>
+
+    <section class="section">
+      <h4 class="text-style-title">排行榜</h4>
+      <div class="charts">
+        <PlayListTrack class="block" :id="19723756"></PlayListTrack>
+        <PlayListTrack class="block" :id="3779629"></PlayListTrack>
+        <PlayListTrack class="block" :id="3778678"></PlayListTrack>
+      </div>
     </section>
-    <!-- 新单，新歌 -->
+
+    <!-- 新专 -->
+    <LatestAlbum class="section"></LatestAlbum>
 
     <!-- 推荐电台 -->
-
+    <!-- <RecomendFM class="section"></RecomendFM> -->
     <br />
     <br />
   </div>
@@ -35,13 +44,18 @@ import TopList from "./components/topList.vue";
 }
 
 .charts {
-  display: flex;
+  display: grid;
   width: 100%;
-
   overflow: hidden;
+  grid: repeat(1, 1fr) / auto-flow;
 
+  grid-gap: 20px;
   > * {
     flex: 1 0 0;
+  }
+
+  @media screen and (max-width: 1440px) {
+    grid: repeat(3, 1fr) / auto-flow;
   }
 }
 </style>

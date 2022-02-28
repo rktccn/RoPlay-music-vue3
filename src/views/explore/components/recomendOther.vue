@@ -1,23 +1,35 @@
 <template lang="">
-<section>
+  <section>
     <h4 class="text-style-title">视&nbsp;·&nbsp;听</h4>
     <div class="container">
       <div class="left-video">
         <div class="video-container" ref="videoItem">
-          <CarouselList :length="video.length" v-if="video" :rows="2" key="video">
-            <template v-for="(item, index) in video" :key="index">
-              <div class="video-list">
-                <PlayListCard :item="item" type="video"></PlayListCard>
-              </div>
-            </template>
+          <CarouselList
+            :length="video.length"
+            v-if="video"
+            :rows="2"
+            key="video"
+          >
+            <div class="video-list" v-for="(item, index) in video" :key="index">
+              <PlayListCard :item="item" type="video"></PlayListCard>
+            </div>
           </CarouselList>
         </div>
       </div>
       <div class="right-song">
-        <CarouselList :length="song.length" v-if="song && songRows !== 0" :rows="songRows" key="song" >
-          <template v-for="(value, index) in song" :key="index">
-            <TrackListItem class="track-item" :height="songItemHeight" :item="value.song"></TrackListItem>
-          </template>
+        <CarouselList
+          :length="song.length"
+          v-if="song && songRows !== 0"
+          :rows="songRows"
+          key="song"
+        >
+          <div v-for="(value, index) in song" :key="index">
+            <TrackListItem
+              class="track-item"
+              :height="songItemHeight"
+              :item="value.song"
+            ></TrackListItem>
+          </div>
         </CarouselList>
       </div>
     </div>
@@ -57,23 +69,27 @@ export default {
     const videoItem = ref(null);
 
     // 设置歌曲列表显示列数
-    const setSongRows = () => {
+    const setSongRows = (height) => {
       if (window.innerWidth < 1250) {
         data.songRows = 2;
         data.songItemHeight = null;
         return;
       }
-      console.log(data.songRows);
-
-      let height = videoItem.value.offsetHeight;
       let size = height / 70;
       size = Math.floor(size);
       data.songRows = size;
       data.songItemHeight = height / size + "px";
     };
 
+    const ro = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const cr = entry.contentRect;
+        setSongRows(cr.height);
+      }
+    });
+
     onMounted(() => {
-      window.addEventListener("resize", () => setSongRows(), false);
+      ro.observe(videoItem.value);
     });
 
     return { ...toRefs(data), videoItem };
@@ -100,6 +116,7 @@ export default {
   @include calc-width(6.9);
   @media (max-width: $lg) {
     width: 100%;
+    max-width: 100%;
   }
 
   .video-container {
@@ -114,9 +131,13 @@ export default {
   @media (max-width: $lg) {
     margin-top: 12px;
     width: 100%;
+    max-width: 100%;
   }
   .track-item {
     @include calc-width(2.5);
+    @media (max-width: $lg) {
+      @include calc-width(4.3);
+    }
   }
 }
 </style>

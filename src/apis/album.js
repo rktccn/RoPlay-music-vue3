@@ -50,3 +50,13 @@ export function likeAAlbum(params) {
     return res;
   });
 }
+
+// 最新专辑
+// 说明 : 调用此接口 ，获取云音乐首页新碟上架数据
+// - id - 返专辑 id
+// - t - 1 为收藏,其他为取消收藏
+export function latestAlbum() {
+  return req.post("/album/newest").then((res) => {
+    return res;
+  });
+}
