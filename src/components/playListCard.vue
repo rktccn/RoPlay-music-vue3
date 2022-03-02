@@ -53,7 +53,7 @@
           v-if="showArtist && type !== 'playlist'"
           :artistList="artists"
         />
-        <div class="info text-truncate font-size-12"></div>
+        <div class="info text-truncate font-size-12">{{ setInfo() }}</div>
       </div>
     </div>
   </div>

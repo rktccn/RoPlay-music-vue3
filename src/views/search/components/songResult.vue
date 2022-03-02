@@ -4,16 +4,16 @@
     <div class="" v-if="artistList">
       <ul class="list grid">
         <li class="list-item" v-for="(item, index) in artistList" :key="index">
-          <TrackListItem :item="item" :showImg="false"></TrackListItem>
+          <TrackListItem :item="item"></TrackListItem>
         </li>
       </ul>
-      <TrackListItem :item="artistList[0]"></TrackListItem>
     </div>
   </div>
 </template>
 <script>
 import { reactive, toRefs } from "vue";
 import { search } from "../../../apis/others";
+import { getTrackDetail } from "../../../apis/track";
 
 import TrackListItem from "../../../components/trackListItem.vue";
 
@@ -22,6 +22,13 @@ export default {
     const data = reactive({
       artistList: null,
     });
+
+    const getSongDetail = (value) => {
+      let ids = value.map((r) => r.id);
+      getTrackDetail(ids.join(",")).then((res) => {
+        data.artistList = res.songs;
+      });
+    };
 
     const getArtists = () => {
       // keywords : 关键词
@@ -35,8 +42,7 @@ export default {
         type: 1,
       };
       search(params).then((res) => {
-        console.log(res);
-        data.artistList = res.result.songs;
+        getSongDetail(res.result.songs);
       });
     };
 

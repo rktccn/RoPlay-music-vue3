@@ -5,7 +5,9 @@
 
     <!-- 单曲 -->
     <SongResult></SongResult>
+
     <!-- 歌单 -->
+    <PlayListResult></PlayListResult>
 
     <!-- 视频 -->
 
@@ -19,6 +21,7 @@ import { reactive, toRefs } from "vue";
 import PlayListCard from "../../components/playListCard.vue";
 import ArtistAndAblum from "./components/artistAndAblum.vue";
 import SongResult from "./components/songResult.vue";
+import PlayListResult from "./components/playListResult.vue";
 
 export default {
   setup() {
@@ -31,7 +34,7 @@ export default {
 
     return { ...toRefs(data) };
   },
-  components: { PlayListCard, ArtistAndAblum, SongResult },
+  components: { PlayListCard, ArtistAndAblum, SongResult, PlayListResult },
 };
 </script>
 <style lang="scss" scoped></style>
