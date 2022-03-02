@@ -4,6 +4,7 @@
     :class="[{ video: type === 'video' }, { 'hover-show-dec': !showDec }]"
     @mouseenter="isDecShow = true"
     @mouseleave="isDecShow = showDec"
+    :style="setWidth()"
   >
     <div class="card-inner">
       <div class="cover">
@@ -87,6 +88,17 @@ export default {
       isDecShow: null,
     });
 
+    const setVideo = () => {
+      const video = props.item;
+
+      data.imgUrl = `${video?.cover || video.coverUrl}?param=480y270`;
+      data.playCount = video?.playCount ?? video?.playTime;
+      data.publishTime = video?.publishTime;
+      data.artists = video?.artists;
+      data.title = video?.name ?? video?.title;
+      data.id = video?.id ?? video?.vid;
+    };
+
     if (props.type === "playlist") {
       const playlist = props.item;
 
@@ -106,15 +118,7 @@ export default {
       data.artists = album.artists;
       data.title = album.name;
     } else if (props.type === "video") {
-      const video = props.item;
-
-      data.imgUrl = `${video.cover}?param=480y270`;
-      data.playCount = video.mv.plays;
-      data.publishTime = video.mv.publishTime;
-      data.artists = video.mv.artists;
-      data.title = video.mv.title;
-      data.info = video.mv.name;
-      data.id = video.id;
+      setVideo();
     } else if (props.type === "artist") {
       const artist = props.item;
 
@@ -132,16 +136,28 @@ export default {
 
     const setStyle = () => {
       let style = {
-        width: null,
         borderRadius: null,
       };
-      if (props.size) style.width = props.size;
+
       props.type === "artist" ? (style.borderRadius = "300px") : "";
 
       return style;
     };
 
-    return { ...toRefs(data), setInfo, setStyle };
+    const setWidth = () => {
+      let style = {
+        width: null,
+        maxWidth: null,
+      };
+      if (props.size) {
+        style.width = props.size;
+        style.maxWidth = props.size;
+      }
+
+      return style;
+    };
+
+    return { ...toRefs(data), setInfo, setStyle, setWidth };
   },
   components: { ArtistFormat },
 };
@@ -155,19 +171,16 @@ export default {
   @media screen and (max-width: $lg) {
     @include calc-width(2.5);
   }
-
-  max-width: 280px;
 }
 
 .card.video {
   @include calc-width(3);
-
-  max-width: 420px;
 }
 
 .card-inner {
   text-align: left;
-  margin: 8px 12px;
+  margin: 0.6vw 0.9vw;
+
   transform: translateY(0px);
 }
 .cover-inner {
@@ -193,6 +206,7 @@ export default {
     width: 100%;
     height: 100%;
     background-size: 100% 100%;
+    background-position: center;
     border-radius: $border-radius-default;
 
     transition: all $transition-time-default;
@@ -245,8 +259,9 @@ export default {
   }
 
   &:hover {
-    img {
-      transform: scale(105%);
+    .avator {
+      background-size: 105% 105%;
+      // transform: scale(105%);
     }
     .mask {
       background-color: rgba(0, 0, 0, 0.2);

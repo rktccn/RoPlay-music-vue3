@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 //获取专辑内容
 export function getAlbum(id) {
@@ -46,9 +47,16 @@ export function getLikeAlbum(params) {
 // - id - 返专辑 id
 // - t - 1 为收藏,其他为取消收藏
 export function likeAAlbum(params) {
-  return req.post("/album/sub", { params }).then((res) => {
-    return res;
-  });
+  return req
+    .post("/album/sub", {
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
+    })
+    .then((res) => {
+      return res;
+    });
 }
 
 // 最新专辑

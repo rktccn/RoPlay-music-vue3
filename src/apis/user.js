@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 /**
  * 获取用户详情
@@ -11,7 +12,7 @@ export function userDetail(uid) {
     .get("/user/detial", {
       params: {
         uid,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
       withCredentials,
     })
@@ -26,7 +27,7 @@ export function userAccount() {
   return req
     .get("/user/account", {
       params: {
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -48,6 +49,7 @@ export function userPlaylist(params) {
     .get("/user/playlist", {
       params: {
         ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -64,7 +66,7 @@ export function userLikedSongsIDs(uid) {
     .get("/likelist", {
       params: {
         uid,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -81,7 +83,7 @@ export function dailySignin(type = 0) {
     .get("/daily_signin", {
       params: {
         type,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -101,7 +103,7 @@ export function likedAlbums(params) {
     .get("/album/sublist", {
       params: {
         limit: params.limit,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -116,7 +118,7 @@ export function likedArtists(params) {
     .get("/artist/sublist", {
       params: {
         limit: params.limit,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -131,7 +133,7 @@ export function likedMVs(params) {
     .get("/mv/sublist", {
       params: {
         limit: params.limit,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -148,7 +150,7 @@ export function uploadSong(file) {
     url: "/cloud",
     method: "post",
     params: {
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
     data: formData,
     headers: {
@@ -167,12 +169,11 @@ export function uploadSong(file) {
  * @param {number=} params.offset
  */
 export function cloudDisk(params = {}) {
-  params.timestamp = new Date().getTime();
-
   return req
     .get("/user/cloud", {
       params: {
         ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);
@@ -184,7 +185,7 @@ export function cloudDisk(params = {}) {
 export function cloudDiskTrackDetail(id) {
   return req.get("/user/cloud/detial", {
     params: {
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       id,
     },
   });
@@ -198,7 +199,7 @@ export function cloudDiskTrackDelete(id) {
   return req
     .get("/user/cloud/del", {
       params: {
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
         id,
       },
     })

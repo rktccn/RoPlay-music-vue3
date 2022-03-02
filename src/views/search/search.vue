@@ -10,6 +10,7 @@
     <PlayListResult></PlayListResult>
 
     <!-- 视频 -->
+    <VideoResult></VideoResult>
 
     <!-- 电台 -->
   </div>
@@ -22,6 +23,7 @@ import PlayListCard from "../../components/playListCard.vue";
 import ArtistAndAblum from "./components/artistAndAblum.vue";
 import SongResult from "./components/songResult.vue";
 import PlayListResult from "./components/playListResult.vue";
+import VideoResult from "./components/videoResult.vue";
 
 export default {
   setup() {
@@ -34,7 +36,13 @@ export default {
 
     return { ...toRefs(data) };
   },
-  components: { PlayListCard, ArtistAndAblum, SongResult, PlayListResult },
+  components: {
+    PlayListCard,
+    ArtistAndAblum,
+    SongResult,
+    PlayListResult,
+    VideoResult,
+  },
 };
 </script>
 <style lang="scss" scoped></style>

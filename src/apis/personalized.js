@@ -1,11 +1,12 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 // 说明 : 私人 FM( 需要登录 )
 export function personalFM() {
   return req
     .get("/personal_fm", {
       params: {
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -24,7 +25,7 @@ export function dailyRecommendTracks() {
   return req
     .get("/recommend/songs", {
       params: {
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -43,6 +44,7 @@ export function dailyRecommendPlaylist(params) {
     .get("/recommend/resource", {
       params: {
         ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -61,7 +63,10 @@ export function dailyRecommendPlaylist(params) {
 export function recommendPlaylist(params) {
   return req
     .get("/personalized", {
-      params,
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
     })
     .then((res) => {
       return res;
@@ -79,6 +84,7 @@ export function recommendNewSong(limit) {
     .get("/personalized/newsong", {
       params: {
         limit,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -97,6 +103,7 @@ export function recommendFM(limit) {
     .get("/personalized/djprogram", {
       params: {
         limit,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {

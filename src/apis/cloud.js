@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 /**
  * 云盘
@@ -15,7 +16,7 @@ export function getCloud(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     console.log(res);
@@ -35,7 +36,7 @@ export function getCloudDetail(id) {
     method: "post",
     params: {
       id,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -54,7 +55,7 @@ export function deleteCloudMusic(id) {
     method: "post",
     params: {
       id,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -72,7 +73,7 @@ export function uploadCloudMusic(file) {
     method: "post",
     params: {
       file,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
     headers: {
       "Content-Type": "multipart/form-data",
@@ -99,7 +100,7 @@ export function matchCloudMusic(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;

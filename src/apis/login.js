@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 /**
  * 手机登录
@@ -16,7 +17,10 @@ export function loginWithPhone(params) {
   return req({
     method: "post",
     url: "/login/cellphone",
-    params,
+    params: {
+      ...params,
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+    },
   }).then((res) => {
     console.log(res);
     return res;
@@ -36,7 +40,10 @@ export function loginWithPhone(params) {
 export function loginWithEmail(params) {
   return req
     .post("/login", {
-      params,
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
     })
     .then((res) => {
       return res;
@@ -50,7 +57,7 @@ export function loginQrCodeKey() {
   return req
     .get("/login/qr/key", {
       params: {
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -71,7 +78,7 @@ export function loginQrCodeCreate(params) {
   {
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -88,7 +95,7 @@ export function loginQrCodeCheck(key) {
     .get("/login/qr/check", {
       params: {
         key,
-        timestamp: new Date().getTime(),
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -105,7 +112,9 @@ export function refreshCookie() {
   return req({
     url: "/login/refresh",
     method: "post",
-    params: {},
+    params: {
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+    },
   }).then((res) => {
     return res;
   });
@@ -119,9 +128,9 @@ export function logout() {
   return req({
     url: "/logout",
     method: "post",
-    // params: {
-    //
-    // },
+    params: {
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+    },
   }).then((res) => {
     return res;
   });

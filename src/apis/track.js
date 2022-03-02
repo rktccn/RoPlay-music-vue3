@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 // import { mapTrackPlayableStatus } from "../utils/common";
 
@@ -18,6 +19,7 @@ export function getMP3(id, br = 320000) {
       params: {
         id,
         br,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -117,11 +119,11 @@ export function topSong(type) {
  * @param {boolean=} [params.like]
  */
 export function likeATrack(params) {
-  params.timestamp = new Date().getTime();
   return req
     .get("/like", {
       params: {
         ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -141,12 +143,11 @@ export function likeATrack(params) {
  * @param {number=} params.time
  */
 export function scrobble(params) {
-  params.timestamp = new Date().getTime();
-
   return req
     .get("/scrobble", {
       params: {
         ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {

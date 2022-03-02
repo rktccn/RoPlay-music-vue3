@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 /**
  * 获取歌单详情
@@ -96,6 +97,7 @@ export function subscribePlaylist(params) {
   return req
     .get("/playlist/subscribe", {
       params,
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     })
     .then((res) => {
       return res;
@@ -114,6 +116,7 @@ export function deletePlaylist(id) {
     method: "post",
     params: {
       id,
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -132,12 +135,12 @@ export function deletePlaylist(id) {
  * @param {string} params.type
  */
 export function createPlaylist(params) {
-  params.timestamp = new Date().getTime();
   return req({
     url: "/playlist/create",
     method: "post",
     params: {
       ...params,
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -161,6 +164,7 @@ export function addOrRemoveTrackFromPlaylist(params) {
     method: "post",
     params: {
       ...params,
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;

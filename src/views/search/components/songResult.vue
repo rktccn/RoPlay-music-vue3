@@ -18,6 +18,7 @@ import { getTrackDetail } from "../../../apis/track";
 import TrackListItem from "../../../components/trackListItem.vue";
 
 export default {
+  name: "searchSong",
   setup() {
     const data = reactive({
       artistList: null,
@@ -59,6 +60,10 @@ export default {
   grid: auto-flow / repeat(4, 1fr);
   grid-auto-flow: dense;
   gap: 8px;
+
+  @media screen and (max-width: $lg) {
+    grid: auto-flow / repeat(auto-fit, minmax(230px, 1fr));
+  }
   .list-item {
     overflow: hidden;
   }

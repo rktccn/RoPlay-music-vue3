@@ -1,4 +1,5 @@
 import req from "../utils/http";
+import Cookie from "js-cookie";
 
 /**
  * 新版评论接口
@@ -23,7 +24,6 @@ export function getComment(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;
@@ -51,7 +51,6 @@ export function floorOfComment(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;
@@ -79,7 +78,6 @@ export function commentOfDJ(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;
@@ -105,7 +103,7 @@ export function likeComment(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -133,7 +131,7 @@ export function writeComment(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -161,7 +159,7 @@ export function deleteComment(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
@@ -185,7 +183,7 @@ export function likeResource(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
+      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     return res;
