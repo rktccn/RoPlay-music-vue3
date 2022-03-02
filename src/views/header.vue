@@ -46,7 +46,7 @@ let searchFocus = ref(false);
     span {
       border-radius: 6px;
       height: 100%;
-      transition: all 0.15s;
+      transition: all $transition-time-default;
 
       cursor: pointer;
       &:hover {
@@ -82,7 +82,7 @@ let searchFocus = ref(false);
       }
     }
     box-shadow: var(--main-color) 0 0 0 0px;
-    transition: all 0.15s;
+    transition: all $transition-time-default;
     &.active {
       box-shadow: var(--main-color) 0 0 0 2px;
     }

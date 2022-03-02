@@ -1,7 +1,12 @@
 <template lang="">
   <div class="track-list-item" ref="refItem" :style="setStyle()">
     <div class="inner">
-      <img class="cover" :src="`${imgUrl}?param=48y48`" alt="" v-if="imgUrl" />
+      <img
+        class="cover"
+        :src="`${imgUrl}?param=48y48`"
+        alt=""
+        v-if="imgUrl && showImg"
+      />
       <div class="title">
         <div class="container">
           <div v-if="artists" class="text-truncate">{{ title }}</div>
@@ -12,7 +17,7 @@
           <div></div>
         </div>
       </div>
-      <div class="artist" v-show="itemWidth <= 1">
+      <div class="artist-md" v-show="itemWidth <= 1">
         <div v-if="artists">
           <ArtistFormat :artistList="artists"></ArtistFormat>
         </div>
@@ -47,6 +52,7 @@ export default {
     type: { type: String, default: "song" },
     height: { type: String, default: "auto" },
     width: { type: String, default: null },
+    showImg: { type: Boolean, default: true },
   },
   setup(props) {
     const data = reactive({
@@ -149,21 +155,23 @@ export default {
 </script>
 <style lang="scss" scoped>
 .track-list-item {
-  border-radius: $border-radius-default;
   padding: 8px;
+  border-radius: $border-radius-default;
+
   scroll-snap-align: start;
 
   .inner {
     display: flex;
     align-items: center;
     height: 100%;
+    min-height: 48px;
 
     > * {
       margin-right: 16px;
     }
   }
 
-  transition: background-color 0.3s;
+  transition: background-color $transition-time-default;
 
   &:hover {
     background-color: var(--background-color-primary);
@@ -194,8 +202,12 @@ export default {
   }
 }
 
-.artist {
+.artist-md {
   flex: 2 1 0;
+  overflow: hidden;
+}
+
+.artist-small {
   overflow: hidden;
 }
 

@@ -39,10 +39,6 @@ import RecomendFM from "./components/recomendFM.vue";
 </template>
 
 <style lang="scss" scoped>
-.section {
-  margin-bottom: 24px;
-}
-
 .charts {
   display: grid;
   width: 100%;

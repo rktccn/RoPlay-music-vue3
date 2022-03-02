@@ -1,21 +1,23 @@
 <template>
-  <div class="card" :class="{ video: type === 'video' }">
-    <div class="card-inner" :style="setWidth()">
+  <div
+    class="card"
+    :class="[{ video: type === 'video' }, { 'hover-show-dec': !showDec }]"
+    @mouseenter="isDecShow = true"
+    @mouseleave="isDecShow = showDec"
+  >
+    <div class="card-inner">
       <div class="cover">
         <div class="cover-inner" :class="{ video: type === 'video' }">
-          <div class="placeholder" :class="{ video: type === 'video' }"></div>
-
-          <img
-            :src="`${imgUrl}?param=480y480`"
-            alt=""
-            v-if="type !== 'video'"
+          <div
+            class="placeholder"
+            :class="{ video: type === 'video' }"
+            :style="setStyle()"
+          ></div>
+          <div
+            :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
+            class="avator"
           />
-          <img
-            :src="`${imgUrl}?param=480y270`"
-            alt=""
-            v-if="type === 'video'"
-          />
-          <div class="mask">
+          <div class="mask" :style="setStyle()">
             <span class="material-icons-round"> play_arrow </span>
           </div>
           <div class="played-count font-size-12" v-if="playCount">
@@ -40,7 +42,12 @@
           </div>
         </div>
       </div>
-      <div class="dec">
+      <div
+        class="dec"
+        :class="{ showDec: !showDec }"
+        v-show="isDecShow"
+        :style="type === 'artist' ? { textAlign: 'center' } : ''"
+      >
         <div class="tit text-truncate">{{ title }}</div>
         <ArtistFormat
           v-if="showArtist && type !== 'playlist'"
@@ -76,12 +83,14 @@ export default {
       title: null,
       info: null,
       id: null,
+
+      isDecShow: null,
     });
 
     if (props.type === "playlist") {
       const playlist = props.item;
 
-      data.imgUrl = playlist.coverImgUrl;
+      data.imgUrl = `${playlist.coverImgUrl}?param=480y480`;
       let date = dateFormat(playlist.createTime, false);
       data.publishTime = date;
       data.artists = playlist.creator;
@@ -91,7 +100,7 @@ export default {
     } else if (props.type === "album") {
       const album = props.item;
 
-      data.imgUrl = album.picUrl;
+      data.imgUrl = `${album.picUrl}?param=480y480`;
       let date = dateFormat(album.publishTime, false);
       data.publishTime = date;
       data.artists = album.artists;
@@ -99,28 +108,40 @@ export default {
     } else if (props.type === "video") {
       const video = props.item;
 
-      data.imgUrl = video.cover;
+      data.imgUrl = `${video.cover}?param=480y270`;
       data.playCount = video.mv.plays;
       data.publishTime = video.mv.publishTime;
       data.artists = video.mv.artists;
       data.title = video.mv.title;
       data.info = video.mv.name;
       data.id = video.id;
+    } else if (props.type === "artist") {
+      const artist = props.item;
+
+      data.imgUrl = `${artist.picUrl}?param=480y480`;
+      data.title = artist.name;
+      data.id = artist.id;
     }
+
+    data.isDecShow = props.showDec;
 
     function setInfo() {
       if (props.type === "playlist") return data.info;
       if (props.type === "album" && props.showTime) return data.publishTime;
     }
 
-    function setWidth() {
-      if (props.size) {
-        let style = {};
-        style.width = props.size;
-        return style;
-      }
-    }
-    return { ...toRefs(data), setInfo, setWidth };
+    const setStyle = () => {
+      let style = {
+        width: null,
+        borderRadius: null,
+      };
+      if (props.size) style.width = props.size;
+      props.type === "artist" ? (style.borderRadius = "300px") : "";
+
+      return style;
+    };
+
+    return { ...toRefs(data), setInfo, setStyle };
   },
   components: { ArtistFormat },
 };
@@ -147,31 +168,39 @@ export default {
 .card-inner {
   text-align: left;
   margin: 8px 12px;
+  transform: translateY(0px);
 }
 .cover-inner {
   position: relative;
-  border-radius: $border-radius-default;
-  overflow: hidden;
+
   cursor: pointer;
 
   .placeholder {
     width: 100%;
     padding-top: 100%;
     background-color: pink;
+    border-radius: $border-radius-default;
 
     &.video {
       padding-top: 56.25%;
     }
   }
 
-  img {
+  .avator {
     position: absolute;
     top: 0;
     left: 0;
-
-    display: block;
     width: 100%;
-    transition: all 0.15s;
+    height: 100%;
+    background-size: 100% 100%;
+    border-radius: $border-radius-default;
+
+    transition: all $transition-time-default;
+
+    @include blurShadow;
+    &::after {
+      opacity: 0;
+    }
   }
 
   .mask {
@@ -181,7 +210,8 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0);
-    transition: all 0.15s;
+    transition: all $transition-time-default;
+    border-radius: $border-radius-default;
 
     span {
       position: absolute;
@@ -191,7 +221,7 @@ export default {
       color: #fff;
       transform: translate(-50%, -50%);
       opacity: 0;
-      transition: all 0.15s;
+      transition: all $transition-time-default;
     }
   }
 
@@ -234,11 +264,36 @@ export default {
 
 .dec {
   margin-top: 3px;
+
   > * {
     margin: 0px 0;
   }
+
+  &.showDec {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+  }
   .info {
     color: var(--text-color-secondary);
+  }
+}
+
+.hover-show-dec {
+  .card-inner {
+    transition: transform $transition-time-default;
+  }
+  &:hover {
+    .card-inner {
+      transform: translateY(-40px);
+    }
+
+    .avator {
+      &::after {
+        opacity: 1;
+      }
+    }
   }
 }
 </style>

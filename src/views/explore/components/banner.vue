@@ -150,7 +150,7 @@ export default {
       padding-top: 100%;
       background-color: var(--background-color-primary);
       border-radius: $border-radius-default;
-      transition: all 0.15s;
+      transition: all $transition-time-default;
 
       &:hover {
         background-color: var(--main-color);
@@ -176,7 +176,7 @@ export default {
       justify-content: center;
 
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all $transition-time-default;
 
       @media screen and (max-width: $md) {
         transform: scale(0.9);
@@ -185,7 +185,7 @@ export default {
       em,
       .category-icon {
         transform: translateY(3px);
-        transition: all 0.15s;
+        transition: all $transition-time-default;
       }
     }
   }

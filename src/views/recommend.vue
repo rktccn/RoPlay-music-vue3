@@ -1,7 +1,9 @@
 <template lang="">
-  <div></div>
+  <div>
+    <SearchVue></SearchVue>
+  </div>
 </template>
-<script>
-export default {};
+<script setup>
+import SearchVue from "./search/search.vue";
 </script>
 <style lang=""></style>

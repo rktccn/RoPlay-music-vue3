@@ -63,7 +63,6 @@ export default {
 
     recommendNewSong().then((res) => {
       data.song = res.result;
-      console.log(res.result);
     });
 
     const videoItem = ref(null);

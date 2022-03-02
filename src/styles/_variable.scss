@@ -4,7 +4,11 @@ $md: 1000px;
 $lg: 1250px;
 $xl: 1920px;
 
+// 默认圆角
 $border-radius-default: 6px;
+
+// 默认过度时间
+$transition-time-default: 0.3s;
 
 // 页面显示范围
 :root {
@@ -25,5 +29,25 @@ $grid-default: calc(var(--view-size) / 10);
   @media screen and (max-width: $sm) {
     width: calc($grid-default * $w * 2);
     max-width: calc(1680px / 10 * $w * 2);
+  }
+}
+
+// 阴影
+@mixin blurShadow() {
+  &::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    background-size: 100% 100%;
+    border-radius: 50%;
+    transform: scale(0.95);
+    filter: blur(10px) brightness(80%) opacity(0.8);
+    z-index: -1;
+
+    transition: all calc($transition-time-default * 2);
   }
 }
