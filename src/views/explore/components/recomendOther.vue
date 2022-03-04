@@ -45,6 +45,7 @@ import CarouselList from "../../../components/carouselList.vue";
 import TrackListItem from "../../../components/trackListItem.vue";
 
 export default {
+  name: "exploreOther",
   setup() {
     const data = reactive({
       video: null,

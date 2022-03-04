@@ -16,6 +16,7 @@ import PlayListCard from "../../../components/playListCard.vue";
 import CarouselList from "../../../components/carouselList.vue";
 
 export default {
+  name: "searchPlayList",
   setup() {
     const data = reactive({
       playLists: null,

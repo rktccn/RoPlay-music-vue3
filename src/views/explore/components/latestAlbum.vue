@@ -22,6 +22,7 @@ import PlayListCard from "../../../components/playListCard.vue";
 import CarouselList from "../../../components/carouselList.vue";
 
 export default {
+  name: "exploreAlbum",
   setup() {
     const data = reactive({
       playlist: null,

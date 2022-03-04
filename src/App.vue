@@ -1,6 +1,8 @@
 <script setup>
 import "./styles/normalize.scss";
 
+import player from "./utils/player";
+
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
 </script>

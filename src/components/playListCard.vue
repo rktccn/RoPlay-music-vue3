@@ -66,6 +66,7 @@ import { dateFormat } from "../utils/common.js";
 import ArtistFormat from "./artistFormat.vue";
 
 export default {
+  name: "PlayListCard",
   props: {
     type: { type: String, required: true },
     // id: { type: Number, required: true },
@@ -99,7 +100,7 @@ export default {
       data.id = video?.id ?? video?.vid;
     };
 
-    if (props.type === "playlist") {
+    const setPlayList = () => {
       const playlist = props.item;
 
       data.imgUrl = `${playlist.coverImgUrl}?param=480y480`;
@@ -109,7 +110,9 @@ export default {
       data.playCount = playlist.playCount;
       data.title = playlist.name;
       data.info = playlist.description;
-    } else if (props.type === "album") {
+    };
+
+    const setAlbum = () => {
       const album = props.item;
 
       data.imgUrl = `${album.picUrl}?param=480y480`;
@@ -117,14 +120,41 @@ export default {
       data.publishTime = date;
       data.artists = album.artists;
       data.title = album.name;
-    } else if (props.type === "video") {
-      setVideo();
-    } else if (props.type === "artist") {
+    };
+
+    const setArtist = () => {
       const artist = props.item;
 
       data.imgUrl = `${artist.picUrl}?param=480y480`;
       data.title = artist.name;
       data.id = artist.id;
+    };
+
+    if (props.type === "playlist") {
+      setPlayList();
+    } else if (props.type === "album") {
+      setAlbum();
+    } else if (props.type === "video") {
+      setVideo();
+    } else if (props.type === "artist") {
+      setArtist();
+    }
+
+    switch (props.type) {
+      case "playlist":
+        setPlayList();
+        break;
+      case "album":
+        setAlbum();
+        break;
+      case "video":
+        setVideo();
+        break;
+      case "artist":
+        setArtist();
+        break;
+      default:
+        console.log('类型必须为 "playlist" "album""video""artist"');
     }
 
     data.isDecShow = props.showDec;

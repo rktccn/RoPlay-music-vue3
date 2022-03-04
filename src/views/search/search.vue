@@ -1,7 +1,7 @@
 <template lang="">
   <div>
     <!-- 艺人，专辑 -->
-    <ArtistAndAblum></ArtistAndAblum>
+    <ArtistAndAlbum></ArtistAndAlbum>
 
     <!-- 单曲 -->
     <SongResult></SongResult>
@@ -20,7 +20,7 @@ import { latestAlbum } from "../../apis/album";
 import { reactive, toRefs } from "vue";
 
 import PlayListCard from "../../components/playListCard.vue";
-import ArtistAndAblum from "./components/artistAndAblum.vue";
+import ArtistAndAlbum from "./components/artistAndAlbum.vue";
 import SongResult from "./components/songResult.vue";
 import PlayListResult from "./components/playListResult.vue";
 import VideoResult from "./components/videoResult.vue";
@@ -38,7 +38,7 @@ export default {
   },
   components: {
     PlayListCard,
-    ArtistAndAblum,
+    ArtistAndAlbum,
     SongResult,
     PlayListResult,
     VideoResult,

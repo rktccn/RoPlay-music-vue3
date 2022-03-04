@@ -23,6 +23,7 @@ import { reactive, toRefs } from "vue";
 // 飙升 19723756   新歌 3779629  热歌 3778678
 
 export default {
+  name: "explorePlayList",
   props: {
     id: { type: Number, required: true },
     type: { type: String, default: "playList" }, // playList,topList

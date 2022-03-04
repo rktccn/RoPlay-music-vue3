@@ -37,6 +37,7 @@ import { search } from "../../../apis/others";
 import PlayListCard from "../../../components/playListCard.vue";
 
 export default {
+  name: "searchArtistAndAlbum",
   setup() {
     const data = reactive({
       artist: null,

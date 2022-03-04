@@ -3,6 +3,7 @@ import { reactive, toRefs } from "vue";
 import { getBanner } from "../../../apis/others.js";
 
 export default {
+  name: "exploreBanner",
   setup() {
     const data = reactive({
       bannerList: null,
