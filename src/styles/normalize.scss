@@ -10,7 +10,6 @@
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-  color: var(--text-color-primary);
 
   @media screen and (max-width: $sm) {
     user-select: none !important;
@@ -21,6 +20,7 @@ html,
 body {
   height: 100%;
   width: 100%;
+  color: var(--text-color-primary);
 }
 
 address,

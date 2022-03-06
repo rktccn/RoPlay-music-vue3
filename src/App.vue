@@ -1,7 +1,7 @@
 <script setup>
 import "./styles/normalize.scss";
 
-import player from "./utils/player";
+// import player from "./utils/player";
 
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
@@ -46,7 +46,7 @@ import HeaderVue from "./views/header.vue";
 
 .el-header {
   background-color: var(--background-color-secondary);
-  color: var(--el-text-color-primary);
+  color: var(--text-color-primary);
   @include display-center;
 }
 
@@ -70,12 +70,12 @@ import HeaderVue from "./views/header.vue";
   }
 
   background-color: var(--background-color-primary);
-  color: var(--el-text-color-primary);
+  color: var(--text-color-primary);
 }
 
 .el-main {
   background-color: var(--background-color-secondary);
-  color: var(--el-text-color-primary);
+  color: var(--text-color-primary);
   overflow-y: scroll;
 
   .main-inner {

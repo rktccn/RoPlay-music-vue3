@@ -52,6 +52,7 @@ export default {
 
     // 计算页面容量
     const calcPageSize = (carouselWidth) => {
+
       data.itemLength = Math.ceil(props.length / props.rows);
 
       let itemwidth = carousel.value.children[0].offsetWidth;
@@ -66,24 +67,24 @@ export default {
 
     const changePage = (direction) => {
       let slider = carousel.value;
-      let products = carousel.value.children[0];
 
       if (direction === "next") {
-        slider.scrollLeft += data.pageSize * products.offsetWidth;
+        slider.scrollLeft +=
+          data.pageSize * carousel.value.children[0].offsetWidth;
       } else if (direction === "prev") {
-        slider.scrollLeft -= data.pageSize * products.offsetWidth;
+        slider.scrollLeft -=
+          data.pageSize * carousel.value.children[0].offsetWidth;
       }
     };
 
     // 设置控件显示
     const setActive = () => {
       let slider = carousel.value;
-      let products = carousel.value.children[0];
       // 左侧已显示内容数量
-      let active = Math.ceil(slider.scrollLeft / products.offsetWidth);
-
-      console.log(slider.scrollLeft / products.offsetWidth);
-
+      carousel.value.children[0];
+      let active = Math.ceil(
+        slider.scrollLeft / carousel.value.children[0].offsetWidth
+      );
       data.active = active;
     };
 
@@ -101,7 +102,6 @@ export default {
     });
 
     onMounted(() => {
-      calcPageSize();
       carousel.value.addEventListener("scroll", setActive);
 
       ro.observe(carousel.value);

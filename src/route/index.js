@@ -20,11 +20,21 @@ const routes = [
       requireLogin: true,
     },
   },
+
+  {
+    path: "/search/:keyword",
+    name: "search",
+    component: () => import("../views/search/search.vue"),
+  },
+  {
+    path: "/search",
+    redirect: "/",
+  },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
+  routes: routes,
 });
 
 export default router;

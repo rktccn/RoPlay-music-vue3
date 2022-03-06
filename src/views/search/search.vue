@@ -1,23 +1,24 @@
 <template lang="">
-  <div>
+  <div v-if="keyword">
     <!-- 艺人，专辑 -->
-    <ArtistAndAlbum></ArtistAndAlbum>
+    <ArtistAndAlbum :w="keyword" :key="componentKey"></ArtistAndAlbum>
 
     <!-- 单曲 -->
-    <SongResult></SongResult>
+    <SongResult :w="keyword" :key="componentKey"></SongResult>
 
     <!-- 歌单 -->
-    <PlayListResult></PlayListResult>
+    <PlayListResult :w="keyword" :key="componentKey"></PlayListResult>
 
     <!-- 视频 -->
-    <VideoResult></VideoResult>
+    <VideoResult :w="keyword" :key="componentKey"></VideoResult>
 
     <!-- 电台 -->
   </div>
 </template>
 <script>
 import { latestAlbum } from "../../apis/album";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, watch } from "vue";
+import { useRoute } from "vue-router";
 
 import PlayListCard from "../../components/playListCard.vue";
 import ArtistAndAlbum from "./components/artistAndAlbum.vue";
@@ -27,12 +28,26 @@ import VideoResult from "./components/videoResult.vue";
 
 export default {
   setup() {
+    const route = useRoute();
+
     const data = reactive({
       playlist: null,
+      keyword: null,
+      componentKey: 0,
     });
     latestAlbum().then((res) => {
       data.playlist = res.albums;
     });
+
+    data.keyword = route.params.keyword;
+
+    watch(
+      () => route.params.keyword,
+      (newValue, oldValue) => {
+        data.keyword = route.params.keyword;
+        data.componentKey += 1;
+      }
+    );
 
     return { ...toRefs(data) };
   },

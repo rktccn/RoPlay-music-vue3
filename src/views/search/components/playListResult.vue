@@ -1,7 +1,7 @@
 <template lang="">
-  <div class="section">
+  <div class="section" v-if="playLists">
     <h4 class="text-style-title">歌单</h4>
-    <CarouselList :length="playLists.length" v-if="playLists">
+    <CarouselList :length="playLists.length">
       <li v-for="(item, index) in playLists" :key="index">
         <PlayListCard :item="item" type="playlist"></PlayListCard>
       </li>
@@ -17,21 +17,22 @@ import CarouselList from "../../../components/carouselList.vue";
 
 export default {
   name: "searchPlayList",
-  setup() {
+  props: {
+    w: { type: String, required: true },
+  },
+  setup(props) {
     const data = reactive({
       playLists: null,
     });
 
     const getPlaylists = () => {
       let params = {
-        keywords: "五月天",
+        keywords: props.w,
         limit: 10,
         type: 1000,
       };
       search(params).then((res) => {
-        console.log(res.result.playlists);
         data.playLists = res.result.playlists;
-        // getSongDetail(res.result.songs);
       });
     };
 

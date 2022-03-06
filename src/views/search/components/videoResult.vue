@@ -17,19 +17,21 @@ import CarouselList from "../../../components/carouselList.vue";
 
 export default {
   name: "searchVideo",
-  setup() {
+  props: {
+    w: { type: String, required: true },
+  },
+  setup(props) {
     const data = reactive({
       videoList: null,
     });
 
     const getVideoList = () => {
       let params = {
-        keywords: "苏打绿",
+        keywords: props.w,
         limit: 8,
         type: 1014,
       };
       search(params).then((res) => {
-        console.log(res.result);
         data.videoList = res.result.videos;
       });
     };

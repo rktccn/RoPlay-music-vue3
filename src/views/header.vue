@@ -1,7 +1,34 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { ElNotification } from "element-plus";
 
-let searchFocus = ref(false);
+let keyword = ref("");
+
+const router = useRouter();
+const route = useRoute();
+
+const doSearch = () => {
+  if (keyword.value === "") {
+    ElNotification({
+      title: "错误",
+      message: "请输入搜索内容",
+      position: "bottom-right",
+      type: "error",
+    });
+
+    return;
+  }
+
+  router.push(`/search/${keyword.value}`);
+};
+
+watch(
+  () => route.params.keyword,
+  () => {
+    keyword.value = route.params.keyword;
+  }
+);
 </script>
 
 <template lang="">
@@ -11,7 +38,7 @@ let searchFocus = ref(false);
       <span class="material-icons-round font-size-48">navigate_next</span>
     </div>
     <div class="search" :class="{ active: searchFocus }">
-      <div class="icon">
+      <div class="icon" @click="doSearch()">
         <span class="material-icons-round font-size-24">search</span>
       </div>
       <div class="search-box">
@@ -21,10 +48,12 @@ let searchFocus = ref(false);
           placeholder="搜索"
           @focus="searchFocus = true"
           @blur="searchFocus = false"
+          @keydown.enter="doSearch()"
+          v-model="keyword"
         />
       </div>
     </div>
-    <div class="right">{{ searchFocus }}</div>
+    <div class="right">{{ keyword }}</div>
   </div>
 </template>
 
@@ -72,6 +101,8 @@ let searchFocus = ref(false);
       margin-top: 3px;
       display: flex;
       align-items: center;
+      user-select: none;
+      cursor: pointer;
     }
 
     .search-box {

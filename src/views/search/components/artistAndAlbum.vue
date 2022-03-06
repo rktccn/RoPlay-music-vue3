@@ -1,6 +1,6 @@
 <template lang="">
   <section class="artist-album">
-    <div class="artist section">
+    <div class="artist section" v-if="artist.length !== 0">
       <h4 class="text-style-title">音乐人</h4>
       <ul class="list">
         <li class="list-item" v-for="(item, index) in artist" :key="index">
@@ -9,7 +9,7 @@
       </ul>
     </div>
     <div class="gap"></div>
-    <div class="album section">
+    <div class="album section" v-if="album.length !== 0">
       <h4 class="text-style-title">专辑</h4>
       <ul class="list">
         <li
@@ -38,28 +38,32 @@ import PlayListCard from "../../../components/playListCard.vue";
 
 export default {
   name: "searchArtistAndAlbum",
-  setup() {
+  props: {
+    w: { type: String, required: true },
+  },
+  setup(props) {
     const data = reactive({
-      artist: null,
-      album: null,
+      artist: [],
+      album: [],
       showDec: false,
     });
 
     const getArtist = () => {
       let params = {
-        keywords: "周杰伦",
+        keywords: props.w,
         limit: 3,
         type: 100,
       };
       search(params).then((res) => {
         let result = res.result.artists;
         data.artist = result;
+        console.log(data.artist.length);
       });
     };
 
     const getAlbum = () => {
       let params = {
-        keywords: "花海",
+        keywords: props.w,
         limit: 9,
         type: 10,
       };
