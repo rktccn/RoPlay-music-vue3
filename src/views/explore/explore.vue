@@ -33,8 +33,6 @@ import RecomendFM from "./components/recomendFM.vue";
 
     <!-- 推荐电台 -->
     <!-- <RecomendFM class="section"></RecomendFM> -->
-    <br />
-    <br />
   </div>
 </template>
 

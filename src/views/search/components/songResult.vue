@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="section" v-if="artistList">
+  <div class="section" v-if="artistList.length !== 0">
     <h4 class="text-style-title">歌曲</h4>
     <div class="">
       <ul class="list grid">
@@ -24,7 +24,7 @@ export default {
   },
   setup(props) {
     const data = reactive({
-      artistList: null,
+      artistList: [],
     });
 
     const getSongDetail = (value) => {

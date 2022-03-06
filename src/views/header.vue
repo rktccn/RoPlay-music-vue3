@@ -4,6 +4,7 @@ import { useRouter, useRoute } from "vue-router";
 import { ElNotification } from "element-plus";
 
 let keyword = ref("");
+let searchFocus = ref(false);
 
 const router = useRouter();
 const route = useRoute();
@@ -16,10 +17,11 @@ const doSearch = () => {
       position: "bottom-right",
       type: "error",
     });
-
     return;
   }
-
+  let input = document.getElementsByName("searchBox")[0];
+  searchFocus.value = false;
+  input.blur();
   router.push(`/search/${keyword.value}`);
 };
 

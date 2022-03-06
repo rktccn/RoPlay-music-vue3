@@ -57,7 +57,6 @@ export default {
       search(params).then((res) => {
         let result = res.result.artists;
         data.artist = result;
-        console.log(data.artist.length);
       });
     };
 

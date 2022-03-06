@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="section" v-if="playLists">
+  <div class="section" v-if="playLists.length !== 0">
     <h4 class="text-style-title">歌单</h4>
     <CarouselList :length="playLists.length">
       <li v-for="(item, index) in playLists" :key="index">
@@ -22,7 +22,7 @@ export default {
   },
   setup(props) {
     const data = reactive({
-      playLists: null,
+      playLists: [],
     });
 
     const getPlaylists = () => {

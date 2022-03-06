@@ -5,6 +5,7 @@ import "./styles/normalize.scss";
 
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
+import AudioControl from "./components/audioControl.vue";
 </script>
 
 <template>
@@ -24,6 +25,7 @@ import HeaderVue from "./views/header.vue";
             </keep-alive>
           </router-view>
           <router-view v-if="!$route.meta.keepAlive"></router-view>
+          <AudioControl class="audio-control"></AudioControl>
         </main>
       </el-main>
     </el-container>
@@ -81,6 +83,14 @@ import HeaderVue from "./views/header.vue";
   .main-inner {
     height: 100%;
     @include display-center;
+
+    .audio-control {
+      position: sticky;
+      bottom: 20px;
+      background-color: pink;
+      width: 100%;
+      height: 80px;
+    }
   }
 }
 

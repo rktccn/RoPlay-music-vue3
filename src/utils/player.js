@@ -5,10 +5,11 @@ import { Howler, Howl } from "howler";
 import { getAlbum } from "../apis/album.js";
 import { getPlaylistDetail } from "../apis/playlist";
 import { getArtist } from "../apis/artist";
-import { personalFM, fmTrash } from "../apis/others";
-import store from "../store";
+// import { personalFM, fmTrash } from "../apis/others";
+// import store from "../store";
+import { useStore } from "../store";
 import { isAccountLoggedIn } from "../utils/auth";
-import request from "../axios/index";
+// import request from "../axios/index";
 
 // import { trackUpdateNowPlaying, trackScrobble } from "../api/lastfm";
 
@@ -242,13 +243,13 @@ export default class {
       this._nextTrackCallback();
     });
   }
-  _getAudioSourceFromCache(id) {
-    return getTrackSource(id).then((t) => {
-      if (!t) return null;
-      const source = URL.createObjectURL(new Blob([t.source]));
-      return source;
-    });
-  }
+  // _getAudioSourceFromCache(id) {
+  //   return getTrackSource(id).then((t) => {
+  //     if (!t) return null;
+  //     const source = URL.createObjectURL(new Blob([t.source]));
+  //     return source;
+  //   });
+  // }
   _getAudioSourceFromNetease(track) {
     if (isAccountLoggedIn()) {
       return getMP3(track.id).then((result) => {
@@ -282,15 +283,17 @@ export default class {
   //   }
   //   return source?.url;
   // }
-  _getAudioSource(track) {
-    return this._getAudioSourceFromCache(String(track.id))
-      .then((source) => {
-        return source ?? this._getAudioSourceFromNetease(track);
-      })
-      .then((source) => {
-        return source ?? this._getAudioSourceFromUnblockMusic(track);
-      });
-  }
+
+  // 解锁音乐
+  // _getAudioSource(track) {
+  //   return this._getAudioSourceFromCache(String(track.id))
+  //     .then((source) => {
+  //       return source ?? this._getAudioSourceFromNetease(track);
+  //     })
+  //     .then((source) => {
+  //       return source ?? this._getAudioSourceFromUnblockMusic(track);
+  //     });
+  // }
   _replaceCurrentTrack(
     id,
     autoplay = true,
