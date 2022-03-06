@@ -1,6 +1,6 @@
 # RoPlay-music
 
-vue3 + vite
+vue3 + vite + Pinia
 
 # 使用方法
 
