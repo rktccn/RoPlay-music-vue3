@@ -9,3 +9,11 @@
   --background-color-primary: #ffffff;
   --background-color-secondary: #f4f5fe;
 }
+
+// vue-silder 主题设置
+// https://github.com/NightCatSama/vue-slider-component/blob/master/lib/theme/default.scss
+$themeColor: var(--main-color);
+$bgColor: var(--hover-color);
+$dotShadow: 0px 0px 0px 2px var(--main-color);
+$dotShadowFocus: $dotShadow;
+@import "vue-slider-component/lib/theme/default.scss";

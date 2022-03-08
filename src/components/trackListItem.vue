@@ -1,6 +1,6 @@
 <template lang="">
   <div class="track-list-item" ref="refItem" :style="setStyle()">
-    <div class="inner">
+    <div class="inner" @dblclick="player.replaceCurrentTrack(id)">
       <img
         class="cover"
         :src="`${imgUrl}?param=48y48`"
@@ -43,6 +43,7 @@
 <script>
 import { onMounted, reactive, ref, toRefs } from "vue";
 import { timeFormat } from "../utils/common.js";
+import { usePlayer } from "../store/player.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
@@ -68,6 +69,7 @@ export default {
     });
 
     const track = props.item;
+    const player = usePlayer();
 
     const refItem = ref(null);
 
@@ -146,7 +148,7 @@ export default {
       ro.observe(refItem.value);
     });
 
-    return { ...toRefs(data), refItem, calcWidth, setStyle };
+    return { ...toRefs(data), player, refItem, calcWidth, setStyle };
   },
   components: {
     ArtistFormat,

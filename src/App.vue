@@ -85,11 +85,9 @@ import AudioControl from "./components/audioControl.vue";
     @include display-center;
 
     .audio-control {
-      position: sticky;
+      position: fixed;
       bottom: 20px;
-      background-color: pink;
-      width: 100%;
-      height: 80px;
+      @include calc-width(10);
     }
   }
 }
