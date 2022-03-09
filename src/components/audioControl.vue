@@ -3,10 +3,12 @@
     <div class="main">
       <div class="left">
         <img
-          :src="`${_currentTrack.al.picUrl}?param=48y48`"
+          :src="`${
+            _currentTrack?.al?.picUrl ??
+            'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
+          }?param=48y48`"
           alt=""
           class="cover"
-          v-if="_currentTrack"
         />
         <div class="music-info text-truncate" v-if="_currentTrack">
           <div class="title text-truncate">{{ _currentTrack.name }}</div>
@@ -37,29 +39,41 @@
           {{ player._isPlaying ? "pause" : "play_arrow" }}
         </li>
         <li class="play-next material-icons-round font-size-32">skip_next</li>
-        <li class="volume material-icons-round font-size-20">volume_up</li>
+        <li
+          class="volume material-icons-round font-size-20"
+          @click="setVolumeIcon"
+        >
+          volume_up
+        </li>
       </ul>
       <div class="right">
         <span class="show-tracklist material-icons-round">queue_music</span>
       </div>
     </div>
     <div class="progress">
-      <em class="time-current font-size-12">02:24</em>
+      <em class="time-current font-size-12">{{
+        timeFormat(progress)
+      }}</em>
       <vue-slider
         class="progress-slider"
-        v-model="value"
+        v-model="progress"
+        :min="0"
+        :max="_currentTrack?.dt"
         dotSize="6"
         height="2px"
         :dragOnClick="true"
         :lazy="true"
         tooltip="hover"
+        :tooltip-formatter="timeFormat"
       />
-      <em class="time-duration font-size-12">04:36</em>
+      <em class="time-duration font-size-12">{{
+        player.getCurrentDuration
+      }}</em>
     </div>
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
+import { computed, reactive, ref, toRef, toRefs, watch } from "vue";
 import { getTrackDetail, getMP3 } from "../apis/track";
 import { timeFormat } from "../utils/common";
 import { usePlayer } from "../store/player";
@@ -83,19 +97,25 @@ export default {
     const player = usePlayer();
     const { _currentTrack } = storeToRefs(player);
 
-    const getDate = (value) => {
-      data.imgUrl = `${value.al.picUrl}?param=48y48`;
-      data.artists = value.ar;
-      data.name = value.name;
-      data.duration = timeFormat(value.dt);
-      //   data.isLiked;
-      data.canPlay = value.fee === 0; // 0: 免费或无版权  1: VIP 歌曲   4: 购买专辑   8: 非会员可免费播放低音质，会员可播放高音质及下载
-    };
+    const progress = computed({
+      get: () => player.getProgress,
+      set: (val) => {
+        player.setProgress(val);
+      },
+    });
 
     // 音量图标随音量变化
     const setVolumeIcon = () => {};
 
-    return { ...toRefs(data), player, _currentTrack };
+    return {
+      ...toRefs(data),
+      player,
+      _currentTrack,
+      progress,
+      getCurTime: player.getCurrentDuration,
+      timeFormat,
+      setVolumeIcon,
+    };
   },
   components: { ArtistFormat, VueSlider },
 };

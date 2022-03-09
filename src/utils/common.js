@@ -32,6 +32,7 @@ export function dateFormat(time, showMin = true) {
 }
 
 export function timeFormat(value) {
+  if (value == 0) return "00:00";
   if (!value) return "";
   value = value / 1000;
   let min = ~~((value / 60) % 60);

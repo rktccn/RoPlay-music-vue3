@@ -221,7 +221,7 @@ export default {
   .placeholder {
     width: 100%;
     padding-top: 100%;
-    background-color: pink;
+    // background-color: pink;
     border-radius: $border-radius-default;
 
     &.video {
