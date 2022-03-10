@@ -1,9 +1,10 @@
 <template lang="">
   <div>
-    <SearchVue></SearchVue>
+    <TrackList></TrackList>
   </div>
 </template>
 <script setup>
-import SearchVue from "./search/search.vue";
+import TrackList from "../components/trackList.vue";
 </script>
+
 <style lang=""></style>

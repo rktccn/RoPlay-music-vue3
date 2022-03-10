@@ -1,6 +1,6 @@
 <template lang="">
   <section class="artist-album">
-    <div class="artist section" v-if="artist.length !== 0">
+    <div class="artist section block" v-if="artist.length !== 0">
       <h4 class="text-style-title">音乐人</h4>
       <ul class="list">
         <li class="list-item" v-for="(item, index) in artist" :key="index">
@@ -9,7 +9,7 @@
       </ul>
     </div>
     <div class="gap"></div>
-    <div class="album section" v-if="album.length !== 0">
+    <div class="album section block" v-if="album.length !== 0">
       <h4 class="text-style-title">专辑</h4>
       <ul class="list">
         <li

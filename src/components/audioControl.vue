@@ -1,18 +1,18 @@
 <template lang="">
-  <div class="audioControl">
+  <div class="audioControl material-theme">
     <div class="main">
       <div class="left">
         <img
           :src="`${
-            _currentTrack?.al?.picUrl ??
+            currentTrack?.al?.picUrl ??
             'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
           }?param=48y48`"
           alt=""
           class="cover"
         />
-        <div class="music-info text-truncate" v-if="_currentTrack">
-          <div class="title text-truncate">{{ _currentTrack.name }}</div>
-          <ArtistFormat :artistList="_currentTrack.ar"></ArtistFormat>
+        <div class="music-info text-truncate" v-if="currentTrack">
+          <div class="title text-truncate">{{ currentTrack.name }}</div>
+          <ArtistFormat :artistList="currentTrack.ar"></ArtistFormat>
         </div>
         <ul class="left-control">
           <li class="like material-icons-round font-size-20">
@@ -29,16 +29,24 @@
       </div>
       <ul class="control">
         <li class="play-mode material-icons-round font-size-20">repeat</li>
-        <li class="play-prev material-icons-round font-size-32">
+        <li
+          class="play-prev material-icons-round font-size-32"
+          @click="player.playPrev()"
+        >
           skip_previous
         </li>
         <li
           class="play-or-pause material-icons-round font-size-38"
           @click="player.playOrPause()"
         >
-          {{ player._isPlaying ? "pause" : "play_arrow" }}
+          {{ player.isPlaying ? "pause" : "play_arrow" }}
         </li>
-        <li class="play-next material-icons-round font-size-32">skip_next</li>
+        <li
+          class="play-next material-icons-round font-size-32"
+          @click="player.playNext()"
+        >
+          skip_next
+        </li>
         <li
           class="volume material-icons-round font-size-20"
           @click="setVolumeIcon"
@@ -51,14 +59,12 @@
       </div>
     </div>
     <div class="progress">
-      <em class="time-current font-size-12">{{
-        timeFormat(progress)
-      }}</em>
+      <em class="time-current font-size-12">{{ timeFormat(progress) }}</em>
       <vue-slider
         class="progress-slider"
         v-model="progress"
         :min="0"
-        :max="_currentTrack?.dt"
+        :max="currentTrack?.dt"
         dotSize="6"
         height="2px"
         :dragOnClick="true"
@@ -74,7 +80,6 @@
 </template>
 <script>
 import { computed, reactive, ref, toRef, toRefs, watch } from "vue";
-import { getTrackDetail, getMP3 } from "../apis/track";
 import { timeFormat } from "../utils/common";
 import { usePlayer } from "../store/player";
 
@@ -95,7 +100,7 @@ export default {
     });
 
     const player = usePlayer();
-    const { _currentTrack } = storeToRefs(player);
+    const { currentTrack } = storeToRefs(player);
 
     const progress = computed({
       get: () => player.getProgress,
@@ -110,7 +115,7 @@ export default {
     return {
       ...toRefs(data),
       player,
-      _currentTrack,
+      currentTrack,
       progress,
       getCurTime: player.getCurrentDuration,
       timeFormat,
@@ -122,15 +127,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 .audioControl {
-  background-color: var(--background-color-primary);
   padding: 12px 2%;
+  @include calc-width(10);
   box-shadow: 0 0 0 4px var(--background-color-secondary);
   border-radius: $border-radius-default * 3;
-
   background-color: var(--background-color-primary);
-
   z-index: 1000;
-
   .main {
     display: flex;
     justify-content: space-between;
@@ -191,6 +193,7 @@ export default {
     .right {
       flex: 2 1 0;
       text-align: right;
+      line-height: 0;
     }
   }
 
@@ -204,6 +207,41 @@ export default {
       flex: 1 1 0;
       margin: 0 24px;
     }
+  }
+}
+
+@media screen and (max-width: $lg) {
+  .left-control {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: $md) {
+  .control {
+    flex: 0 !important;
+    margin-right: 8px;
+    > * {
+      display: none;
+    }
+
+    .play-or-pause {
+      display: block;
+    }
+  }
+
+  .right {
+    flex: 0 !important;
+    align-items: center;
+  }
+
+  .progress {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .audioControl {
+    @include calc-width(5);
   }
 }
 </style>

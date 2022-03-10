@@ -15,9 +15,9 @@ const routes = [
     name: "recommend",
     component: () => import("../views/recommend.vue"),
     meta: {
-      keepAlive: true,
-      savePosition: true,
-      requireLogin: true,
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
     },
   },
 

@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="section" v-if="videoList.length !== 0">
+  <div class="section block" v-if="videoList.length !== 0">
     <h4 class="text-style-title">视频</h4>
     <CarouselList :length="videoList.length">
       <li v-for="(item, index) in videoList" :key="index">

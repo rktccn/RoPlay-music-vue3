@@ -56,7 +56,6 @@ export default {
 
     ToplistOfMV()
       .then((res) => {
-        console.log(res.data);
         data.video = res.data;
       })
       .then(() => {

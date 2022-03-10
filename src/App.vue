@@ -26,6 +26,7 @@ import AudioControl from "./components/audioControl.vue";
           </router-view>
           <router-view v-if="!$route.meta.keepAlive"></router-view>
           <AudioControl class="audio-control"></AudioControl>
+          <div class="control-placeholder"></div>
         </main>
       </el-main>
     </el-container>
@@ -87,7 +88,10 @@ import AudioControl from "./components/audioControl.vue";
     .audio-control {
       position: fixed;
       bottom: 20px;
-      @include calc-width(10);
+    }
+
+    .control-placeholder {
+      height: 120px;
     }
   }
 }

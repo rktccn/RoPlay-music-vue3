@@ -28,7 +28,6 @@ export default {
       playlist: null,
     });
     latestAlbum().then((res) => {
-      console.log(res);
       data.playlist = res.albums;
     });
 

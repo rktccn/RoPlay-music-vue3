@@ -37,6 +37,11 @@
           <span class="material-icons-round"> favorite_border </span>
         </div>
       </div>
+      <span
+        class="play material-icons-round"
+        @click="player.replaceCurrentTrack(id)"
+        >play_arrow</span
+      >
     </div>
   </div>
 </template>
@@ -50,7 +55,7 @@ import ArtistFormat from "./artistFormat.vue";
 export default {
   props: {
     item: { type: Object, required: true },
-    type: { type: String, default: "song" },
+    type: { type: String, default: "song" }, // song,
     height: { type: String, default: "auto" },
     width: { type: String, default: null },
     showImg: { type: Boolean, default: true },
@@ -236,6 +241,13 @@ export default {
 
     display: none;
     cursor: pointer;
+  }
+}
+
+.play {
+  display: none;
+  @media screen and (max-width: $sm) {
+    display: block;
   }
 }
 </style>
