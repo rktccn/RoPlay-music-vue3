@@ -47,11 +47,20 @@
         >
           skip_next
         </li>
-        <li
-          class="volume material-icons-round font-size-20"
-          @click="setVolumeIcon"
-        >
-          volume_up
+        <li class="volume">
+          <span class="material-icons-round font-size-20">{{
+            setVolumeIcon()
+          }}</span>
+          <div class="volume-bar">
+            <vue-slider
+              v-model="volume"
+              :min="0"
+              :max="1"
+              tooltip="none"
+              :interval="0.1"
+              dotSize="6"
+            ></vue-slider>
+          </div>
         </li>
       </ul>
       <div class="right">
@@ -81,14 +90,14 @@
   </div>
 </template>
 <script>
-import { computed, reactive, ref, toRef, toRefs, watch } from "vue";
+import { computed, reactive, toRefs } from "vue";
 import { timeFormat } from "../utils/common";
 import { usePlayer } from "../store/player";
 
 import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 export default {
   setup() {
     const data = reactive({
@@ -105,6 +114,7 @@ export default {
     const player = usePlayer();
     const { currentTrack } = storeToRefs(player);
     const router = useRouter();
+    const route = useRoute();
 
     const progress = computed({
       get: () => player.getProgress,
@@ -113,12 +123,32 @@ export default {
       },
     });
 
+    const volume = computed({
+      get: () => player.getVolume,
+      set: (val) => {
+        player.setVolume(val);
+      },
+    });
+
     // 音量图标随音量变化
-    const setVolumeIcon = () => {};
+    const setVolumeIcon = () => {
+      if (volume.value === 0) {
+        return "volume_off";
+      } else if (volume.value > 0.7) {
+        return "volume_up";
+      } else if (volume.value < 0.3) {
+        return "volume_mute";
+      } else {
+        return "volume_down";
+      }
+    };
 
     // 跳转到播放列表
     const goCurrentList = () => {
-      router.push(`/currentList`);
+      const goBack = () => {
+        window.history.state.back ? router.go(-1) : router.push(`/`);
+      };
+      route.path === "/currentList" ? goBack() : router.push(`/currentList`);
     };
 
     return {
@@ -126,6 +156,7 @@ export default {
       player,
       currentTrack,
       progress,
+      volume,
       timeFormat,
       setVolumeIcon,
       goCurrentList,
@@ -190,7 +221,19 @@ export default {
       li {
         margin: 0 4px;
       }
+      .volume {
+        position: relative;
+        line-height: 0;
+        .volume-bar {
+          position: absolute;
+          left: 50%;
+          bottom: 24px;
+          transform: translateX(-50%);
+          width: 60px;
 
+          // background-color: pink;
+        }
+      }
       .play-or-pause {
         padding: 6px;
         border-radius: 300px;

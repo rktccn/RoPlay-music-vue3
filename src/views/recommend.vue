@@ -1,12 +1,6 @@
 <template lang="">
-  <div>
-    <!-- <TrackList></TrackList> -->
-    <CurrentList></CurrentList>
-  </div>
+  <div></div>
 </template>
-<script setup>
-// import TrackList from "../components/trackList.vue";
-import CurrentList from "./currentList.vue";
-</script>
+<script setup></script>
 
 <style lang=""></style>

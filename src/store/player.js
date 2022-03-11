@@ -27,12 +27,8 @@ export const usePlayer = defineStore("player", {
       return this.progress;
     },
 
-    getTrackList() {
-      return this.trackList;
-    },
-
-    getCurrentIndex() {
-      return this.currentIndex;
+    getVolume() {
+      return this.volume;
     },
   },
 
@@ -52,18 +48,6 @@ export const usePlayer = defineStore("player", {
       this.isPlaying ? this.songPlay() : this.songPause();
     },
 
-    playSong(source) {
-      Howler.unload();
-      this.howler = new Howl({
-        src: [source],
-        html5: true,
-        volume: this.volume,
-        format: ["mp3", "flac"],
-      });
-      this.setCurTimeIntervals();
-      this.songPlay();
-    },
-
     playPrev() {
       this.currentIndex === 0
         ? (this.currentIndex = this.trackList.length - 1)
@@ -78,6 +62,22 @@ export const usePlayer = defineStore("player", {
         : this.currentIndex++;
 
       this.replaceCurrentTrack(this.trackList[this.currentIndex]);
+    },
+
+    playSong(source) {
+      Howler.unload();
+      this.howler = new Howl({
+        src: [source],
+        html5: true,
+        volume: this.volume,
+        format: ["mp3", "flac"],
+      });
+      this.setCurTimeIntervals();
+      this.songPlay();
+
+      this.howler.once("end", () => {
+        this.playNext();
+      });
     },
 
     replaceCurrentTrack(id) {
@@ -120,6 +120,14 @@ export const usePlayer = defineStore("player", {
       if (this.howler) {
         this.howler.seek(value / 1000);
       }
+    },
+
+    setVolume(value) {
+      console.log(value);
+      if (Howler) {
+        Howler.volume(value);
+      }
+      this.volume = value;
     },
   },
 });
