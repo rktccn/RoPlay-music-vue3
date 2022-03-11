@@ -48,9 +48,11 @@
           skip_next
         </li>
         <li class="volume">
-          <span class="material-icons-round font-size-20">{{
-            setVolumeIcon()
-          }}</span>
+          <span
+            class="material-icons-round font-size-20"
+            @click="player.setVolume(0)"
+            >{{ setVolumeIcon() }}</span
+          >
           <div class="volume-bar">
             <vue-slider
               v-model="volume"
