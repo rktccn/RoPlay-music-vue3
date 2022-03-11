@@ -30,6 +30,12 @@ const routes = [
     path: "/search",
     redirect: "/",
   },
+
+  {
+    path: "/currentList",
+    name: "currentList",
+    component: () => import("../views/currentList.vue"),
+  },
 ];
 
 const router = createRouter({

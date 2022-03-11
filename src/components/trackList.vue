@@ -4,8 +4,9 @@
       v-for="(track, index) in tracks"
       :key="index"
       :item="track"
+      :canHover="canHover"
     ></TrackListItem>
-    {{ currentIndex }}
+    <!-- {{ currentIndex }} -->
   </div>
 </template>
 <script>
@@ -17,27 +18,28 @@ import { storeToRefs } from "pinia";
 import { reactive, toRefs } from "vue";
 export default {
   props: {
-    // tracks: { type: Object, required: true },
+    tracks: { type: Array, required: true },
+    canHover: { type: Boolean, default: true }, // 是否显示hover样式
   },
 
   setup() {
     const player = usePlayer();
 
     const data = reactive({
-      tracks: [],
-      trackList: player.getTrackList,
+      // tracks: [],
+      // trackList: player.getTrackList,
     });
 
-    const { trackList, currentIndex } = storeToRefs(player);
+    // const { trackList, currentIndex } = storeToRefs(player);
 
-    if (trackList.value.length !== 0) {
-      getTrackDetail(trackList.value.join(",")).then((res) => {
-        console.log(res);
-        data.tracks = res.songs;
-      });
-    }
+    // if (trackList.value.length !== 0) {
+    //   getTrackDetail(trackList.value.join(",")).then((res) => {
+    //     console.log(res);
+    //     data.tracks = res.songs;
+    //   });
+    // }
 
-    return { currentIndex, ...toRefs(data) };
+    return { ...toRefs(data) };
   },
 
   components: {

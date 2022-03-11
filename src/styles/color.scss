@@ -1,13 +1,26 @@
 :root {
   --main-color: #177cb0;
+  --primary-container-color: #c7e6ff;
 
   --hover-color: rgb(144, 147, 153, 0.2);
 
   --text-color-primary: #454f63;
   --text-color-secondary: rgba(69, 79, 99, 0.75);
 
+  --text-color-primary-container: #001e30;
+
   --background-color-primary: #ffffff;
   --background-color-secondary: #f4f5fe;
+}
+
+.primary {
+  background-color: var(--main-color);
+  color: var(--background-color-primary);
+}
+
+.container-primary {
+  background-color: var(--primary-container-color);
+  color: var(--text-color-primary-container);
 }
 
 // vue-silder 主题设置

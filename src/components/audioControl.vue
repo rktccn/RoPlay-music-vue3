@@ -55,7 +55,9 @@
         </li>
       </ul>
       <div class="right">
-        <span class="show-tracklist material-icons-round">queue_music</span>
+        <span class="show-tracklist material-icons-round" @click="goCurrentList"
+          >queue_music</span
+        >
       </div>
     </div>
     <div class="progress">
@@ -86,6 +88,7 @@ import { usePlayer } from "../store/player";
 import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 export default {
   setup() {
     const data = reactive({
@@ -101,6 +104,7 @@ export default {
 
     const player = usePlayer();
     const { currentTrack } = storeToRefs(player);
+    const router = useRouter();
 
     const progress = computed({
       get: () => player.getProgress,
@@ -112,14 +116,19 @@ export default {
     // 音量图标随音量变化
     const setVolumeIcon = () => {};
 
+    // 跳转到播放列表
+    const goCurrentList = () => {
+      router.push(`/currentList`);
+    };
+
     return {
       ...toRefs(data),
       player,
       currentTrack,
       progress,
-      getCurTime: player.getCurrentDuration,
       timeFormat,
       setVolumeIcon,
+      goCurrentList,
     };
   },
   components: { ArtistFormat, VueSlider },

@@ -10,9 +10,11 @@ export const usePlayer = defineStore("player", {
       isPlaying: false,
       progress: 0, // 当前播放进度
       volume: 0.5, // 音量 0-1
+
       currentTrack: null,
       trackList: [],
       currentIndex: 0, // 当前歌曲在列表中的index
+
       howler: null,
     };
   },

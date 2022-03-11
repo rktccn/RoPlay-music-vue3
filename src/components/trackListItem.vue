@@ -1,5 +1,10 @@
 <template lang="">
-  <div class="track-list-item" ref="refItem" :style="setStyle()">
+  <div
+    class="track-list-item"
+    :class="{ hover: canHover }"
+    ref="refItem"
+    :style="setStyle()"
+  >
     <div class="inner" @dblclick="player.replaceCurrentTrack(id)">
       <img
         class="cover"
@@ -59,6 +64,7 @@ export default {
     height: { type: String, default: "auto" },
     width: { type: String, default: null },
     showImg: { type: Boolean, default: true },
+    canHover: { type: Boolean, default: true }, // 是否显示hover样式
   },
   setup(props) {
     const data = reactive({
@@ -181,8 +187,6 @@ export default {
   transition: background-color $transition-time-default;
 
   &:hover {
-    background-color: var(--background-color-primary);
-
     .more {
       .duration {
         opacity: 0;
@@ -193,7 +197,9 @@ export default {
     }
   }
 }
-
+.hover:hover {
+  background-color: var(--background-color-primary);
+}
 .cover {
   line-height: 0;
   border-radius: $border-radius-default;

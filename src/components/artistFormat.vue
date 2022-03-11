@@ -39,7 +39,9 @@ export default {
   margin-top: 2px;
 
   a {
-    color: var(--text-color-secondary);
+    // color: var(--text-color-secondary);
+    color: inherit;
+    opacity: 0.88;
 
     &:hover {
       color: var(--main-color);
