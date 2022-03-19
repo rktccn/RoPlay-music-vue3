@@ -15,6 +15,7 @@ const routes = [
     name: "recommend",
     component: () => import("../views/recommend.vue"),
     meta: {
+      hideHeader: true, // 移动端隐藏头部
       // keepAlive: true,
       // savePosition: true,
       // requireLogin: true,

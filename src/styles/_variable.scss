@@ -51,3 +51,12 @@ $grid-default: calc(var(--view-size) / 10);
     transition: all calc($transition-time-default * 2);
   }
 }
+
+// 文字超出省略号
+
+@mixin text-overflow($line) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+  overflow: hidden;
+}

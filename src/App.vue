@@ -6,6 +6,16 @@ import "./styles/normalize.scss";
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
 import AudioControl from "./components/audioControl.vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+const showHeader = () => {
+  if (route.meta.hideHeader && window.innerWidth <= 768) {
+    return false;
+  }
+  return true;
+};
 </script>
 
 <template>
@@ -14,17 +24,17 @@ import AudioControl from "./components/audioControl.vue";
       <SideNav></SideNav>
     </el-aside>
     <el-container>
-      <el-header>
+      <el-header v-if="showHeader()">
         <HeaderVue></HeaderVue>
       </el-header>
       <el-main>
         <main class="main-inner">
-          <router-view v-slot="{ Component }" v-if="$route.meta.keepAlive">
+          <router-view v-slot="{ Component }" v-if="route.meta.keepAlive">
             <keep-alive :max="10">
               <component :is="Component" />
             </keep-alive>
           </router-view>
-          <router-view v-if="!$route.meta.keepAlive"></router-view>
+          <router-view v-if="!route.meta.keepAlive"></router-view>
           <AudioControl class="audio-control"></AudioControl>
           <div class="control-placeholder"></div>
         </main>
