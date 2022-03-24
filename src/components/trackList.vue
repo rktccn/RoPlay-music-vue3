@@ -1,5 +1,5 @@
 <template lang="">
-  <div v-if="tracks !== []">
+  <div v-if="tracks !== []" class="track-list">
     <TrackListItem
       v-for="(track, index) in tracks"
       :key="index"
@@ -18,33 +18,19 @@ import { storeToRefs } from "pinia";
 import { reactive, toRefs } from "vue";
 export default {
   props: {
-    tracks: { type: Array, required: true },
+    tracks: { type: Array, required: true }, // 传入歌曲列表
     canHover: { type: Boolean, default: true }, // 是否显示hover样式
   },
 
-  setup() {
-    const player = usePlayer();
-
-    const data = reactive({
-      // tracks: [],
-      // trackList: player.getTrackList,
-    });
-
-    // const { trackList, currentIndex } = storeToRefs(player);
-
-    // if (trackList.value.length !== 0) {
-    //   getTrackDetail(trackList.value.join(",")).then((res) => {
-    //     console.log(res);
-    //     data.tracks = res.songs;
-    //   });
-    // }
-
-    return { ...toRefs(data) };
-  },
+  setup() {},
 
   components: {
     TrackListItem,
   },
 };
 </script>
-<style lang=""></style>
+<style lang="scss" scoped>
+.track-list {
+  margin-top: 72px;
+}
+</style>

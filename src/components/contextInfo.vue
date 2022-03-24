@@ -12,13 +12,16 @@
           {{ item.description }}
         </p>
       </div>
+      <div class="gap"></div>
       <div class="control">
-        <button class="play">
+        <button class="play primary">
           <span class="material-icons-round">play_arrow</span>
           播放
         </button>
-        <button class="like"></button>
-        <button class="more"></button>
+        <button class="like material-icons-round font-size-20">
+          favorite_border
+        </button>
+        <button class="more material-icons-round">more_horiz</button>
       </div>
     </div>
   </div>
@@ -58,7 +61,7 @@ export default {
 
   .avatar {
     overflow: hidden;
-    width: 280px;
+    width: 300px;
     align-items: center;
     line-height: 0;
 
@@ -97,17 +100,44 @@ export default {
     .title {
       padding-top: var(--gap);
       @include text-overflow(2);
+      line-height: 1.2;
     }
 
     .describe {
       padding-top: calc(var(--gap) * 2);
       white-space: pre-line;
       @include text-overflow(3);
+      line-height: 1.6;
       color: var(--text-color-secondary);
     }
+    .gap {
+      flex: 1;
+    }
     .control {
+      display: flex;
       padding-top: calc(var(--gap) * 2);
-      // align-items: center;
+      text-align: center;
+
+      > * {
+        align-items: center;
+        border-radius: $border-radius-default;
+      }
+
+      .play {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        padding-left: 12px;
+        border-radius: $border-radius-default;
+      }
+
+      .like,
+      .more {
+        background-color: var(--background-color-primary);
+        width: 40px;
+        margin-left: 12px;
+        // box-shadow: 0 0 0 1px var(--main-color);
+      }
     }
   }
 }
@@ -157,9 +187,9 @@ export default {
         background-color: var(--primary-container-color);
       }
 
-      .title {
-        // transform: translateY(-100%);
-      }
+      // .title {
+      //   // transform: translateY(-100%);
+      // }
 
       .describe {
         display: none;
