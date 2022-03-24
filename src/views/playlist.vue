@@ -1,6 +1,6 @@
 <template lang="">
   <div class="playlist">
-    <ContextInfo :item="item" v-if="item"></ContextInfo>
+    <ContextInfo class="playlist-info" :item="item" v-if="item"></ContextInfo>
     <TrackList :tracks="item.tracks"></TrackList>
   </div>
 </template>
@@ -32,4 +32,8 @@ export default {
   components: { ContextInfo, TrackList },
 };
 </script>
-<style lang=""></style>
+<style lang="scss" scoped>
+.playlist-info {
+  margin-bottom: 72px;
+}
+</style>
