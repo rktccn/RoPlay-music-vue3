@@ -25,7 +25,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.track-list {
-}
-</style>
+<style lang="scss" scoped></style>

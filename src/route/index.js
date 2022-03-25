@@ -15,10 +15,9 @@ const routes = [
     name: "recommend",
     component: () => import("../views/recommend.vue"),
     meta: {
-      hideHeader: true, // 移动端隐藏头部
-      // keepAlive: true,
-      // savePosition: true,
-      // requireLogin: true,
+      keepAlive: true,
+      savePosition: true,
+      requireLogin: true,
     },
   },
 
@@ -36,6 +35,18 @@ const routes = [
     path: "/currentList",
     name: "currentList",
     component: () => import("../views/currentList.vue"),
+  },
+  {
+    path: "/playlist/:id",
+    name: "playlist",
+    component: () => import("../views/playlist.vue"),
+    meta: {
+      hideHeader: true, // 移动端隐藏头部
+    },
+  },
+  {
+    path: "/playlist",
+    redirect: "/",
   },
 ];
 

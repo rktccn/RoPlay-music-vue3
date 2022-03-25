@@ -8,7 +8,7 @@
     <div class="inner" @dblclick="player.replaceCurrentTrack(id)">
       <img
         class="cover"
-        :src="`${imgUrl}?param=48y48`"
+        :src="`${imgUrl}?param=224y224`"
         alt=""
         v-if="imgUrl && showImg"
       />
@@ -61,8 +61,8 @@ export default {
   props: {
     item: { type: Object, required: true },
     type: { type: String, default: "song" }, // song,
-    height: { type: String, default: "auto" },
-    width: { type: String, default: null },
+    height: { type: String, default: "64px" },
+    // width: { type: String, default: null },
     showImg: { type: Boolean, default: true },
     canHover: { type: Boolean, default: true }, // 是否显示hover样式
   },
@@ -101,7 +101,7 @@ export default {
     const setStyle = () => {
       let styles = {
         height: props.height,
-        width: props.width,
+        // width: props.width,
       };
       return styles;
     };

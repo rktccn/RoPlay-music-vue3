@@ -7,7 +7,7 @@
     :style="setWidth()"
   >
     <div class="card-inner">
-      <div class="cover">
+      <div class="cover" @click="goTo">
         <div class="cover-inner" :class="{ video: type === 'video' }">
           <div
             class="placeholder"
@@ -64,6 +64,7 @@ import { reactive, toRefs } from "vue";
 
 import { dateFormat } from "../utils/common.js";
 import ArtistFormat from "./artistFormat.vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "PlayListCard",
@@ -77,6 +78,7 @@ export default {
     item: { type: Object, required: true },
   },
   setup(props) {
+    const router = useRouter();
     const data = reactive({
       imgUrl: null,
       playCount: null,
@@ -102,7 +104,6 @@ export default {
 
     const setPlayList = () => {
       const playlist = props.item;
-
       data.imgUrl = `${playlist.coverImgUrl}?param=480y480`;
       let date = dateFormat(playlist.createTime, false);
       data.publishTime = date;
@@ -110,6 +111,7 @@ export default {
       data.playCount = playlist.playCount;
       data.title = playlist.name;
       data.info = playlist.description;
+      data.id = playlist.id;
     };
 
     const setAlbum = () => {
@@ -169,8 +171,7 @@ export default {
         borderRadius: null,
       };
 
-      props.type === "artist" ? (style.borderRadius = "300px") : "";
-
+      props.type === "artist" ? (style.borderRadius = "50%") : ""; // 显示音乐人时修改为圆形
       return style;
     };
 
@@ -187,7 +188,11 @@ export default {
       return style;
     };
 
-    return { ...toRefs(data), setInfo, setStyle, setWidth };
+    const goTo = () => {
+      router.push(`/playlist/${data.id}`);
+    };
+
+    return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };
   },
   components: { ArtistFormat },
 };
