@@ -101,6 +101,7 @@ import VueSlider from "vue-slider-component";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 export default {
+  name: "audioControl",
   setup() {
     const data = reactive({
       imgUrl: null,

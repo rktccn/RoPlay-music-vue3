@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  name: "artistFormat",
   props: {
     artistList: { type: Object, require: true },
     fontSize: { type: String, default: "12px" },

@@ -26,7 +26,7 @@
   </section>
 </template>
 <script>
-import { reactive, ref, toRefs, onMounted } from "vue";
+import { reactive, ref, toRefs, onMounted, onBeforeUnmount } from "vue";
 import PlayListCard from "./playListCard.vue";
 
 export default {
@@ -52,7 +52,6 @@ export default {
 
     // 计算页面容量
     const calcPageSize = (carouselWidth) => {
-
       data.itemLength = Math.ceil(props.length / props.rows);
 
       let itemwidth = carousel.value.children[0].offsetWidth;
@@ -103,8 +102,12 @@ export default {
 
     onMounted(() => {
       carousel.value.addEventListener("scroll", setActive);
-
       ro.observe(carousel.value);
+    });
+
+    onBeforeUnmount(() => {
+      carousel.value.removeEventListener("scroll", setActive);
+      ro.disconnect(carousel.value);
     });
 
     return { carousel, ...toRefs(data), changePage, setRow };

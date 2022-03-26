@@ -51,13 +51,14 @@
   </div>
 </template>
 <script>
-import { onMounted, reactive, ref, toRefs } from "vue";
+import { onBeforeUnmount, onMounted, reactive, ref, toRefs } from "vue";
 import { timeFormat } from "../utils/common.js";
 import { usePlayer } from "../store/player.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
 export default {
+  name: "trackListItem",
   props: {
     item: { type: Object, required: true },
     type: { type: String, default: "song" }, // song,
@@ -157,6 +158,10 @@ export default {
     onMounted(() => {
       calcWidth();
       ro.observe(refItem.value);
+    });
+
+    onBeforeUnmount(() => {
+      ro.disconnect(refItem.value);
     });
 
     return { ...toRefs(data), player, refItem, calcWidth, setStyle };

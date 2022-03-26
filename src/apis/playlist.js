@@ -170,3 +170,28 @@ export function addOrRemoveTrackFromPlaylist(params) {
     return res;
   });
 }
+
+/**
+ * 获取歌单所有歌曲
+ * 说明 : 由于网易云接口限制，歌单详情只会提供 10 首歌，通过调用此接口，传入对应的歌单id，即可获得对应的所有歌曲
+ * 必选参数 : id : 歌单 id
+ * 可选参数 : limit : 限制获取歌曲的数量，默认值为当前歌单的歌曲数量
+ * 可选参数 : offset : 默认值为0，用于歌曲的分页，计算方法为 limit * offset<= 你得到的歌曲 <= limit * offset + 1
+ * @param {Object} params
+ * @param {Number} params.id
+ * @param {Number} params.limit
+ * @param {Number} params.offset
+ */
+export function getPlaylistTracks(params) {
+  params.limit ??= 20;
+  console.log(params.offset);
+  return req({
+    url: "/playlist/track/all",
+    method: "post",
+    params: {
+      ...params,
+    },
+  }).then((res) => {
+    return res;
+  });
+}
