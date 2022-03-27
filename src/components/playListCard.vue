@@ -122,6 +122,7 @@ export default {
       data.publishTime = date;
       data.artists = album.artists;
       data.title = album.name;
+      data.id = album.id;
     };
 
     const setArtist = () => {
@@ -189,7 +190,8 @@ export default {
     };
 
     const goTo = () => {
-      router.push(`/playlist/${data.id}`);
+      router.push(`/${props.type}/${data.id}`);
+      `1234`;
     };
 
     return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };

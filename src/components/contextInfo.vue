@@ -5,8 +5,18 @@
     </div>
     <div class="gap"></div>
     <div class="info">
-      <span class="type font-size-12">歌单</span>
+      <span class="type font-size-12">{{ tag }}</span>
       <h2 class="title font-size-26">{{ item.name }}</h2>
+      <p class="sub-title" v-if="type === 'album'">
+        <span class="date">{{ publishTime }}</span>
+        <em>·</em>
+        <span class="artist"
+          ><ArtistFormat
+            :artistList="item.artists"
+            :fontSize="'16pxF'"
+          ></ArtistFormat
+        ></span>
+      </p>
       <div class="describe">
         <p>
           {{ item.description }}
@@ -28,28 +38,58 @@
 </template>
 <script>
 import { reactive, toRefs } from "vue";
+import { dateFormat } from "../utils/common";
+
+import ArtistFormat from "./artistFormat.vue";
 export default {
   name: "contextInfo",
   props: {
     item: { type: Object, required: true },
+    type: { type: String, required: true }, // playlist/album
   },
   setup(props) {
     console.log(props.item);
     const data = reactive({
       imgUrl: null,
+      publishTime: null,
+      tag: null,
     });
+    let typeList = ["playlist", "album"];
+
+    const initPlaylist = () => {
+      data.tag = "歌单";
+    };
+
+    const initAlbum = () => {
+      data.publishTime = dateFormat(props.item.publishTime);
+      data.tag = "专辑";
+    };
 
     const getImgUrl = () => {
-      let url = props.item?.coverImgUrl;
+      let url = props.item?.coverImgUrl || props.item.picUrl;
 
       return `${url}?param=960y960`;
     };
 
-    const initData = () => {};
+    const initData = () => {
+      switch (typeList.indexOf(props.type)) {
+        case 0:
+          initPlaylist();
+          break;
+        case 1:
+          initAlbum();
+          break;
+        default:
+          throw `type 必须为 ${typeList}`;
+      }
+    };
 
-    initData;
+    initData();
 
     return { ...toRefs(data), getImgUrl };
+  },
+  components: {
+    ArtistFormat,
   },
 };
 </script>
@@ -101,6 +141,24 @@ export default {
       padding-top: var(--gap);
       @include text-overflow(2);
       line-height: 1.2;
+    }
+
+    .sub-title {
+      display: flex;
+      margin-top: 2px;
+
+      .date {
+        color: var(--text-color-secondary);
+      }
+
+      em {
+        margin: 0px 2px;
+      }
+
+      .artist {
+        flex: 1 1 0;
+        overflow: hidden;
+      }
     }
 
     .describe {

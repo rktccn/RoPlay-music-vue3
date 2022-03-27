@@ -29,9 +29,9 @@ const showHeader = () => {
       </el-header>
       <el-main>
         <main class="main-inner">
-          <router-view v-slot="{ Component }" v-if="route.meta.keepAlive">
+          <router-view v-slot="{ Component }">
             <keep-alive :max="10">
-              <component :is="Component" />
+              <component :is="Component" v-if="route.meta.keepAlive" />
             </keep-alive>
           </router-view>
           <router-view v-if="!route.meta.keepAlive"></router-view>
@@ -101,7 +101,7 @@ const showHeader = () => {
     }
 
     .control-placeholder {
-      height: 120px;
+      height: 136px;
     }
   }
 }

@@ -2,7 +2,7 @@
  * 日期格式化
  * @param Number time
  */
-export function dateFormat(time, showMin = true) {
+export function dateFormat(time, showMin = false) {
   const t = new Date(time);
   // 日期格式
   const format = showMin ? "Y-m-d h:i:s" : "Y-m-d";

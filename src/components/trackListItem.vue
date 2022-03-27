@@ -10,8 +10,11 @@
         class="cover"
         :src="`${imgUrl}?param=224y224`"
         alt=""
-        v-if="imgUrl && showImg"
+        v-if="imgUrl && showImg && type !== 'album'"
       />
+      <span class="index font-size-16" v-if="type === 'album'">{{
+        index
+      }}</span>
       <div class="title">
         <div class="container">
           <div v-if="artists" class="text-truncate">{{ title }}</div>
@@ -19,16 +22,15 @@
             :artistList="artists"
             v-show="itemWidth >= 2"
           ></ArtistFormat>
-          <div></div>
         </div>
       </div>
-      <div class="artist-md" v-show="itemWidth <= 1">
+      <div class="artist-md" v-show="itemWidth <= 1 && type !== 'album'">
         <div v-if="artists">
           <ArtistFormat :artistList="artists"></ArtistFormat>
         </div>
       </div>
 
-      <div class="describe" v-show="itemWidth === 0">
+      <div class="describe" v-show="itemWidth === 0 && type !== 'album'">
         <div v-if="describe" class="text-truncate">{{ describe.name }}</div>
       </div>
 
@@ -61,11 +63,11 @@ export default {
   name: "trackListItem",
   props: {
     item: { type: Object, required: true },
-    type: { type: String, default: "song" }, // song,
+    type: { type: String, default: "song" }, // 类型 song/album
     height: { type: String, default: "64px" },
-    // width: { type: String, default: null },
     showImg: { type: Boolean, default: true },
     canHover: { type: Boolean, default: true }, // 是否显示hover样式
+    index: { type: Number },
   },
   setup(props) {
     const data = reactive({
@@ -209,6 +211,14 @@ export default {
   line-height: 0;
   border-radius: $border-radius-default;
   height: 100%;
+}
+
+.index {
+  width: 48px;
+  margin-right: 0 !important;
+  padding-left: 8px;
+  font-weight: bolder;
+  color: var(--text-color-secondary);
 }
 
 .title {

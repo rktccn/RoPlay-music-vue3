@@ -37,7 +37,6 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  margin-top: 2px;
 
   a {
     // color: var(--text-color-secondary);

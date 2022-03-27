@@ -72,7 +72,7 @@ export default {
     const setSongRows = (height) => {
       if (window.innerWidth < 1250) {
         data.songRows = 2;
-        data.songItemHeight = null;
+        data.songItemHeight = "64px";
         return;
       }
       let size = height / 70;

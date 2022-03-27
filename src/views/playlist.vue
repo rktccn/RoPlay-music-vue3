@@ -5,17 +5,21 @@
       :item="item"
       v-if="item"
       v-loading="item === null"
+      :type="'playlist'"
     ></ContextInfo>
     <TrackList class="playlist-list" :tracks="tracks" v-if="tracks">
     </TrackList>
   </div>
-  <p class="load-info">{{ hasMore ? "正在加载" : "已加载全部" }}</p>
+  <p class="load-info font-size-12">
+    {{ hasMore ? "正在加载" : "已加载全部" }}
+  </p>
 </template>
 <script>
 import ContextInfo from "../components/contextInfo.vue";
 import TrackList from "../components/trackListItem.vue";
 
 import { getPlaylistDetail, getPlaylistTracks } from "../apis/playlist";
+
 import { reactive, toRefs, ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessageBox } from "element-plus";
@@ -120,7 +124,6 @@ export default {
 }
 
 .load-info {
-  display: inline-block;
-  margin-bottom: 12px;
+  color: var(--text-color-secondary);
 }
 </style>

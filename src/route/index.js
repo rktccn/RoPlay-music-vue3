@@ -20,6 +20,56 @@ const routes = [
       requireLogin: true,
     },
   },
+  {
+    path: "/video",
+    name: "video",
+    component: () => import("../views/recommend.vue"),
+    meta: {
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
+    },
+  },
+  {
+    path: "/radio",
+    name: "radio",
+    component: () => import("../views/recommend.vue"),
+    meta: {
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
+    },
+  },
+  {
+    path: "/like",
+    name: "like",
+    component: () => import("../views/recommend.vue"),
+    meta: {
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
+    },
+  },
+  {
+    path: "/recent",
+    name: "recent",
+    component: () => import("../views/recommend.vue"),
+    meta: {
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
+    },
+  },
+  {
+    path: "/cloud",
+    name: "cloud",
+    component: () => import("../views/recommend.vue"),
+    meta: {
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
+    },
+  },
 
   {
     path: "/search/:keyword",
@@ -46,6 +96,19 @@ const routes = [
   },
   {
     path: "/playlist",
+    redirect: "/",
+  },
+
+  {
+    path: "/album/:id",
+    name: "album",
+    component: () => import("../views/album.vue"),
+    meta: {
+      hideHeader: true, // 移动端隐藏头部
+    },
+  },
+  {
+    path: "/album",
     redirect: "/",
   },
 ];
