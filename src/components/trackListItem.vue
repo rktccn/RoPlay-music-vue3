@@ -5,7 +5,7 @@
     ref="refItem"
     :style="setStyle()"
   >
-    <div class="inner" @dblclick="player.replaceCurrentTrack(id)">
+    <div class="inner" @dblclick="player.replaceCurrentTrack(id, canPlay)">
       <img
         class="cover"
         :src="`${imgUrl}?param=224y224`"

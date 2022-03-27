@@ -52,7 +52,7 @@ export default {
         loading = true;
         data.offset++;
         await getPlaylistTracks({ id, offset: ++offset }).then((res) => {
-          if (offset === data.maxPage) {
+          if (offset >= data.maxPage) {
             data.tracks.push(...res.songs.splice(-overTracks));
             data.hasMore = false;
             document
@@ -85,6 +85,17 @@ export default {
         data.tracks = res.songs;
         data.maxPage = Math.ceil(data.trackCount / 20) - 1;
         overTracks = data.trackCount % 20; // 多余歌曲
+        console.log(data.maxPage);
+
+        if (data.maxPage === 0) {
+          loading = false;
+          data.hasMore = false;
+
+          document
+            .getElementsByClassName("el-main")[0]
+            .removeEventListener("scroll", loadMore);
+          return;
+        }
       });
     };
 

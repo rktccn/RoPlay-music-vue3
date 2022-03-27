@@ -80,7 +80,8 @@ export const usePlayer = defineStore("player", {
       });
     },
 
-    replaceCurrentTrack(id) {
+    replaceCurrentTrack(id, fee) {
+      console.log(fee);
       getTrackDetail(id).then((res) => {
         getMP3(id).then((res2) => {
           if (res2.data[0].url) {

@@ -184,7 +184,6 @@ export function addOrRemoveTrackFromPlaylist(params) {
  */
 export function getPlaylistTracks(params) {
   params.limit ??= 20;
-  console.log(params.offset);
   return req({
     url: "/playlist/track/all",
     method: "post",
