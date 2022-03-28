@@ -7,8 +7,11 @@ import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
 import AudioControl from "./components/audioControl.vue";
 import { useRoute } from "vue-router";
+import { useStore } from "./store/index";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
+const store = useStore();
 
 const showHeader = () => {
   if (route.meta.hideHeader && window.innerWidth <= 768) {
@@ -20,7 +23,7 @@ const showHeader = () => {
 
 <template>
   <el-container class="wrap">
-    <el-aside width="220px">
+    <el-aside width="220px" :class="{ active: store.getOverlay }">
       <SideNav></SideNav>
     </el-aside>
     <el-container>
@@ -41,6 +44,15 @@ const showHeader = () => {
       </el-main>
     </el-container>
   </el-container>
+  <teleport to="body">
+    <transition name="fade" mode="out-in">
+      <div
+        class="overlay"
+        @click="store.setOverlay(false)"
+        v-if="store.getOverlay"
+      ></div>
+    </transition>
+  </teleport>
 </template>
 
 <style lang="scss" scoped>
@@ -75,11 +87,19 @@ const showHeader = () => {
     transform: translate(-220px - 855px, -50%);
     height: 90%;
     border-radius: 25px;
-    z-index: 999;
+    z-index: 30;
   }
 
   @media screen and (max-width: $sm) {
-    display: none;
+    position: absolute;
+    left: -260px;
+    height: 100vh;
+    transition: all $transition-time-default;
+    z-index: 30;
+
+    &.active {
+      left: 0;
+    }
   }
 
   background-color: var(--background-color-primary);
@@ -108,5 +128,15 @@ const showHeader = () => {
 
 body > .el-container {
   margin-bottom: 40px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 20;
+  background-color: rgba(33, 33, 33, 0.46);
 }
 </style>

@@ -175,7 +175,7 @@ export default {
   box-shadow: 0 0 0 4px var(--background-color-secondary);
   border-radius: $border-radius-default * 3;
   background-color: var(--background-color-primary);
-  z-index: 1000;
+  z-index: 10;
   .main {
     display: flex;
     justify-content: space-between;

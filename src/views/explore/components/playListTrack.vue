@@ -2,6 +2,7 @@
   <div class="top-list">
     <div class="title" v-if="topList" :style="setBackGround()">
       <span class="name font-size-32">{{ setTitle() }}</span>
+      <div class="more">更多</div>
     </div>
     <div class="list">
       <ul v-if="topList">
@@ -73,7 +74,7 @@ export default {
     margin-right: 8px;
 
     user-select: none;
-    background-color: black;
+    background-color: rgb(68, 55, 55);
 
     .name {
       display: block;
@@ -83,6 +84,16 @@ export default {
       font-weight: 600;
       background-color: rgba($color: black, $alpha: 0.1);
       color: #fff;
+    }
+
+    .more {
+      position: relative;
+      top: -10%;
+      width: 100%;
+      text-align: center;
+      font-weight: bolder;
+      color: #fff;
+      opacity: 0.88;
     }
   }
 

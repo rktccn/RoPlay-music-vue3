@@ -2,12 +2,15 @@
 import { ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { ElNotification } from "element-plus";
+import { useStore } from "../store/index";
 
 let keyword = ref("");
 let searchFocus = ref(false);
+let sideNav = ref(false); // 侧边菜单显示
 
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
 
 const doSearch = () => {
   if (keyword.value === "") {
@@ -25,6 +28,11 @@ const doSearch = () => {
   router.push(`/search/${keyword.value}`);
 };
 
+const toggleSideNav = () => {
+  sideNav.value = !sideNav.value;
+  // console.log(sideNav);
+};
+
 watch(
   () => route.params.keyword,
   () => {
@@ -36,8 +44,17 @@ watch(
 <template lang="">
   <div class="header">
     <div class="button">
-      <span class="material-icons-round font-size-48">navigate_before</span>
-      <span class="material-icons-round font-size-48">navigate_next</span>
+      <span class="material-icons-round font-size-48 navigate"
+        >navigate_before</span
+      >
+      <span class="material-icons-round font-size-48 navigate"
+        >navigate_next</span
+      >
+      <span
+        class="material-icons-round font-size-40 menu"
+        @click="store.setOverlay(true)"
+        >menu</span
+      >
     </div>
     <div class="search" :class="{ active: searchFocus }">
       <div class="icon" @click="doSearch()">
@@ -82,6 +99,18 @@ watch(
       cursor: pointer;
       &:hover {
         background-color: var(--hover-color);
+      }
+    }
+    .menu {
+      display: none;
+    }
+
+    @media screen and(max-width:$sm) {
+      .navigate {
+        display: none;
+      }
+      .menu {
+        display: block;
       }
     }
   }

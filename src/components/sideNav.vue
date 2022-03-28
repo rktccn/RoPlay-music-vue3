@@ -1,5 +1,9 @@
 <script setup>
 import { reactive } from "vue";
+import { useStore } from "../store";
+
+const store = useStore();
+
 const list = reactive([
   {
     listName: "发现音乐",
@@ -50,7 +54,11 @@ const list = reactive([
             }}
           </ol>
           <template v-for="(value, j) in item.listItem" :key="j">
-            <li class="list-item" v-if="value.needLog ? true : true">
+            <li
+              class="list-item"
+              v-if="value.needLog ? true : true"
+              @click="store.setOverlay(false)"
+            >
               <router-link :to="value.path" class="item-link">
                 <span class="material-icons-round">
                   {{ value.icon }}
@@ -69,7 +77,7 @@ const list = reactive([
 .side-nav {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
 
   padding: 24px 35px;
 
