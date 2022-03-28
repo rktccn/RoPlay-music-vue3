@@ -2,6 +2,10 @@
 
 vue3 + vite + Pinia
 
+# DEMO
+
+[link](https://ro-play-vue3-69xxynv91-wskkku.vercel.app/#/)
+
 # 使用方法
 
 ## 部署到自己的服务器
@@ -16,7 +20,3 @@ vue3 + vite + Pinia
 
 ![首页-lg](./images/feed-lg.png)
 ![首页-md](./images/feed-md.png)
-
-# DEMO
-
-[link](https://ro-play-vue3-69xxynv91-wskkku.vercel.app/#/)
