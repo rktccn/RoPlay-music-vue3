@@ -8,7 +8,6 @@ import HeaderVue from "./views/header.vue";
 import AudioControl from "./components/audioControl.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "./store/index";
-import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const store = useStore();

@@ -20,7 +20,7 @@ export const useStore = defineStore("main", {
       this.musicId = param;
     },
     setOverlay(param) {
-      if (param) {
+      if (param !== null) {
         this.showOverlay = param;
       } else {
         this.showOverlay = !this.showOverlay;
