@@ -7,3 +7,20 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+.drop-up-enter-active,
+.drop-up-leave-active {
+  transition: all $transition-time-default ease;
+}
+
+.drop-up-enter-from,
+.drop-up-leave-to {
+  opacity: 0;
+  transform: translateY(6%);
+}
+
+.drop-up-enter-to,
+.drop-up-leave-from {
+  opacity: 1;
+  transform: translateY(0%);
+}

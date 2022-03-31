@@ -30,10 +30,16 @@
         </div>
       </div>
 
+      <!-- 专辑 -->
       <div class="describe" v-show="itemWidth === 0 && type !== 'album'">
-        <div v-if="describe" class="text-truncate">{{ describe.name }}</div>
+        <router-link
+          :to="`/album/${describe.id}`"
+          v-if="describe"
+          class="text-truncate"
+        >
+          {{ describe.name }}</router-link
+        >
       </div>
-
       <div class="more">
         <div class="duration" v-if="duration">
           <span v-show="itemWidth <= 2">

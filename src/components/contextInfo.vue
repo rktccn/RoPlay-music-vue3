@@ -17,10 +17,8 @@
           ></ArtistFormat
         ></span>
       </p>
-      <div class="describe">
-        <p>
-          {{ item.description }}
-        </p>
+      <div class="describe" @click="showDescribe">
+        {{ item.description }}
       </div>
       <div class="gap"></div>
       <div class="control">
@@ -40,6 +38,7 @@
 import { reactive, toRefs } from "vue";
 import { dateFormat } from "../utils/common";
 
+import createTextModal from "../components/textModal.js";
 import ArtistFormat from "./artistFormat.vue";
 export default {
   name: "contextInfo",
@@ -49,6 +48,7 @@ export default {
   },
   setup(props) {
     console.log(props.item);
+
     const data = reactive({
       imgUrl: null,
       publishTime: null,
@@ -86,7 +86,11 @@ export default {
 
     initData();
 
-    return { ...toRefs(data), getImgUrl };
+    const showDescribe = () => {
+      createTextModal(`${data.tag}介绍`, props.item.description);
+    };
+
+    return { ...toRefs(data), getImgUrl, showDescribe };
   },
   components: {
     ArtistFormat,
@@ -167,6 +171,12 @@ export default {
       @include text-overflow(3);
       line-height: 1.6;
       color: var(--text-color-secondary);
+      transition: color $transition-time-default;
+
+      &:hover {
+        color: inherit;
+        cursor: pointer;
+      }
     }
     .gap {
       flex: 1;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, getCurrentInstance } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { ElNotification } from "element-plus";
 import { useStore } from "../store/index";
@@ -7,7 +7,7 @@ import { useStore } from "../store/index";
 let keyword = ref("");
 let searchFocus = ref(false);
 let sideNav = ref(false); // 侧边菜单显示
-
+const { proxy } = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
 const store = useStore();

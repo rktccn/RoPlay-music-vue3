@@ -40,7 +40,12 @@ i {
 
 a {
   text-decoration: none;
-  color: #666;
+  color: inherit;
+  opacity: 0.88;
+
+  &:hover {
+    color: var(--main-color);
+  }
 }
 
 input::-ms-clear {
