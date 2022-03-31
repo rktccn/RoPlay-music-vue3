@@ -77,7 +77,7 @@ const list = reactive([
 .side-nav {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  // height: 100vh;
 
   padding: 24px 35px;
 

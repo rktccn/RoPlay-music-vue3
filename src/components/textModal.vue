@@ -91,6 +91,7 @@ export default {
     margin-top: 16px;
     max-height: 45vh;
     overflow: scroll;
+    white-space: pre-line;
   }
 }
 </style>

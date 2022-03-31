@@ -6,6 +6,9 @@ vue3 + vite + Pinia
 
 [link](https://ro-play-vue3-69xxynv91-wskkku.vercel.app/#/)
 
+# DEMO
+[更新日志](./docs/changLog.md)
+
 # 使用方法
 
 ## 部署到自己的服务器
