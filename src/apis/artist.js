@@ -107,3 +107,39 @@ export function similarArtists(id) {
       return res;
     });
 }
+
+/**
+ * 获取歌手详情
+ * 说明 : 调用此接口 , 传入歌手 id, 可获得歌手描述
+ * - id: 歌手 id
+ * @param {number} id
+ */
+export function getArtistDetail(id) {
+  return req
+    .get("/artist/detail", {
+      params: {
+        id,
+      },
+    })
+    .then((res) => {
+      return res;
+    });
+}
+
+/**
+ * 获取歌手描述
+ * 说明 : 调用此接口 , 传入歌手 id, 可获得歌手描述
+ * - id: 歌手 id
+ * @param {number} id
+ */
+export function getArtistDesc(id) {
+  return req
+    .get("/artist/desc", {
+      params: {
+        id,
+      },
+    })
+    .then((res) => {
+      return res;
+    });
+}

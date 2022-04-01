@@ -66,6 +66,9 @@
         </li>
       </ul>
       <div class="right">
+        <p class="font-size-12" v-if="currentTrack?.fee === 1">
+          当前歌曲可试听30秒
+        </p>
         <span class="show-tracklist material-icons-round" @click="goCurrentList"
           >queue_music</span
         >
@@ -247,8 +250,13 @@ export default {
 
     .right {
       flex: 2 1 0;
-      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
       line-height: 0;
+      > * {
+        margin-left: 6px;
+      }
     }
   }
 

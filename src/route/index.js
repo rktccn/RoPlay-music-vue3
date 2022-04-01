@@ -13,11 +13,11 @@ const routes = [
   {
     path: "/recommend",
     name: "recommend",
-    component: () => import("../views/recommend.vue"),
+    component: () => import("../views/artist.vue"),
     meta: {
-      keepAlive: true,
-      savePosition: true,
-      requireLogin: true,
+      // keepAlive: true,
+      // savePosition: true,
+      // requireLogin: true,
     },
   },
   {

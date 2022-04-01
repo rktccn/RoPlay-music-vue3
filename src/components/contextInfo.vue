@@ -13,12 +13,12 @@
         <span class="artist"
           ><ArtistFormat
             :artistList="item.artists"
-            :fontSize="'16pxF'"
+            :fontSize="'16px'"
           ></ArtistFormat
         ></span>
       </p>
       <div class="describe" @click="showDescribe">
-        {{ item.description }}
+        {{ description }}
       </div>
       <div class="gap"></div>
       <div class="control">
@@ -53,21 +53,29 @@ export default {
       imgUrl: null,
       publishTime: null,
       tag: null,
+      description: null,
     });
-    let typeList = ["playlist", "album"];
+    let typeList = ["playlist", "album", "artist"];
 
     const initPlaylist = () => {
       data.tag = "歌单";
+      data.description = props.item.description;
     };
 
     const initAlbum = () => {
       data.publishTime = dateFormat(props.item.publishTime);
       data.tag = "专辑";
+      data.description = props.item.description;
+    };
+
+    const initArtist = () => {
+      data.tag = "歌手";
+      data.description = props.item.briefDesc;
     };
 
     const getImgUrl = () => {
-      let url = props.item?.coverImgUrl || props.item.picUrl;
-
+      let url =
+        props.item?.coverImgUrl || props.item?.picUrl || props.item?.img1v1Url;
       return `${url}?param=960y960`;
     };
 
@@ -79,6 +87,9 @@ export default {
         case 1:
           initAlbum();
           break;
+        case 2:
+          initArtist();
+          break;
         default:
           throw `type 必须为 ${typeList}`;
       }
@@ -87,7 +98,7 @@ export default {
     initData();
 
     const showDescribe = () => {
-      createTextModal(`${data.tag}介绍`, props.item.description);
+      createTextModal(`${data.tag}介绍`, data.description);
     };
 
     return { ...toRefs(data), getImgUrl, showDescribe };
