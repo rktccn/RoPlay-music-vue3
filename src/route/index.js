@@ -13,9 +13,9 @@ const routes = [
   {
     path: "/recommend",
     name: "recommend",
-    component: () => import("../views/room/playlist.vue"),
+    component: () => import("../views/recommend.vue.vue"),
     meta: {
-      // keepAlive: true,
+      keepAlive: true,
       // savePosition: true,
       // requireLogin: true,
     },
