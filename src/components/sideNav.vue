@@ -74,11 +74,23 @@ const list = reactive([
 </template>
 
 <style lang="scss" scoped>
+@keyframes flood-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+  // 0% {
+  //   transform: translateX(0);
+  // }
+  // 100% {
+  //   transform: translateX(-100%);
+  // }
+}
 .side-nav {
   display: flex;
   flex-direction: column;
-  // height: 100vh;
-
   padding: 24px 35px;
 
   background-color: var(--background-color-primary);
@@ -111,20 +123,38 @@ const list = reactive([
     font-size: 16px;
 
     .item-link {
-      display: block;
+      position: relative;
+      display: flex;
       width: 100%;
       height: 100%;
       padding: 3px 6px;
       margin: 6px 0;
       margin-left: -6px;
       border-radius: 6px;
-      display: flex;
+      overflow: hidden;
+
       span {
         margin-right: 8px;
       }
 
+      &::after {
+        content: "";
+        position: absolute;
+        left: -100%;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--main-color);
+        opacity: 0.12;
+        border-radius: 0 25px 25px 0;
+        transition: left $transition-time-default ease-in-out;
+      }
+
       &:hover {
-        background-color: var(--hover-color);
+        // background-color: var(--hover-color);
+        &::after {
+          left: 0;
+        }
       }
     }
 

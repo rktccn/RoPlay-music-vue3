@@ -94,7 +94,9 @@ export default {
     const setVideo = () => {
       const video = props.item;
 
-      data.imgUrl = `${video?.cover || video.coverUrl}?param=480y270`;
+      data.imgUrl = `${
+        video?.cover || video?.coverUrl || video?.imgurl
+      }?param=480y270`;
       data.playCount = video?.playCount ?? video?.playTime;
       data.publishTime = video?.publishTime;
       data.artists = video?.artists;

@@ -61,7 +61,7 @@ export function toplistOfArtists(type = null) {
  * @param {number} params.offset
  * @param {number} params.limit
  */
-export function artistMv(params) {
+export function getArtistMv(params) {
   return req.get("artist/mv", { params }).then((res) => {
     return res;
   });
@@ -96,9 +96,9 @@ export function followAArtist(params) {
  * - id: 歌手 id
  * @param {number} id
  */
-export function similarArtists(id) {
+export function getSimilarArtists(id) {
   return req
-    .post("/simi/artist", {
+    .get("/simi/artist", {
       params: {
         id,
       },

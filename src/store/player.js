@@ -74,6 +74,7 @@ export const usePlayer = defineStore("player", {
       });
       this.setCurTimeIntervals();
       this.songPlay();
+      document.title = `Ro Play - ${this.currentTrack.name} · ${this.currentTrack.ar[0].name}`;
 
       this.howler.once("end", () => {
         this.playNext();

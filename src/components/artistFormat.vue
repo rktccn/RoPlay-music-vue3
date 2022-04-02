@@ -1,10 +1,8 @@
 <template>
   <div class="artist" :style="setStyle()">
     <template v-for="(artist, j) in artistList" :key="j">
-      <a :href="'https://music.163.com/#/artist?id=' + artist.id">{{
-        artist.name
-      }}</a
-      ><em v-if="artistList.length !== j + 1">/</em>
+      <router-link :to="`/artist/${artist.id}`"> {{ artist.name }}</router-link>
+      <em v-if="artistList.length !== j + 1">/</em>
     </template>
   </div>
 </template>

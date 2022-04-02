@@ -36,7 +36,10 @@ const showHeader = () => {
               <component :is="Component" v-if="route.meta.keepAlive" />
             </keep-alive>
           </router-view>
-          <router-view v-if="!route.meta.keepAlive"></router-view>
+          <router-view
+            v-if="!route.meta.keepAlive"
+            :key="route.fullPath"
+          ></router-view>
           <AudioControl class="audio-control"></AudioControl>
           <div class="control-placeholder"></div>
         </main>

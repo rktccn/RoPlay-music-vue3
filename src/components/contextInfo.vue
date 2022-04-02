@@ -17,7 +17,7 @@
           ></ArtistFormat
         ></span>
       </p>
-      <div class="describe" @click="showDescribe">
+      <div class="describe" @click="showDescribe" v-if="description">
         {{ description }}
       </div>
       <div class="gap"></div>

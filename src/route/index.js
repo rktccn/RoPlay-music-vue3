@@ -111,6 +111,19 @@ const routes = [
     path: "/album",
     redirect: "/",
   },
+
+  {
+    path: "/artist/:id",
+    name: "artist",
+    component: () => import("../views/artist.vue"),
+    meta: {
+      hideHeader: true, // 移动端隐藏头部
+    },
+  },
+  {
+    path: "/artist",
+    redirect: "/",
+  },
 ];
 
 const router = createRouter({
