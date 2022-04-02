@@ -20,7 +20,7 @@ export default {
         },
         {
           name: "歌单",
-          path: "/",
+          path: "/room/playlist",
           iconName: "queue_music",
         },
         {
@@ -65,12 +65,14 @@ export default {
           v-for="(item, index) in category"
           :key="index"
         >
-          <span class="category-item">
-            <span class="category-icon material-icons-round font-size-48">
-              {{ item.iconName }}
+          <router-link :to="item.path">
+            <span class="category-item">
+              <span class="category-icon material-icons-round font-size-48">
+                {{ item.iconName }}
+              </span>
+              <em>{{ item.name }}</em>
             </span>
-            <em>{{ item.name }}</em>
-          </span>
+          </router-link>
         </div>
       </div>
     </section>

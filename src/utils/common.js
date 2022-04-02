@@ -41,3 +41,37 @@ export function timeFormat(value) {
   let sec = (~~(value % 60)).toString().padStart(2, "0");
   return `${min}:${sec}`;
 }
+
+//判断页面是否滚动到底部
+export function isScrollBottom() {
+  let scrollTop = document.getElementsByClassName("el-main")[0].scrollTop;
+  let scrollHeight = document.getElementsByClassName("el-main")[0].scrollHeight;
+  let clientHeight = document.getElementsByClassName("el-main")[0].clientHeight;
+  if (scrollTop + clientHeight >= scrollHeight) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// const loadMore = async () => {
+//   if (loading || data.tracks === null) return;
+//   if (
+//     trackList.value.getBoundingClientRect().bottom <= document.body.clientHeight
+//   ) {
+//     loading = true;
+//     data.offset++;
+//     await getPlaylistTracks({ id, offset: ++offset }).then((res) => {
+//       if (offset >= data.maxPage) {
+//         data.tracks.push(...res.songs.splice(-overTracks));
+//         data.hasMore = false;
+//         document
+//           .getElementsByClassName("el-main")[0]
+//           .removeEventListener("scroll", loadMore);
+//         return;
+//       }
+//       data.tracks.push(...res.songs);
+//       loading = false;
+//     });
+//   }
+// };

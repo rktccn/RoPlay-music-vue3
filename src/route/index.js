@@ -13,7 +13,7 @@ const routes = [
   {
     path: "/recommend",
     name: "recommend",
-    component: () => import("../views/artist.vue"),
+    component: () => import("../views/room/playlist.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,
@@ -123,6 +123,16 @@ const routes = [
   {
     path: "/artist",
     redirect: "/",
+  },
+
+  {
+    path: "/room",
+    redirect: "/",
+  },
+  {
+    path: "/room/playlist",
+    name: "RoomPlaylist",
+    component: () => import("../views/room/playlist.vue"),
   },
 ];
 

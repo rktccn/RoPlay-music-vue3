@@ -78,6 +78,22 @@ export default {
     item: { type: Object, required: true },
   },
   setup(props) {
+    //检查传入的参数
+    const type = ["playlist", "album", "artist", "video"];
+    const checkProps = () => {
+      if (!type.includes(props.type)) {
+        console.error(
+          `type:${props.type} is not a valid type must be one of ${type} -- PlayListCard`
+        );
+      }
+
+      // 检查是否存在item
+      if (!props.item) {
+        console.error(`item is required -- PlayListCard`);
+      }
+    };
+    checkProps();
+
     const router = useRouter();
     const data = reactive({
       imgUrl: null,
@@ -135,16 +151,6 @@ export default {
       data.id = artist.id;
     };
 
-    if (props.type === "playlist") {
-      setPlayList();
-    } else if (props.type === "album") {
-      setAlbum();
-    } else if (props.type === "video") {
-      setVideo();
-    } else if (props.type === "artist") {
-      setArtist();
-    }
-
     switch (props.type) {
       case "playlist":
         setPlayList();
@@ -159,7 +165,7 @@ export default {
         setArtist();
         break;
       default:
-        console.log('类型必须为 "playlist" "album""video""artist"');
+        break;
     }
 
     data.isDecShow = props.showDec;

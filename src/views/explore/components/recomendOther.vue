@@ -43,6 +43,7 @@ import { recommendNewSong } from "../../../apis/personalized";
 
 import CarouselList from "../../../components/carouselList.vue";
 import TrackListItem from "../../../components/trackListItem.vue";
+import PlayListCard from "../../../components/playlistCard.vue";
 
 export default {
   name: "exploreOther",
@@ -94,7 +95,7 @@ export default {
 
     return { ...toRefs(data), videoItem };
   },
-  components: { CarouselList, TrackListItem },
+  components: { CarouselList, TrackListItem, PlayListCard },
 };
 </script>
 <style lang="scss" scoped>

@@ -67,7 +67,7 @@ export function topPlaylist(params) {
  * 歌单分类
  * 说明 : 调用此接口,可获取歌单分类,包含 category 信息
  */
-export function playlistCatlist() {
+export function getPlaylistCatlist() {
   return req.get("/playlist/catlist").then((res) => {
     return res;
   });

@@ -75,7 +75,7 @@ import {
 } from "../apis/artist";
 
 import ContextInfo from "../components/contextInfo.vue";
-import PlayListCard from "../components/playListCard.vue";
+import PlayListCard from "../components/playlistCard.vue";
 import CarouselList from "../components/carouselList.vue";
 import TrackListItem from "../components/trackListItem.vue";
 import { useRoute } from "vue-router";

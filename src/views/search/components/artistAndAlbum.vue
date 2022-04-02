@@ -34,7 +34,7 @@
 import { reactive, toRefs } from "vue";
 import { search } from "../../../apis/others";
 
-import PlayListCard from "../../../components/playListCard.vue";
+import PlayListCard from "../../../components/playlistCard.vue";
 
 export default {
   name: "searchArtistAndAlbum",
