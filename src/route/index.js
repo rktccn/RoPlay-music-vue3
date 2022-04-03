@@ -125,15 +125,15 @@ const routes = [
     redirect: "/",
   },
 
-  // {
-  //   path: "/room",
-  //   redirect: "/",
-  // },
-  // {
-  //   path: "/room/playlist",
-  //   name: "RoomPlaylist",
-  //   component: () => import("../views/room/playlist.vue"),
-  // },
+  {
+    path: "/room",
+    redirect: "/",
+  },
+  {
+    path: "/room/playlist",
+    name: "RoomPlaylist",
+    component: () => import("../views/room/playlist.vue"),
+  },
 ];
 
 const router = createRouter({
