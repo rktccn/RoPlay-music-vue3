@@ -3,7 +3,7 @@
     <h4 class="text-style-title">视频</h4>
     <CarouselList :length="videoList.length">
       <li v-for="(item, index) in videoList" :key="index">
-        <PlayListCard :item="item" type="video"></PlayListCard>
+        <PlaylistCard :item="item" type="video"></PlaylistCard>
       </li>
     </CarouselList>
   </div>
@@ -12,7 +12,7 @@
 import { reactive, toRefs } from "vue";
 import { search } from "../../../apis/others";
 
-import PlayListCard from "../../../components/playlistCard.vue";
+import PlaylistCard from "../../../components/playlistCard.vue";
 import CarouselList from "../../../components/carouselList.vue";
 
 export default {
@@ -40,7 +40,7 @@ export default {
     return { ...toRefs(data) };
   },
   components: {
-    PlayListCard,
+    PlaylistCard,
     CarouselList,
   },
 };

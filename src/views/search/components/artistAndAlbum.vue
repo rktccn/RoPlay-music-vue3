@@ -4,7 +4,7 @@
       <h4 class="text-style-title">音乐人</h4>
       <ul class="list">
         <li class="list-item" v-for="(item, index) in artist" :key="index">
-          <PlayListCard :item="item" type="artist" class="card"></PlayListCard>
+          <PlaylistCard :item="item" type="artist" class="card"></PlaylistCard>
         </li>
       </ul>
     </div>
@@ -18,13 +18,13 @@
           v-for="(item, index) in album"
           :key="index"
         >
-          <PlayListCard
+          <PlaylistCard
             class="card"
             :item="item"
             type="album"
             :showDec="false"
             :size="'100%'"
-          ></PlayListCard>
+          ></PlaylistCard>
         </li>
       </ul>
     </div>
@@ -34,7 +34,7 @@
 import { reactive, toRefs } from "vue";
 import { search } from "../../../apis/others";
 
-import PlayListCard from "../../../components/playlistCard.vue";
+import PlaylistCard from "../../../components/playlistCard.vue";
 
 export default {
   name: "searchArtistAndAlbum",
@@ -76,7 +76,7 @@ export default {
     getAlbum();
     return { ...toRefs(data) };
   },
-  components: { PlayListCard },
+  components: { PlaylistCard },
 };
 </script>
 <style lang="scss" scoped>

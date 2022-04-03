@@ -27,7 +27,6 @@
 </template>
 <script>
 import { reactive, ref, toRefs, onMounted, onBeforeUnmount } from "vue";
-import PlayListCard from "./playlistCard.vue";
 
 export default {
   name: "carouselList",
@@ -112,7 +111,6 @@ export default {
 
     return { carousel, ...toRefs(data), changePage, setRow };
   },
-  components: { PlayListCard },
 };
 </script>
 <style lang="scss" scoped>

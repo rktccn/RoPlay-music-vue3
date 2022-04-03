@@ -12,8 +12,8 @@
       <div class="new-album section" v-if="albums">
         <div class="text-style-title">最新发布</div>
         <div class="inner">
-          <PlayListCard :item="albums[0]" type="album"></PlayListCard>
-          <PlayListCard :item="albums[1]" type="album"></PlayListCard>
+          <PlaylistCard :item="albums[0]" type="album"></PlaylistCard>
+          <PlaylistCard :item="albums[1]" type="album"></PlaylistCard>
         </div>
       </div>
 
@@ -38,12 +38,12 @@
       <div class="text-style-title">视频</div>
       <CarouselList :length="mvs.length" :rows="mvs.length >= 6 ? 2 : 1">
         <li v-for="(mv, index) in mvs" :key="index">
-          <PlayListCard
+          <PlaylistCard
             :item="mv"
             :index="index"
             class="track-item"
             :type="'video'"
-          ></PlayListCard>
+          ></PlaylistCard>
         </li>
       </CarouselList>
     </div>
@@ -54,12 +54,12 @@
 
       <CarouselList :length="simiArtists.length">
         <li v-for="(artist, index) in simiArtists" :key="index">
-          <PlayListCard
+          <PlaylistCard
             :item="artist"
             :index="index"
             class="track-item"
             :type="'artist'"
-          ></PlayListCard>
+          ></PlaylistCard>
         </li>
       </CarouselList>
     </div>
@@ -75,7 +75,7 @@ import {
 } from "../apis/artist";
 
 import ContextInfo from "../components/contextInfo.vue";
-import PlayListCard from "../components/playlistCard.vue";
+import PlaylistCard from "../components/playlistCard.vue";
 import CarouselList from "../components/carouselList.vue";
 import TrackListItem from "../components/trackListItem.vue";
 import { useRoute } from "vue-router";
@@ -121,7 +121,7 @@ export default {
   components: {
     ContextInfo,
     CarouselList,
-    PlayListCard,
+    PlaylistCard,
     TrackListItem,
   },
 };
