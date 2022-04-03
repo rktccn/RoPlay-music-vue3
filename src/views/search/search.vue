@@ -20,7 +20,6 @@ import { latestAlbum } from "../../apis/album";
 import { reactive, toRefs, watch } from "vue";
 import { useRoute } from "vue-router";
 
-import PlayListCard from "../../components/playlistCard.vue";
 import ArtistAndAlbum from "./components/artistAndAlbum.vue";
 import SongResult from "./components/songResult.vue";
 import PlayListResult from "./components/playListResult.vue";
@@ -52,7 +51,6 @@ export default {
     return { ...toRefs(data) };
   },
   components: {
-    PlayListCard,
     ArtistAndAlbum,
     SongResult,
     PlayListResult,
