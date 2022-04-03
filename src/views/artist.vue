@@ -76,7 +76,7 @@ import {
 import { useRoute } from "vue-router";
 
 import ContextInfo from "../components/contextInfo.vue";
-import PlaylistCard from "../components/playListCard";
+import PlaylistCard from "../components/playListCard.vue";
 import CarouselList from "../components/carouselList.vue";
 import TrackListItem from "../components/trackListItem.vue";
 export default {
