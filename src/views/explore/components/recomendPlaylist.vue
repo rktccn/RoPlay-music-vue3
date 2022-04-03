@@ -18,7 +18,7 @@
 <script>
 import { topPlaylist } from "../../../apis/playlist";
 import { reactive, toRefs } from "vue";
-import PlayListCard from "../../../components/playlistCard.vue";
+import PlayListCard from "../../../components/playListCard.vue";
 import CarouselList from "../../../components/carouselList.vue";
 
 export default {

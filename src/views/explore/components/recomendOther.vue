@@ -43,7 +43,7 @@ import { recommendNewSong } from "../../../apis/personalized";
 
 import CarouselList from "../../../components/carouselList.vue";
 import TrackListItem from "../../../components/trackListItem.vue";
-import PlayListCard from "../../../components/playlistCard.vue";
+import PlayListCard from "../../../components/playListCard.vue";
 
 export default {
   name: "exploreOther",
