@@ -132,7 +132,7 @@ const routes = [
   {
     path: "/room/playlist",
     name: "RoomPlaylist",
-    component: () => import("../views/room/playlist.vue"),
+    component: () => import("../views/room/playlistList.vue"),
   },
 ];
 
