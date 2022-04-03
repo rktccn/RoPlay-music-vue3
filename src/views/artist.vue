@@ -73,12 +73,12 @@ import {
   getArtistMv,
   getSimilarArtists,
 } from "../apis/artist";
+import { useRoute } from "vue-router";
 
 import ContextInfo from "../components/contextInfo.vue";
 import PlaylistCard from "../components/playlistCard.vue";
 import CarouselList from "../components/carouselList.vue";
 import TrackListItem from "../components/trackListItem.vue";
-import { useRoute } from "vue-router";
 export default {
   name: "Atrist",
   setup() {
