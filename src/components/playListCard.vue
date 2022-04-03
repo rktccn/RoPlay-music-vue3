@@ -61,13 +61,13 @@
 </template>
 <script>
 import { reactive, toRefs } from "vue";
-
 import { dateFormat } from "../utils/common.js";
-import ArtistFormat from "./artistFormat.vue";
 import { useRouter } from "vue-router";
 
+import ArtistFormat from "./artistFormat.vue";
+
 export default {
-  name: "PlayListCard",
+  name: "PlaylistCard",
   props: {
     type: { type: String, required: true },
     // id: { type: Number, required: true },

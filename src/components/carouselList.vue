@@ -27,7 +27,7 @@
 </template>
 <script>
 import { reactive, ref, toRefs, onMounted, onBeforeUnmount } from "vue";
-import PlayListCard from "./playListCard.vue";
+import PlayListCard from "./playlistCard.vue";
 
 export default {
   name: "carouselList",
