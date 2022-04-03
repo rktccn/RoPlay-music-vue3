@@ -69,7 +69,7 @@ import { onMounted, onUnmounted, reactive, toRefs } from "vue";
 import { topPlaylist, getPlaylistCatlist } from "../../apis/playlist";
 import { isScrollBottom } from "../../utils/common";
 
-import PlaylistCard from "../../components/playlistCard.vue";
+import PlaylistCard from "../../components/playListCard.vue";
 
 export default {
   name: "RoomPlaylist",
