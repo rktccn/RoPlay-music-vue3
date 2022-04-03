@@ -72,7 +72,7 @@ import { isScrollBottom } from "../../utils/common";
 import PlaylistCard from "../../components/playlistCard.vue";
 
 export default {
-  name: "RoomPlaylistList",
+  name: "RoomPlaylist",
   setup() {
     const data = reactive({
       playlists: null,
