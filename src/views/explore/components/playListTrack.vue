@@ -27,7 +27,6 @@ export default {
   name: "explorePlayList",
   props: {
     id: { type: Number, required: true },
-    type: { type: String, default: "playList" }, // playList,topList
   },
   setup(props) {
     const data = reactive({

@@ -10,7 +10,7 @@
         class="cover"
         :src="`${imgUrl}?param=224y224`"
         alt=""
-        v-if="imgUrl && showImg && type !== 'album'"
+        v-if="imgUrl && showImg && type !== 'album' && itemWidth <= 2"
       />
       <span class="index font-size-16" v-if="type === 'album'">{{
         index

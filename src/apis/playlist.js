@@ -194,3 +194,16 @@ export function getPlaylistTracks(params) {
     return res;
   });
 }
+
+/**
+ * 所有榜单内容摘要
+ * 说明 : 调用此接口,可获取所有榜单内容摘要
+ */
+export function getTopList() {
+  return req({
+    url: "/toplist/detail",
+    method: "get",
+  }).then((res) => {
+    return res;
+  });
+}

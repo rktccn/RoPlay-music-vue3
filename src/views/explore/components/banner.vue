@@ -15,7 +15,7 @@ export default {
         },
         {
           name: "排行",
-          path: "/",
+          path: "/room/top",
           iconName: "bar_chart",
         },
         {

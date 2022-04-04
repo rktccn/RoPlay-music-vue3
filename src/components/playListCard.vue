@@ -99,6 +99,7 @@ export default {
       imgUrl: null,
       playCount: null,
       publishTime: null,
+      updataTime: null,
       artists: null,
       title: null,
       info: null,
@@ -125,6 +126,7 @@ export default {
       data.imgUrl = `${playlist.coverImgUrl}?param=480y480`;
       let date = dateFormat(playlist.createTime, false);
       data.publishTime = date;
+      data.updataTime = dateFormat(playlist.updateTime, false);
       data.artists = playlist.creator;
       data.playCount = playlist.playCount;
       data.title = playlist.name;
@@ -171,6 +173,8 @@ export default {
     data.isDecShow = props.showDec;
 
     function setInfo() {
+      if (props.type === "playlist" && props.showTime)
+        return `${data.updataTime}更新`;
       if (props.type === "playlist") return data.info;
       if (props.type === "album" && props.showTime) return data.publishTime;
     }
