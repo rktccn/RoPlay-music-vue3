@@ -143,3 +143,28 @@ export function getArtistDesc(id) {
       return res;
     });
 }
+
+/**
+ * 歌手分类列表
+ * 说明 : 调用此接口 , 可获取排行榜中的歌手榜
+ * - type : -1:全部 1:男歌手 2:女歌手 3:乐队
+ * - area : -1:全部 7华语 96欧美 8:日本 16韩国 0:其他
+ * - limit : 返回数量 , 默认为 30
+ * - offset : 偏移数量，用于分页
+ * - initial: 按首字母索引查找参数, 热门传-1, 全部传0
+ * @param {Object} params
+ * @param {number} params.type
+ * @param {number} params.area
+ * @param {number} params.limit
+ * @param {number} params.offset
+ * @param {string} params.initial
+ */
+export function getArtistList(params) {
+  return req
+    .get("/artist/list", {
+      params,
+    })
+    .then((res) => {
+      return res;
+    });
+}

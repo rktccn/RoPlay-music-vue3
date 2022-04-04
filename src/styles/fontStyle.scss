@@ -46,11 +46,14 @@
 
 // 文字样式
 .text-style-title {
-  margin-left: 20px;
   font-size: 24px;
   font-weight: bolder;
   line-height: 1.7;
   user-select: none;
+
+  @media screen and (max-width: $md) {
+    font-size: 24px;
+  }
 }
 
 .material-icons-round {

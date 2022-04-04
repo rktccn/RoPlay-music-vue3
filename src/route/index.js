@@ -15,7 +15,7 @@ const routes = [
     name: "recommend",
     component: () => import("../views/recommend.vue"),
     meta: {
-      keepAlive: true,
+      // keepAlive: true,
       // savePosition: true,
       // requireLogin: true,
     },
@@ -125,14 +125,20 @@ const routes = [
     redirect: "/",
   },
 
-  {
-    path: "/room",
-    redirect: "/",
-  },
+  // room
   {
     path: "/room/playlist",
     name: "RoomPlaylist",
     component: () => import("../views/room/playlist.vue"),
+  },
+  {
+    path: "/room/artist",
+    name: "RoomArtist",
+    component: () => import("../views/room/artist.vue"),
+  },
+  {
+    path: "/room",
+    redirect: "/",
   },
 ];
 

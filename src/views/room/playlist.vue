@@ -57,11 +57,11 @@
       </transition>
     </div>
 
-    <ul class="track-list" v-if="playlists">
+    <CoverRow v-if="playlists">
       <li v-for="(playlist, index) in playlists" :key="index">
         <PlaylistCard :item="playlist" :type="'playlist'"></PlaylistCard>
       </li>
-    </ul>
+    </CoverRow>
   </div>
 </template>
 <script>
@@ -70,6 +70,7 @@ import { topPlaylist, getPlaylistCatlist } from "../../apis/playlist";
 import { isScrollBottom } from "../../utils/common";
 
 import PlaylistCard from "../../components/playListCard.vue";
+import CoverRow from "../../components/coverRow.vue";
 
 export default {
   name: "RoomPlaylist",
@@ -175,6 +176,7 @@ export default {
   },
   components: {
     PlaylistCard,
+    CoverRow,
   },
 };
 </script>
@@ -200,6 +202,8 @@ export default {
       @media (max-width: $sm) {
         margin-right: 10px;
         margin-bottom: 8px;
+        padding: 4px 8px;
+        font-size: 12px;
       }
 
       &:hover {
@@ -239,6 +243,11 @@ export default {
         flex-direction: column;
       }
 
+      .big-cat-name {
+        @media (max-width: $sm) {
+          font-size: 16px;
+        }
+      }
       .cat-list {
         margin-left: 26px;
         flex: 1 1 0;
@@ -249,7 +258,7 @@ export default {
         }
 
         @media (max-width: $md) {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
 
         .cat {
@@ -262,6 +271,12 @@ export default {
           cursor: pointer;
           transition: all $transition-time-default;
 
+          @media (max-width: $sm) {
+            margin-right: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+          }
+
           &:hover {
             background-color: var(--primary-container-color);
           }
@@ -272,23 +287,6 @@ export default {
         }
       }
     }
-  }
-}
-.track-list {
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-
-  @media (max-width: $lg) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (max-width: $md) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media (max-width: $sm) {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 </style>

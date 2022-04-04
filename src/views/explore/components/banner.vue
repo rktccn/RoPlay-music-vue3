@@ -10,7 +10,7 @@ export default {
       category: [
         {
           name: "歌手",
-          path: "/",
+          path: "/room/artist",
           iconName: "person",
         },
         {
