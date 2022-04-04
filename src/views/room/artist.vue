@@ -33,6 +33,9 @@
         <PlayListCard :item="artist" type="artist"></PlayListCard>
       </li>
     </CoverRow>
+    <p class="load-info font-size-12" @click="dododo">
+      {{ hasMore ? "正在加载" : "已加载全部" }}
+    </p>
   </div>
 </template>
 <script>
@@ -138,7 +141,7 @@ export default {
       data.curType = code;
       data.artistList = null;
       data.hasMore = true;
-      data.loading = false;
+      loading = false;
       params = {
         type: data.curType,
         area: data.curArea,
@@ -154,7 +157,7 @@ export default {
       data.curArea = code;
       data.artistList = null;
       data.hasMore = true;
-      data.loading = false;
+      loading = false;
       params = {
         type: data.curType,
         area: data.curArea,
@@ -185,7 +188,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .tab {
   .type,
   .area {
@@ -217,5 +220,9 @@ export default {
       background-color: var(--main-color);
     }
   }
+}
+
+.load-info {
+  color: var(--text-color-secondary);
 }
 </style>

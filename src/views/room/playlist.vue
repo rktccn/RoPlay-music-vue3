@@ -62,6 +62,9 @@
         <PlaylistCard :item="playlist" :type="'playlist'"></PlaylistCard>
       </li>
     </CoverRow>
+    <p class="load-info font-size-12" @click="dododo">
+      {{ hasMore ? "正在加载" : "已加载全部" }}
+    </p>
   </div>
 </template>
 <script>
@@ -147,6 +150,7 @@ export default {
       data.tab = tab;
       data.playlists = null;
       data.hasMore = true;
+      loading = false;
       document
         .getElementsByClassName("el-main")[0]
         .addEventListener("scroll", loadMore);
@@ -288,5 +292,9 @@ export default {
       }
     }
   }
+}
+
+.load-info {
+  color: var(--text-color-secondary);
 }
 </style>
