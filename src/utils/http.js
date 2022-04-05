@@ -2,7 +2,6 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 let baseURL = import.meta.env.VITE_BASE_URL;
-let timestamp = new Date().getTime();
 
 const service = axios.create({
   baseURL,
@@ -14,14 +13,10 @@ service.interceptors.request.use(function (config) {
   if (config.method === "post") {
     config.data = {
       ...config.data,
-      timestamp,
-      // cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     };
   } else if (config.method === "get") {
     config.params = {
-      timestamp,
       ...config.params,
-      // cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     };
   }
 

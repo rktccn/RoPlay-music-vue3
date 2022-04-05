@@ -22,9 +22,21 @@ import RecomendFM from "./components/recomendFM.vue";
     <section class="section">
       <h4 class="text-style-title">排行榜</h4>
       <div class="charts">
-        <PlayListTrack class="block" :id="19723756"></PlayListTrack>
-        <PlayListTrack class="block" :id="3779629"></PlayListTrack>
-        <PlayListTrack class="block" :id="3778678"></PlayListTrack>
+        <PlayListTrack
+          class="block"
+          name="飙升榜"
+          :id="19723756"
+        ></PlayListTrack>
+        <PlayListTrack
+          class="block"
+          name="新歌榜"
+          :id="3779629"
+        ></PlayListTrack>
+        <PlayListTrack
+          class="block"
+          name="热歌榜"
+          :id="3778678"
+        ></PlayListTrack>
       </div>
     </section>
 

@@ -55,13 +55,10 @@ export default {
       songItemHeight: "64px",
     });
 
-    ToplistOfMV()
-      .then((res) => {
-        data.video = res.data;
-      })
-      .then(() => {
-        setSongRows();
-      });
+    ToplistOfMV({ limit: 20 }).then((res) => {
+      data.video = res.data;
+      setSongRows();
+    });
 
     recommendNewSong().then((res) => {
       data.song = res.result;

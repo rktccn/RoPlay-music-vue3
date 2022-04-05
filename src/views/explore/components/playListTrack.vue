@@ -1,8 +1,8 @@
 <template lang="">
   <div class="top-list">
     <div class="title" v-if="topList" :style="setBackGround()">
-      <span class="name font-size-32">{{ setTitle() }}</span>
-      <div class="more">更多</div>
+      <span class="name font-size-32">{{ name }}</span>
+      <div class="more" @click="goToPlaylist()">更多</div>
     </div>
     <div class="list">
       <ul v-if="topList">
@@ -17,9 +17,9 @@
 <script>
 import TrackListItem from "../../../components/trackListItem.vue";
 
-import { getPlaylistDetail } from "../../../apis/playlist";
-import { getTrackDetail } from "../../../apis/track";
+import { getPlaylistTracks } from "../../../apis/playlist";
 import { reactive, toRefs } from "vue";
+import { useRouter } from "vue-router";
 
 // 飙升 19723756   新歌 3779629  热歌 3778678
 
@@ -27,21 +27,17 @@ export default {
   name: "explorePlayList",
   props: {
     id: { type: Number, required: true },
+    name: { type: String, required: true },
   },
   setup(props) {
+    const router = useRouter();
+
     const data = reactive({
       topList: null,
     });
 
-    let PlaylistInfo = null;
-
-    getPlaylistDetail(props.id).then((res) => {
-      PlaylistInfo = res.playlist;
-      getTrackDetail(
-        `${res.privileges[0].id}, ${res.privileges[1].id}, ${res.privileges[2].id}, ${res.privileges[3].id}, ${res.privileges[4].id}`
-      ).then((res2) => {
-        data.topList = res2.songs;
-      });
+    getPlaylistTracks({ id: props.id, limit: 5 }).then((res) => {
+      data.topList = res.songs;
     });
 
     const setBackGround = () => {
@@ -54,11 +50,12 @@ export default {
       return styles;
     };
 
-    const setTitle = () => {
-      return PlaylistInfo.name;
+    // 点击前往歌单页面
+    const goToPlaylist = () => {
+      router.push(`/playlist/${props.id}`);
     };
 
-    return { ...toRefs(data), setBackGround, setTitle };
+    return { ...toRefs(data), setBackGround, goToPlaylist };
   },
   components: { TrackListItem },
 };
@@ -93,6 +90,8 @@ export default {
       font-weight: bolder;
       color: #fff;
       opacity: 0.88;
+
+      cursor: pointer;
     }
   }
 

@@ -4,11 +4,11 @@
       <h4 class="text-style-title">精挑细选</h4>
       <div class="inner">
         <li
-          v-for="(id, index) in recommendList"
+          v-for="(item, index) in recommendList"
           :key="index"
           class="track-item block"
         >
-          <TopListCard :id="id"></TopListCard>
+          <TopListCard :name="item.name" :id="item.id"></TopListCard>
         </li>
       </div>
     </div>
@@ -41,7 +41,20 @@ export default {
     const data = reactive({
       TopLists: null,
       TopArtist: null,
-      recommendList: [3778678, 2884035, 19723756],
+      recommendList: [
+        {
+          name: "飙升榜",
+          id: 19723756,
+        },
+        {
+          name: "原创榜",
+          id: 2884035,
+        },
+        {
+          name: "新歌榜",
+          id: 3779629,
+        },
+      ],
     });
 
     // 获取排行榜

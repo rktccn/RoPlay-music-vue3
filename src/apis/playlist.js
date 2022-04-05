@@ -1,5 +1,6 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
+const cookie = `MUSIC_U=${Cookies.get("MUSIC_U")};`;
 
 /**
  * 获取歌单详情
@@ -15,12 +16,15 @@ export function getPlaylistDetail(id) {
     .get("/playlist/detail", {
       params: {
         id,
+        timestamp: new Date().getTime(),
+        cookie,
       },
     })
     .then((res) => {
       return res;
     });
 }
+
 /**
  * 获取精品歌单
  * 说明 : 调用此接口 , 可获取精品歌单
@@ -189,6 +193,8 @@ export function getPlaylistTracks(params) {
     method: "post",
     params: {
       ...params,
+      timestamp: new Date().getTime(),
+      cookie,
     },
   }).then((res) => {
     return res;
