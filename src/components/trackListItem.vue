@@ -10,7 +10,8 @@
         class="cover"
         :src="`${imgUrl}?param=224y224`"
         alt=""
-        v-if="imgUrl && showImg && type !== 'album' && itemWidth <= 2"
+        v-if="imgUrl && showImg && type !== 'album'"
+        :class="itemWidth > 2 ? ' hide-in-sm' : ''"
       />
       <span class="index font-size-16" v-if="type === 'album'">{{
         index

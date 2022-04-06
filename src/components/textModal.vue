@@ -76,14 +76,15 @@ export default {
 .block {
   width: 45vw;
   max-width: 800px;
-  padding: 24px 34px;
   box-shadow: 0px 2px 20px -5px var(--main-color);
+  padding: 24px 0;
 
   .header {
     display: flex;
     justify-content: space-between;
     padding-right: 8px;
     line-height: 1.4;
+    padding: 0px 34px;
   }
 
   .text {
@@ -92,6 +93,7 @@ export default {
     max-height: 45vh;
     overflow: scroll;
     white-space: pre-line;
+    padding: 0px 34px;
   }
 }
 </style>

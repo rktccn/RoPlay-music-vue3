@@ -13,7 +13,7 @@ const routes = [
   {
     path: "/recommend",
     name: "recommend",
-    component: () => import("../views/room/topList.vue"),
+    component: () => import("../views/lyricPage.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,

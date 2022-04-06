@@ -12,7 +12,7 @@ export const usePlayer = defineStore("player", {
       volume: 0.5, // 音量 0-1
 
       currentTrack: null,
-      trackList: [],
+      trackList: [386538, 528272281],
       currentIndex: 0, // 当前歌曲在列表中的index
 
       howler: null,
@@ -81,8 +81,7 @@ export const usePlayer = defineStore("player", {
       });
     },
 
-    replaceCurrentTrack(id, fee) {
-      console.log(fee);
+    replaceCurrentTrack(id) {
       getTrackDetail(id).then((res) => {
         getMP3(id).then((res2) => {
           if (res2.data[0].url) {

@@ -7,6 +7,7 @@ vue3 + vite + Pinia
 [link](https://ro-play-vue3-69xxynv91-wskkku.vercel.app/#/)
 
 # 更新日志
+
 [更新日志](./docs/changLog.md)
 
 # 使用方法
@@ -23,3 +24,10 @@ vue3 + vite + Pinia
 
 ![首页-lg](./images/feed-lg.png)
 ![首页-md](./images/feed-md.png)
+
+# 灵感来源
+
+- [YesPlayMusic](https://github.com/qier222/YesPlayMusic)
+- AppleMusic
+- YoutubeMusic
+- 网易云音乐

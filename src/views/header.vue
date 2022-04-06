@@ -30,7 +30,6 @@ const doSearch = () => {
 
 const toggleSideNav = () => {
   sideNav.value = !sideNav.value;
-  // console.log(sideNav);
 };
 
 watch(
