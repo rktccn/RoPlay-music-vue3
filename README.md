@@ -22,6 +22,13 @@ vue3 + vite + Pinia
 
 # 介绍
 
+## 特色
+
+- 使用 vue3 + vite + Pinia 开发
+- 响应式布局
+
+## 截图
+
 ![首页](./images/explore.png)
 ![音乐人](./images/artist.png)
 ![歌词](./images/lyric.png)
