@@ -1,13 +1,18 @@
 <template lang="">
   <div class="lyric-page" :style="setColor()">
     <div class="left-side">
+      <div
+        class="close material-icons-round font-size-48"
+        @click="store.showLyric = false"
+      >
+        expand_more
+      </div>
       <div class="inner">
         <!-- 歌曲封面 -->
         <div class="cover">
           <img
-            v-if="player.currentTrack"
             :src="`${
-              player.currentTrack?.al?.picUrl ??
+              player?.currentTrack?.al?.picUrl ||
               'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
             }?param=1024y1024`"
             alt=""
@@ -15,19 +20,29 @@
         </div>
 
         <div class="control">
-          <span class="prev material-icons-round font-size-32"
+          <span
+            class="prev material-icons-round font-size-32"
+            @click="player.playPrev()"
             >skip_previous</span
           >
-          <span class="next material-icons-round font-size-32"> skip_next</span>
+          <span
+            class="next material-icons-round font-size-32"
+            @click="player.playNext()"
+          >
+            skip_next</span
+          >
           <span class="gap"></span>
-          <span class="play material-icons-round font-size-48">
-            play_arrow</span
+          <span
+            class="play material-icons-round font-size-48"
+            @click="player.playOrPause()"
+          >
+            {{ player.isPlaying ? "pause" : "play_arrow" }}</span
           >
           <span class="like material-icons-round font-size-24"
             >favorite_border</span
           >
         </div>
-        <div class="info">
+        <div class="info" v-if="player.currentTrack">
           <span class="title text-truncate">{{
             player.currentTrack.name
           }}</span>
@@ -55,6 +70,8 @@
             :lazy="true"
             tooltip="hover"
             :tooltip-formatter="timeFormat"
+            :process-style="{ backgroundColor: color.fontColor }"
+            :dot-style="{ boxShadow: `0px 0px 0px 2px ${color.fontColor}` }"
           ></VueSlider>
           <span class="total-time text-style-info">
             {{ player.getCurrentDuration }}
@@ -76,6 +93,9 @@
         </span>
       </li>
     </ul>
+    <span class="list right-side" v-if="!lyricList"
+      ><li class="lyric-item active">没有音乐</li>
+    </span>
   </div>
 </template>
 <script>
@@ -88,12 +108,14 @@ import analyze from "rgbaster";
 
 import ArtistFormat from "../components/artistFormat.vue";
 import VueSlider from "vue-slider-component";
+import { useStore } from "../store";
 
 export default {
   name: "LyricPage",
 
   setup() {
     const player = usePlayer();
+    const store = useStore();
     const data = reactive({
       lyricList: null,
       curIndex: 0,
@@ -190,8 +212,10 @@ export default {
       return style;
     };
 
-    getColor();
-    getData(player.currentTrack.id);
+    if (player.currentTrack) {
+      getColor();
+      getData(player.currentTrack.id);
+    }
 
     // 监听播放进度，设置歌词curIndex
     watch(
@@ -209,10 +233,10 @@ export default {
 
     // 监听歌曲改变,重置歌词
     watch(
-      () => player.currentTrack.id,
-      (id) => {
+      () => player.currentTrack,
+      (val) => {
         data.curIndex = 0;
-        getData(id);
+        getData(val.id);
         getColor();
       }
     );
@@ -229,6 +253,7 @@ export default {
       ...toRefs(data),
       list,
       player,
+      store,
       progress,
       clickLyric,
       setColor,
@@ -243,10 +268,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .lyric-page {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   color: #fff;
   background-color: var(--background-color-secondary);
+  z-index: 30;
 
   &::before {
     content: "";
@@ -269,19 +299,41 @@ export default {
       @include calc-width(3);
     }
 
+    .close {
+      position: absolute;
+      top: 2.5vw;
+      left: 2.5vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      border-radius: $border-radius-default;
+      transition: all $transition-time-default
+        cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &:hover {
+        backdrop-filter: brightness(1.2);
+      }
+    }
+
     .cover {
       position: relative;
+      width: 100%;
       padding-top: 100%;
-      background-color: pink;
       border-radius: $border-radius-default * 2;
-      overflow: hidden;
+      // overflow: hidden;
       line-height: 0;
+      background: black;
+      @include shadow();
+
       img {
         position: absolute;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
         width: 100%;
+        border-radius: $border-radius-default * 2;
       }
     }
 
@@ -290,6 +342,7 @@ export default {
       align-items: center;
       width: 100%;
       padding: 4px 5%;
+      padding-top: 20px;
 
       > * {
         margin: 0 8px;
@@ -338,7 +391,7 @@ export default {
   height: 0vh;
   width: 100%;
   overflow-y: scroll;
-  padding: 35vh 0;
+  padding: 49vh 0;
   font-size: 28px;
   line-height: 1.5;
   // 隐藏滚动条

@@ -21,7 +21,10 @@
           <li class="add-to-playlist material-icons-round font-size-20">
             playlist_add
           </li>
-          <li class="show-lyric-page material-icons-round font-size-20">
+          <li
+            class="show-lyric-page material-icons-round font-size-20"
+            @click="store.showLyric = true"
+          >
             open_in_full
           </li>
           <li class="more material-icons-round font-size-20">more_horiz</li>
@@ -103,6 +106,7 @@ import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
 import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "../store";
 export default {
   name: "audioControl",
   setup() {
@@ -118,6 +122,7 @@ export default {
     });
 
     const player = usePlayer();
+    const store = useStore();
     const { currentTrack } = storeToRefs(player);
     const router = useRouter();
     const route = useRoute();
@@ -160,6 +165,7 @@ export default {
     return {
       ...toRefs(data),
       player,
+      store,
       currentTrack,
       progress,
       volume,

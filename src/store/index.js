@@ -5,6 +5,7 @@ export const useStore = defineStore("main", {
     return {
       isLoggedIn: false,
       showOverlay: false,
+      showLyric: false,
     };
   },
   getters: {

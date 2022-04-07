@@ -6,6 +6,8 @@ import "./styles/normalize.scss";
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
 import AudioControl from "./components/audioControl.vue";
+import LyricPage from "./views/lyricPage.vue";
+
 import { useRoute } from "vue-router";
 import { useStore } from "./store/index";
 
@@ -46,6 +48,10 @@ const showHeader = () => {
       </el-main>
     </el-container>
   </el-container>
+
+  <transition name="slide-up" mode="out-in">
+    <LyricPage v-if="store.showLyric"></LyricPage>
+  </transition>
   <teleport to="body">
     <transition name="fade" mode="out-in">
       <div

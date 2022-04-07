@@ -24,3 +24,13 @@
   opacity: 1;
   transform: translateY(0%);
 }
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all $transition-time-default ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(100%);
+}
