@@ -389,7 +389,6 @@ export default {
 
 .list {
   height: 0vh;
-  width: 100%;
   overflow-y: scroll;
   padding: 49vh 0;
   font-size: 28px;
@@ -400,9 +399,9 @@ export default {
   }
 
   .lyric-item {
+    width: 80%;
     padding: 8px 12px;
     border-radius: $border-radius-default;
-
     transition: all $transition-time-default
       cubic-bezier(0.25, 0.46, 0.45, 0.94);
     font-weight: 600;
