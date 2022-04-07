@@ -51,6 +51,7 @@
             ><ArtistFormat
               fontSize="16px"
               :artistList="player.currentTrack.ar"
+              @click="store.showLyric = false"
             ></ArtistFormat
           ></span>
         </div>

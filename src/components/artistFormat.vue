@@ -37,12 +37,11 @@ export default {
   white-space: nowrap;
 
   a {
-    // color: var(--text-color-secondary);
     color: inherit;
     opacity: 0.88;
 
     &:hover {
-      color: var(--main-color);
+      opacity: 1;
     }
   }
   em {

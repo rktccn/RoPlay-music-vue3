@@ -22,8 +22,9 @@ vue3 + vite + Pinia
 
 # 介绍
 
-![首页-lg](./images/feed-lg.png)
-![首页-md](./images/feed-md.png)
+![首页](./images/explore.png)
+![音乐人](./images/artist.png)
+![歌词](./images/lyric.png)
 
 # 灵感来源
 
