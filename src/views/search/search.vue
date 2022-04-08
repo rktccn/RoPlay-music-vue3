@@ -1,5 +1,5 @@
 <template lang="">
-  <div v-if="keyword">
+  <div v-if="keyword" class="search">
     <!-- 艺人，专辑 -->
     <ArtistAndAlbum :w="keyword" :key="componentKey"></ArtistAndAlbum>
 
@@ -58,4 +58,12 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+.search {
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+</style>

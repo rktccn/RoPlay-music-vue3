@@ -1,6 +1,9 @@
 <template lang="">
   <div class="section block" v-if="videoList.length !== 0">
-    <h4 class="text-style-title">视频</h4>
+    <div class="title">
+      <h4 class="text-style-title">视频</h4>
+      <span class="text-style-info">查看全部</span>
+    </div>
     <CarouselList :length="videoList.length">
       <li v-for="(item, index) in videoList" :key="index">
         <PlaylistCard :item="item" type="video"></PlaylistCard>

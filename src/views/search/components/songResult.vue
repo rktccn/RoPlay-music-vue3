@@ -1,6 +1,11 @@
 <template lang="">
   <div class="section" v-if="artistList.length !== 0">
-    <h4 class="text-style-title">歌曲</h4>
+    <div class="title">
+      <h4 class="text-style-title">歌曲</h4>
+      <router-link :to="`/search/${w}/songs`" class="text-style-info"
+        >查看全部</router-link
+      >
+    </div>
     <div class="">
       <ul class="list grid">
         <li class="list-item" v-for="(item, index) in artistList" :key="index">

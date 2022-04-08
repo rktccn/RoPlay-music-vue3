@@ -1,7 +1,12 @@
 <template lang="">
   <section class="artist-album">
     <div class="artist section block" v-if="artist.length !== 0">
-      <h4 class="text-style-title">音乐人</h4>
+      <div class="title">
+        <h4 class="text-style-title">音乐人</h4>
+        <router-link :to="`/search/${w}/artists`" class="text-style-info"
+          >查看全部</router-link
+        >
+      </div>
       <ul class="list">
         <li class="list-item" v-for="(item, index) in artist" :key="index">
           <PlaylistCard :item="item" type="artist" class="card"></PlaylistCard>
@@ -10,7 +15,12 @@
     </div>
     <div class="gap"></div>
     <div class="album section block" v-if="album.length !== 0">
-      <h4 class="text-style-title">专辑</h4>
+      <div class="title">
+        <h4 class="text-style-title">专辑</h4>
+        <router-link :to="`/search/${w}/albums`" class="text-style-info"
+          >查看全部</router-link
+        >
+      </div>
       <ul class="list">
         <li
           class="list-item"
@@ -54,6 +64,7 @@ export default {
         limit: 3,
         type: 100,
       };
+
       search(params).then((res) => {
         let result = res.result.artists;
         data.artist = result;

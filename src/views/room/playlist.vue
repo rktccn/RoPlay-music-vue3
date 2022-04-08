@@ -62,7 +62,7 @@
         <PlaylistCard :item="playlist" :type="'playlist'"></PlaylistCard>
       </li>
     </CoverRow>
-    <p class="load-info font-size-12" @click="dododo">
+    <p class="load-info font-size-12">
       {{ hasMore ? "正在加载" : "已加载全部" }}
     </p>
   </div>
@@ -115,7 +115,6 @@ export default {
     });
 
     const loadMore = () => {
-      console.log("滚动");
       if (isScrollBottom()) {
         loading = true;
         topPlaylist({
@@ -127,8 +126,6 @@ export default {
           data.playlists = data.playlists.concat(res.playlists); // 拼接数组
           loading = false;
           if (res.playlists.length < 20) {
-            console.log("没有了");
-
             data.hasMore = false;
             document
               .getElementsByClassName("el-main")[0]

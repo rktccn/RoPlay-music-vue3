@@ -1,6 +1,11 @@
 <template lang="">
   <div class="section" v-if="playLists.length !== 0">
-    <h4 class="text-style-title">歌单</h4>
+    <div class="title">
+      <h4 class="text-style-title">歌单</h4>
+      <router-link :to="`/search/${w}/playlists`" class="text-style-info"
+        >查看全部</router-link
+      >
+    </div>
     <CarouselList :length="playLists.length">
       <li v-for="(item, index) in playLists" :key="index">
         <PlaylistCard :item="item" type="playlist"></PlaylistCard>

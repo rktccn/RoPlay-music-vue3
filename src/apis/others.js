@@ -18,7 +18,7 @@ import Cookie from "js-cookie";
  */
 export function search(params) {
   return req
-    .get("/search", {
+    .get("/cloudsearch", {
       params,
     })
     .then((res) => {
