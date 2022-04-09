@@ -51,22 +51,3 @@ export function fmTrash(id) {
     return res;
   });
 }
-
-/**
- * 音乐是否可用
- * 说明 : 调用此接口,传入歌曲 id, 可获取音乐是否可用,返回 { success: true, message: 'ok' } 或者 { success: false, message: '亲爱的,暂无版权' }
- * - id : 歌曲 id
- * - br: 码率,默认设置了 999000 即最大码率,如果要 320k 则可设置为 320000,其他类推
- * @param {Object} params
- * @param {string} params.id
- * @param {number=} params.br
- */
-export function checkMusic(params) {
-  return req
-    .get("/check/music", {
-      params,
-    })
-    .then((res) => {
-      return res;
-    });
-}

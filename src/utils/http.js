@@ -28,8 +28,8 @@ service.interceptors.response.use(
     const res = response.data;
     return res;
   },
-  (error) => {
-    return Promise.reject(error);
+  (err) => {
+    return Promise.reject(err);
   }
 );
 

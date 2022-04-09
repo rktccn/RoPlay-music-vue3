@@ -205,10 +205,14 @@ export default {
       if (!player?.currentTrack?.al?.picUrl) return;
       let style = {
         background: null,
+        backgroundColor: null,
         color: null,
       };
-      let color = `linear-gradient(to top left, ${data.color.main}, ${data.color.secondary})`;
+      // let color = `linear-gradient(to top left, ${data.color.main}, ${data.color.secondary})`;
+      let color = `linear-gradient(to top left, ${data.color.main}, transparent)`;
+      let bgColor = data.color.secondary;
       style.background = color;
+      style.backgroundColor = bgColor;
       style.color = data.color.fontColor;
       return style;
     };
@@ -276,8 +280,10 @@ export default {
   height: 100vh;
   display: flex;
   color: #fff;
-  background-color: var(--background-color-secondary);
+  background: var(--background-color-secondary);
   z-index: 30;
+
+  transition: background $transition-time-default ease;
 
   &::before {
     content: "";

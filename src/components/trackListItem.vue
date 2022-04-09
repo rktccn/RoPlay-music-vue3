@@ -1,11 +1,12 @@
 <template lang="">
   <div
     class="track-list-item"
-    :class="{ hover: canHover }"
+    :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
     ref="refItem"
     :style="setStyle()"
+    @dblclick="player.replaceCurrentTrack(id, canPlay)"
   >
-    <div class="inner" @dblclick="player.replaceCurrentTrack(id, canPlay)">
+    <div class="inner">
       <img
         class="cover"
         :src="`${imgUrl}?param=224y224`"
@@ -63,6 +64,7 @@
 import { onBeforeUnmount, onMounted, reactive, ref, toRefs } from "vue";
 import { timeFormat } from "../utils/common.js";
 import { usePlayer } from "../store/player.js";
+import { getMP3, getTrackDetail } from "../apis/track.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
@@ -85,7 +87,8 @@ export default {
       id: null,
       duration: 0,
       isLiked: false,
-      canPlay: 0,
+      canPlay: 0, // -1:无版权 0: 免费  1: VIP 歌曲   4: 购买专辑   8: 非会员可免费播放低音质，会员可播放高音质及下载
+      musicUrl: null,
       describe: null,
     });
 
@@ -143,6 +146,18 @@ export default {
       }
     };
 
+    // 获取音乐播放链接
+    const getMusicUrl = async () => {
+      const res = await getMP3(track.id);
+      if (res.data[0].url) {
+        data.musicUrl = res.data[0].url;
+        data.canPlay = track.fee;
+      } else {
+        data.musicUrl = null;
+        data.canPlay = -1;
+      }
+    };
+
     // 初始化数据
     const initData = () => {
       getArtists();
@@ -151,8 +166,7 @@ export default {
       getDescribe();
       data.title = track.name;
       data.id = track.id;
-      data.canPlay = track.fee; // 0: 免费或无版权  1: VIP 歌曲   4: 购买专辑   8: 非会员可免费播放低音质，会员可播放高音质及下载
-      // data.isLiked =
+      getMusicUrl();
     };
 
     initData();
@@ -182,10 +196,24 @@ export default {
 </script>
 <style lang="scss" scoped>
 .track-list-item {
+  position: relative;
   padding: 8px;
   border-radius: $border-radius-default;
-
   scroll-snap-align: start;
+  overflow: hidden;
+  transition: background-color $transition-time-default;
+
+  &.disable {
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: saturate(0);
+    }
+  }
 
   .inner {
     display: flex;
@@ -197,22 +225,17 @@ export default {
       margin-right: 16px;
     }
   }
-
-  transition: background-color $transition-time-default;
-
-  &:hover {
-    .more {
-      .duration {
-        opacity: 0;
-      }
-      .like {
-        display: block;
-      }
-    }
-  }
 }
 .hover:hover {
   background-color: var(--background-color-primary);
+  .more {
+    .duration {
+      opacity: 0;
+    }
+    .like {
+      display: block;
+    }
+  }
 }
 .cover {
   line-height: 0;

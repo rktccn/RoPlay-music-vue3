@@ -1,8 +1,6 @@
 import req from "../utils/http";
 import Cookie from "js-cookie";
 
-// import { mapTrackPlayableStatus } from "../utils/common";
-
 /**
  * 获取音乐 url
  * 说明 : 使用歌单详情接口后 , 能得到的音乐的 id, 但不能得到的音乐 url, 调用此接口, 传入的音乐 id( 可多个 , 用逗号隔开 ), 可以获取对应的音乐的 url,
@@ -42,37 +40,6 @@ export async function getTrackDetail(ids) {
     .then((res) => {
       return res;
     });
-
-  //缓存
-  // const fetchLatest = () => {
-  //   return request({
-  //     url: "/song/detail",
-  //     method: "get",
-  //     params: {
-  //       ids,
-  //     },
-  //   }).then((data) => {
-  //     data.songs.map((song) => {
-  //       const privileges = data.privileges.find((t) => t.id === song.id);
-  //       cacheTrackDetail(song, privileges);
-  //     });
-  //     data.songs = mapTrackPlayableStatus(data.songs, data.privileges);
-  //     return data;
-  //   });
-  // };
-  // fetchLatest();
-
-  // let idsInArray = [String(ids)];
-  // if (typeof ids === "string") {
-  //   idsInArray = ids.split(",");
-  // }
-
-  // return getTrackDetailFromCache(idsInArray).then((result) => {
-  //   if (result) {
-  //     result.songs = mapTrackPlayableStatus(result.songs, result.privileges);
-  //   }
-  //   return result ?? fetchLatest();
-  // });
 }
 
 /**
@@ -152,5 +119,30 @@ export function scrobble(params) {
     })
     .then((res) => {
       return res;
+    });
+}
+
+/**
+ * 音乐是否可用
+ * 说明: 调用此接口,传入歌曲 id, 可获取音乐是否可用,返回 { success: true, message: 'ok' } 或者 { success: false, message: '亲爱的,暂无版权' }
+ * @param {Object} params
+ * @param {number | string} params.id 歌曲id
+ * @param {number=} params.br 码率,默认设置了 999000 即最大码率,如果要 320k 则可设置为 320000,其他类推
+ * @return {Object} { success: true, message: 'ok' } 或者 { success: false, message: '亲爱的,暂无版权' }
+ */
+export function checkMusic(params) {
+  console.log(params);
+  return req
+    .get("/check/music", {
+      params: {
+        ...params,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err.status);
+      console.log(err);
     });
 }
