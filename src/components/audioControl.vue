@@ -123,7 +123,7 @@ export default {
 
     const player = usePlayer();
     const store = useStore();
-    const { currentTrack } = storeToRefs(player);
+    const currentTrack = computed(() => player.currentTrack);
     const router = useRouter();
     const route = useRoute();
 

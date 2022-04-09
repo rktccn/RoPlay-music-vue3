@@ -10,9 +10,13 @@ import LyricPage from "./views/lyricPage.vue";
 
 import { useRoute } from "vue-router";
 import { useStore } from "./store/index";
+import { usePlayer } from "./store/player";
 
 const route = useRoute();
 const store = useStore();
+
+const player = usePlayer();
+player.init();
 
 const showHeader = () => {
   if (route.meta.hideHeader && window.innerWidth <= 768) {

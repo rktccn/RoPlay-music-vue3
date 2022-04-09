@@ -4,6 +4,8 @@ import { ElNotification } from "element-plus";
 import { getTrackDetail, getMP3 } from "../apis/track";
 import { timeFormat } from "../utils/common";
 
+let howler = null;
+
 export const usePlayer = defineStore("player", {
   state: () => {
     return {
@@ -33,6 +35,15 @@ export const usePlayer = defineStore("player", {
   },
 
   actions: {
+    init() {
+      if (!this.trackList || this.trackList.length === 0) return;
+      this.replaceCurrentTrack(
+        this.trackList[this.currentIndex],
+        false,
+        this.progress
+      );
+    },
+
     songPlay() {
       this.isPlaying = true;
       this.howler.play();
@@ -64,7 +75,7 @@ export const usePlayer = defineStore("player", {
       this.replaceCurrentTrack(this.trackList[this.currentIndex]);
     },
 
-    playSong(source) {
+    playSong(source, autoPlay, progress) {
       Howler.unload();
       this.howler = new Howl({
         src: [source],
@@ -73,7 +84,8 @@ export const usePlayer = defineStore("player", {
         format: ["mp3", "flac"],
       });
       this.setCurTimeIntervals();
-      this.songPlay();
+      autoPlay ? this.songPlay() : this.songPause();
+      this.howler.seek(Math.floor(progress / 1000));
       document.title = `Ro Play - ${this.currentTrack.name} · ${this.currentTrack.ar[0].name}`;
 
       this.howler.once("end", () => {
@@ -81,7 +93,7 @@ export const usePlayer = defineStore("player", {
       });
     },
 
-    replaceCurrentTrack(id) {
+    replaceCurrentTrack(id, autoPlay = true, progress = 0) {
       getTrackDetail(id).then((res) => {
         getMP3(id).then((res2) => {
           if (res2.data[0].url) {
@@ -92,9 +104,8 @@ export const usePlayer = defineStore("player", {
             } else {
               this.currentIndex = index;
             }
-
             this.currentTrack = res.songs[0];
-            this.playSong(res2.data[0].url);
+            this.playSong(res2.data[0].url, autoPlay, progress);
           } else {
             ElNotification({
               title: "错误",
@@ -130,5 +141,15 @@ export const usePlayer = defineStore("player", {
       }
       this.volume = value;
     },
+  },
+  // 开启数据缓存
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage,
+        paths: ["progress", "vloume", "trackList", "currentIndex"],
+      },
+    ],
   },
 });

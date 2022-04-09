@@ -194,6 +194,7 @@ export default {
         maxWidth: null,
       };
       if (props.size) {
+        console.log(props.size);
         style.width = props.size;
         style.maxWidth = props.size;
       }

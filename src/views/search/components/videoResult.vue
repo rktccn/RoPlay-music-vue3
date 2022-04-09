@@ -2,7 +2,9 @@
   <div class="section block" v-if="videoList.length !== 0">
     <div class="title">
       <h4 class="text-style-title">视频</h4>
-      <span class="text-style-info">查看全部</span>
+      <router-link :to="`/search/${w}/videos`" class="text-style-info"
+        >查看全部</router-link
+      >
     </div>
     <CarouselList :length="videoList.length">
       <li v-for="(item, index) in videoList" :key="index">

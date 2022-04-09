@@ -1,10 +1,17 @@
 <template lang="">
-  <div class="cover-row">
+  <div class="cover-row" :class="{ video: type === 'videos' }">
     <slot></slot>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    type: {
+      // videos / other
+      type: String,
+      default: "other",
+    },
+  },
   name: "CoverRow",
 };
 </script>
@@ -12,6 +19,9 @@ export default {
 .cover-row {
   margin: 0 auto;
   display: grid;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
   grid-template-columns: repeat(5, 1fr);
 
   @media (max-width: $lg) {
@@ -24,6 +34,22 @@ export default {
 
   @media (max-width: $sm) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  &.videos {
+    grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: $lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: $md) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: $sm) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 }
 </style>

@@ -4,10 +4,14 @@
       <TrackList :tracks="resultList"></TrackList>
     </div>
 
-    <div class="playlists" v-if="type !== 'songs'">
-      <CoverRow>
+    <div :class="type" v-if="type !== 'songs'">
+      <CoverRow type="type">
         <li v-for="(item, index) in resultList" :key="index">
-          <PlayListCard :item="item" :type="type.slice(0, -1)"></PlayListCard>
+          <PlayListCard
+            class="item"
+            :item="item"
+            :type="type.slice(0, -1)"
+          ></PlayListCard>
         </li>
       </CoverRow>
     </div>
@@ -115,4 +119,10 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.videos {
+  li {
+    zoom: 0.83333;
+  }
+}
+</style>
