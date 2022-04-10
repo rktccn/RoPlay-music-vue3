@@ -5,23 +5,27 @@
     <TrackList
       class="play-now-track primary"
       :tracks="[tracks[currentIndex]]"
-      v-if="tracks"
+      v-if="tracks.length"
       :canHover="false"
-      :key="currentIndex"
+      :key="currentIndex + tracks.length"
     ></TrackList>
   </div>
 
   <div class="current-list section">
     <h4 class="text-style-title">播放列表</h4>
-    <TrackList :tracks="tracks" v-if="tracks"></TrackList>
-    <p v-if="!tracks">暂无歌曲</p>
+    <TrackList
+      :tracks="tracks"
+      v-if="tracks.length"
+      :key="tracks.length"
+    ></TrackList>
+    <p v-if="!tracks.length">暂无歌曲</p>
   </div>
 </template>
 <script>
 import TrackList from "../components/trackList.vue";
 
 import { usePlayer } from "../store/player";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { getTrackDetail } from "../apis/track";
 
@@ -31,7 +35,7 @@ export default {
     const player = usePlayer();
 
     const data = reactive({
-      tracks: null,
+      tracks: [],
     });
 
     const { trackList, currentIndex } = storeToRefs(player);
@@ -45,6 +49,16 @@ export default {
     };
 
     getTracks();
+
+    watch(
+      () => player.deleteTrackIndex,
+      (index) => {
+        if (index === -1) return;
+        data.tracks.splice(index, 1);
+        player.deleteTrackIndex = -1;
+      }
+    );
+
     return { ...toRefs(data), currentIndex };
   },
   components: { TrackList },

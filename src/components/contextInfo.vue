@@ -47,8 +47,6 @@ export default {
     type: { type: String, required: true }, // playlist/album
   },
   setup(props) {
-    console.log(props.item);
-
     const data = reactive({
       imgUrl: null,
       publishTime: null,

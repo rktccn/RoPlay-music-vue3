@@ -9,13 +9,16 @@ let howler = null;
 export const usePlayer = defineStore("player", {
   state: () => {
     return {
+      // 播放信息
       isPlaying: false,
       progress: 0, // 当前播放进度
       volume: 0.5, // 音量 0-1
 
+      // 歌曲信息
       currentTrack: null,
       trackList: [386538, 528272281],
       currentIndex: 0, // 当前歌曲在列表中的index
+      deleteTrackIndex: -1, // 从播放列表中删除的歌曲index
 
       howler: null,
     };
@@ -44,22 +47,27 @@ export const usePlayer = defineStore("player", {
       );
     },
 
+    // 播放
     songPlay() {
       this.isPlaying = true;
       this.howler.play();
     },
 
+    // 暂停
     songPause() {
       this.isPlaying = false;
       this.howler.pause();
     },
 
     playOrPause() {
+      if (!this.trackList || this.trackList.length === 0) return;
       this.isPlaying = !this.isPlaying;
       this.isPlaying ? this.songPlay() : this.songPause();
     },
 
+    // 上一首
     playPrev() {
+      if (!this.trackList || this.trackList.length === 0) return;
       this.currentIndex === 0
         ? (this.currentIndex = this.trackList.length - 1)
         : this.currentIndex--;
@@ -67,7 +75,9 @@ export const usePlayer = defineStore("player", {
       this.replaceCurrentTrack(this.trackList[this.currentIndex]);
     },
 
+    // 下一首
     playNext() {
+      if (!this.trackList || this.trackList.length === 0) return;
       this.currentIndex === this.trackList.length - 1
         ? (this.currentIndex = 0)
         : this.currentIndex++;
@@ -75,6 +85,7 @@ export const usePlayer = defineStore("player", {
       this.replaceCurrentTrack(this.trackList[this.currentIndex]);
     },
 
+    // 播放指定歌曲
     playSong(source, autoPlay, progress) {
       Howler.unload();
       this.howler = new Howl({
@@ -93,6 +104,7 @@ export const usePlayer = defineStore("player", {
       });
     },
 
+    // 替换当前歌曲
     replaceCurrentTrack(id, autoPlay = true, progress = 0) {
       getTrackDetail(id).then((res) => {
         getMP3(id).then((res2) => {
@@ -135,11 +147,39 @@ export const usePlayer = defineStore("player", {
     },
 
     setVolume(value) {
-      console.log(value);
+      if (value > 1) value = 1;
+      if (value < 0) value = 0;
+
       if (Howler) {
         Howler.volume(value);
       }
       this.volume = value;
+    },
+
+    // 传入id,检查是否在播放列表中
+    checkInTrackList(id) {
+      return this.trackList.indexOf(id) !== -1;
+    },
+
+    // 传入id,从播放列表中移除
+    removeTrack(id) {
+      this.deleteTrackIndex = -1;
+      let index = this.trackList.indexOf(id);
+
+      if (index !== -1) {
+        // 如果删除的是当前歌曲就播放下一首
+        if (index === this.currentIndex) {
+          this.trackList.length === 1 ? "" : this.playNext();
+        }
+        index < this.currentIndex ? this.currentIndex-- : "";
+        this.deleteTrackIndex = index;
+        this.trackList.splice(index, 1);
+
+        if (this.trackList.length === 0) {
+          // 清除音乐
+          Howler.stop();
+        }
+      }
     },
   },
   // 开启数据缓存

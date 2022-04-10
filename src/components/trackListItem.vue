@@ -5,6 +5,7 @@
     ref="refItem"
     :style="setStyle()"
     @dblclick="player.replaceCurrentTrack(id, canPlay)"
+    @click.right="showContextMenu"
   >
     <div class="inner">
       <img
@@ -64,9 +65,10 @@
 import { onBeforeUnmount, onMounted, reactive, ref, toRefs } from "vue";
 import { timeFormat } from "../utils/common.js";
 import { usePlayer } from "../store/player.js";
-import { getMP3, getTrackDetail } from "../apis/track.js";
+import { getMP3 } from "../apis/track.js";
 
 import ArtistFormat from "./artistFormat.vue";
+import createContextMenu from "./contextMenu.js";
 
 export default {
   name: "trackListItem",
@@ -178,6 +180,11 @@ export default {
       }
     });
 
+    // 打开右键菜单
+    const showContextMenu = (e) => {
+      createContextMenu(e, data.id);
+    };
+
     onMounted(() => {
       calcWidth();
       ro.observe(refItem.value);
@@ -187,7 +194,14 @@ export default {
       ro.disconnect(refItem.value);
     });
 
-    return { ...toRefs(data), player, refItem, calcWidth, setStyle };
+    return {
+      ...toRefs(data),
+      player,
+      refItem,
+      calcWidth,
+      setStyle,
+      showContextMenu,
+    };
   },
   components: {
     ArtistFormat,

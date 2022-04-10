@@ -104,7 +104,6 @@ import { usePlayer } from "../store/player";
 
 import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
-import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "../store";
 export default {

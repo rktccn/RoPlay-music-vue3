@@ -75,6 +75,7 @@ $grid-default: calc(var(--view-size) / 10);
     filter: blur(10px);
     opacity: 0.68;
     border-radius: 15px;
+    z-index: 0;
   }
 }
 
