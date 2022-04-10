@@ -69,7 +69,7 @@ export default {
     };
 
     // 获取位置
-    const getpos = () => {
+    const getPos = () => {
       let top = props.mousePosition.clientY;
       let left = props.mousePosition.clientX;
 
@@ -92,7 +92,7 @@ export default {
 
     // 设置菜单位置
     onMounted(() => {
-      getpos();
+      getPos();
       contextMenu.value.style.top = menuTop;
       contextMenu.value.style.left = menuLeft;
       document.onmousedown = handleClick;
@@ -132,6 +132,8 @@ export default {
     li {
       display: flex;
       padding: 4px 0;
+      height: 32px;
+      align-items: center;
       border-radius: $border-radius-default;
 
       span {
