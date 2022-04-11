@@ -31,6 +31,9 @@
           >
             skip_next</span
           >
+          <span class="material-icons-round font-size-24" @click="togglePIP">
+            picture_in_picture_alt
+          </span>
           <span class="gap"></span>
           <span
             class="play material-icons-round font-size-48"
@@ -97,6 +100,14 @@
     <span class="list right-side" v-if="!lyricList"
       ><li class="lyric-item active">没有音乐</li>
     </span>
+    <PipLyric
+      :currentLyric="lyricList[curIndex].content"
+      :nextLyric="lyricList[curIndex + 1]?.content || ''"
+      :color="color || {}"
+      :isPIP="isPIP"
+      v-if="lyricList"
+    ></PipLyric>
+    <!-- <PipLyric></PipLyric> -->
   </div>
 </template>
 <script>
@@ -106,10 +117,12 @@ import { getLyric } from "../apis/track";
 import { initLyric } from "../utils/lyric";
 import { timeFormat } from "../utils/common";
 import analyze from "rgbaster";
+import tinyColor from "tinycolor2";
+import { useStore } from "../store";
 
 import ArtistFormat from "../components/artistFormat.vue";
 import VueSlider from "vue-slider-component";
-import { useStore } from "../store";
+import PipLyric from "../components/pipLyric.vue";
 
 export default {
   name: "LyricPage",
@@ -125,6 +138,7 @@ export default {
         secondary: null,
         fontColor: null,
       },
+      isPIP: false,
     });
     const list = ref(null);
 
@@ -192,12 +206,19 @@ export default {
       if (!player?.currentTrack?.al?.picUrl) return;
       let img = player.currentTrack.al.picUrl + "?param=1000y1000";
       const result = await analyze(img, {
-        ignore: ["rgb(255,255,255)", "rgb(0,0,0)"],
         scale: 0.6,
       });
+
       data.color.main = result[Math.floor(result.length / 4)].color;
       data.color.secondary = result[Math.floor(result.length / 2)].color;
-      data.color.fontColor = result[0].color;
+      // 判断字体颜色与背景色是否相似
+      const color = tinyColor(result[0].color);
+      const mainColor = tinyColor(data.color.main);
+      console.log(Math.abs(color.getLuminance() - mainColor.getLuminance()));
+      if (Math.abs(color.getLuminance() - mainColor.getLuminance()) < 0.2) {
+        color.isDark() ? color.lighten(60) : color.lighten(20);
+      }
+      data.color.fontColor = color.toHexString();
     };
 
     // 设置背景和字体颜色
@@ -215,6 +236,15 @@ export default {
       style.backgroundColor = bgColor;
       style.color = data.color.fontColor;
       return style;
+    };
+
+    // 切换画中画
+    const togglePIP = () => {
+      if (document.pictureInPictureElement) {
+        data.isPIP = false;
+      } else {
+        data.isPIP = true;
+      }
     };
 
     if (player.currentTrack) {
@@ -263,11 +293,13 @@ export default {
       clickLyric,
       setColor,
       timeFormat,
+      togglePIP,
     };
   },
   components: {
     ArtistFormat,
     VueSlider,
+    PipLyric,
   },
 };
 </script>
@@ -292,7 +324,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    backdrop-filter: brightness(0.85);
+    backdrop-filter: brightness(0.9);
   }
 
   .left-side {
