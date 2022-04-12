@@ -3,10 +3,9 @@ import { Howl, Howler } from "howler";
 import { ElNotification } from "element-plus";
 import { getTrackDetail, getMP3 } from "../apis/track";
 import { getPlaylistDetail } from "../apis/playlist";
-
+import { getAlbum } from "../apis/album";
 import { timeFormat } from "../utils/common";
-
-let howler = null;
+import { getArtist } from "../apis/artist";
 
 export const usePlayer = defineStore("player", {
   state: () => {
@@ -209,6 +208,32 @@ export const usePlayer = defineStore("player", {
       let ids = [];
       getPlaylistDetail(id).then((res) => {
         res.playlist.trackIds.map((item) => {
+          ids.push(item.id);
+        });
+        this.trackList = ids;
+        this.currentIndex = 0;
+        this.replaceCurrentTrack(ids[0]);
+      });
+    },
+
+    // 通过id获取专辑所有歌曲并重置播放列表
+    playSongByAlbum(id) {
+      let ids = [];
+      getAlbum(id).then((res) => {
+        res.songs.map((item) => {
+          ids.push(item.id);
+        });
+        this.trackList = ids;
+        this.currentIndex = 0;
+        this.replaceCurrentTrack(ids[0]);
+      });
+    },
+
+    // 通过id获取歌手热门歌曲并重置播放列表
+    playSongByArtist(id) {
+      let ids = [];
+      getArtist(id).then((res) => {
+        res.hotSongs.map((item) => {
           ids.push(item.id);
         });
         this.trackList = ids;

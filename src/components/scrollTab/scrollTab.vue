@@ -31,6 +31,7 @@ export default {
       default: 0,
     },
     active: {
+      // 是否启用
       type: Boolean,
       default: false,
     },

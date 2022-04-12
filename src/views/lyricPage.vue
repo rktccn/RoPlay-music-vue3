@@ -204,7 +204,7 @@
       :nextLyric="lyricList[curIndex + 1]?.content || ''"
       :color="color || {}"
       :isPIP="isPIP ? true : false"
-      v-if="lyricList"
+      v-if="lyricList && isPIP !== -1"
     ></PipLyric>
   </div>
 </template>
@@ -271,7 +271,7 @@ export default {
       }
     };
 
-    // 自动滚动歌词
+    // 更新歌词index值
     const autoScroll = (curTime) => {
       const curIndex = data.curIndex;
       const nextIndex = curIndex + 1;
@@ -325,7 +325,9 @@ export default {
 
       data.color.main = result[Math.floor(result.length / 4)].color;
       data.color.secondary = result[Math.floor(result.length / 2)].color;
-      // 判断字体颜色与背景色是否相似
+
+      // 判断字体颜色与背景色是否相似,明度小于0.2为相似
+      // 如果相似，将字体颜色提亮
       const color = tinyColor(result[0].color);
       const mainColor = tinyColor(data.color.main);
       if (Math.abs(color.getLuminance() - mainColor.getLuminance()) < 0.2) {
@@ -360,16 +362,16 @@ export default {
       }
     };
 
-    // 切换歌词显示
+    // 切换歌词显示 (移动端)
     const toggleLyric = (val) => {
       data.showLyric = val;
       loadingIndex.value = val;
     };
 
+    // 初始化数据
     if (player.currentTrack) {
       getColor();
       getData(player.currentTrack.id);
-      data.isPIP = document.pictureInPictureElement;
     }
 
     // 监听播放进度，设置歌词curIndex
@@ -386,7 +388,7 @@ export default {
       }
     );
 
-    // 监听歌曲改变,重置歌词
+    // 监听歌曲改变,重新获取数据
     watch(
       () => player.currentTrack,
       (val) => {
@@ -396,6 +398,7 @@ export default {
       }
     );
 
+    // 切换到歌词页面时自动滚动到当前歌词(移动端)
     watch(
       () => data.showLyric,
       () => {
@@ -415,9 +418,16 @@ export default {
       // 移动端开启滑动切换
       if (window.innerWidth <= 768) {
         data.active = true;
-        data.showLyric = 0; // 封面页不滚动
+        data.showLyric = 0; // 封面页不滚动歌词
       } else {
         data.showLyric = 1;
+      }
+
+      // 检测是否支持画中画
+      if (document.pictureInPictureEnabled) {
+        data.isPIP = document.pictureInPictureElement;
+      } else {
+        data.isPIP = -1;
       }
     });
 
@@ -507,7 +517,6 @@ export default {
       width: 100%;
       padding-top: 100%;
       border-radius: $border-radius-default * 2;
-      // overflow: hidden;
       line-height: 0;
       background: black;
       @include shadow();
@@ -532,6 +541,7 @@ export default {
 .list {
   height: 0vh;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   padding: 49vh 0;
   padding-left: 4vw;
   font-size: 28px;
@@ -567,6 +577,7 @@ export default {
   }
 }
 
+// 移动端修改封面大小和位置
 @media screen and (max-width: $sm) {
   .lyric-page {
     .left-side {

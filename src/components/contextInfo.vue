@@ -22,7 +22,7 @@
       </div>
       <div class="gap"></div>
       <div class="control">
-        <button class="play primary" @click="player.playSongByPlaylist(id)">
+        <button class="play primary" @click="playSong(id)">
           <span class="material-icons-round">play_arrow</span>
           播放
         </button>
@@ -54,6 +54,7 @@ export default {
       tag: null,
       description: null,
       id: null,
+      playSong: () => {},
     });
     let typeList = ["playlist", "album", "artist"];
 
@@ -63,17 +64,22 @@ export default {
       data.tag = "歌单";
       data.description = props.item.description;
       data.id = props.item.id;
+      data.playSong = player.playSongByPlaylist;
     };
 
     const initAlbum = () => {
       data.publishTime = dateFormat(props.item.publishTime);
       data.tag = "专辑";
       data.description = props.item.description;
+      data.id = props.item.id;
+      data.playSong = player.playSongByAlbum;
     };
 
     const initArtist = () => {
       data.tag = "歌手";
       data.description = props.item.briefDesc;
+      data.id = props.item.id;
+      data.playSong = player.playSongByArtist;
     };
 
     const getImgUrl = () => {

@@ -11,7 +11,7 @@
 import { ref, watch } from "vue";
 const props = defineProps({
   loading: Boolean,
-  active: { type: Boolean, default: false },
+  active: { type: Boolean, default: false }, // 是否启用
 });
 const clientWidth = document.documentElement.clientWidth
   ? document.documentElement.clientWidth

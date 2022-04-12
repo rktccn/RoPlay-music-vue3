@@ -40,15 +40,21 @@ export default {
 
     const { trackList, currentIndex } = storeToRefs(player);
 
-    const getTracks = () => {
-      if (trackList.value.length !== 0) {
-        getTrackDetail(trackList.value.join(",")).then((res) => {
-          data.tracks = res.songs;
+    const getTracks = (val) => {
+      if (val.length !== 0) {
+        getTrackDetail(val).then((res) => {
+          data.tracks = data.tracks.concat(res.songs);
         });
       }
     };
 
-    getTracks();
+    // 每次加载50首歌曲
+    for (let i = 0; i < trackList.value.length; i = i + 50) {
+      let arr = trackList.value.slice(i, i + 50);
+      arr = arr.join(",");
+      console.log(arr);
+      getTracks(arr);
+    }
 
     watch(
       () => player.deleteTrackIndex,

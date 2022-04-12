@@ -7,7 +7,7 @@
     :style="setWidth()"
   >
     <div class="card-inner">
-      <div class="cover" @click="goTo">
+      <div class="cover">
         <div class="cover-inner" :class="{ video: type === 'video' }">
           <div
             class="placeholder"
@@ -18,8 +18,10 @@
             :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
             class="avator"
           />
-          <div class="mask" :style="setStyle()">
-            <span class="material-icons-round"> play_arrow </span>
+          <div class="mask" :style="setStyle()" @click.self="goTo">
+            <span class="material-icons-round" @click.self="playSong(id)">
+              play_arrow
+            </span>
           </div>
           <div class="played-count font-size-12" v-if="playCount">
             <span
@@ -63,6 +65,7 @@
 import { reactive, toRefs } from "vue";
 import { dateFormat } from "../utils/common.js";
 import { useRouter } from "vue-router";
+import { usePlayer } from "../store/player.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
@@ -104,9 +107,11 @@ export default {
       title: null,
       info: null,
       id: null,
+      playSong: () => {},
 
       isDecShow: null,
     });
+    const player = usePlayer();
 
     const setVideo = () => {
       const video = props.item;
@@ -132,6 +137,7 @@ export default {
       data.title = playlist.name;
       data.info = playlist.description;
       data.id = playlist.id;
+      data.playSong = player.playSongByPlaylist;
     };
 
     const setAlbum = () => {
@@ -143,6 +149,7 @@ export default {
       data.artists = album.artists;
       data.title = album.name;
       data.id = album.id;
+      data.playSong = player.playSongByAlbum;
     };
 
     const setArtist = () => {
@@ -151,6 +158,7 @@ export default {
       data.imgUrl = `${artist.picUrl}?param=480y480`;
       data.title = artist.name;
       data.id = artist.id;
+      data.playSong = player.playSongByArtist;
     };
 
     switch (props.type) {
