@@ -8,8 +8,13 @@
     >
       <ScrollTabCol class="item" :loading="loadingIndex === 0" :active="active">
         <div class="left-side">
-          <div class="close material-icons-round font-size-48">expand_more</div>
-          <div class="inner">
+          <div
+            class="close material-icons-round font-size-48"
+            @click="store.showLyric = false"
+          >
+            expand_more
+          </div>
+          <div class="inner" id="lyricPageInner">
             <!-- 歌曲封面 -->
             <div class="cover" @click="toggleLyric">
               <img
@@ -21,71 +26,154 @@
               />
             </div>
 
-            <div class="control">
-              <span
-                class="prev material-icons-round font-size-32"
-                @click="player.playPrev()"
-                >skip_previous</span
-              >
-              <span
-                class="next material-icons-round font-size-32"
-                @click="player.playNext()"
-              >
-                skip_next</span
-              >
-              <span
-                class="material-icons-round font-size-24"
-                @click="togglePIP"
-                v-if="isPIP !== -1"
-              >
-                picture_in_picture_alt
-              </span>
-              <span class="gap"></span>
-              <span
-                class="play material-icons-round font-size-48"
-                @click="player.playOrPause()"
-              >
-                {{ player.isPlaying ? "pause" : "play_arrow" }}</span
-              >
-              <span class="like material-icons-round font-size-24"
-                >favorite_border</span
-              >
-            </div>
-            <div class="info" v-if="player.currentTrack">
-              <span class="title text-truncate">{{
-                player.currentTrack.name
-              }}</span>
-              <em>-</em>
-              <span class="artists"
-                ><ArtistFormat
-                  fontSize="16px"
-                  :artistList="player.currentTrack.ar"
-                  @click="store.showLyric = false"
-                ></ArtistFormat
-              ></span>
-            </div>
+            <!-- 移动端播放控件会传送至body -->
+            <teleport to="body" v-if="active">
+              <transition name="fade" mode="out-in">
+                <div
+                  class="detail"
+                  :style="{ color: color.fontColor }"
+                  v-if="showLyric === 0"
+                >
+                  <div class="control">
+                    <span
+                      class="prev material-icons-round font-size-32"
+                      @click="player.playPrev()"
+                      >skip_previous</span
+                    >
+                    <span
+                      class="next material-icons-round font-size-32"
+                      @click="player.playNext()"
+                    >
+                      skip_next</span
+                    >
+                    <span
+                      class="material-icons-round font-size-24"
+                      @click="togglePIP"
+                      v-if="isPIP !== -1"
+                    >
+                      picture_in_picture_alt
+                    </span>
+                    <span class="gap"></span>
+                    <span
+                      class="play material-icons-round font-size-48"
+                      @click="player.playOrPause()"
+                    >
+                      {{ player.isPlaying ? "pause" : "play_arrow" }}</span
+                    >
+                    <span class="like material-icons-round font-size-24"
+                      >favorite_border</span
+                    >
+                  </div>
+                  <div class="info" v-if="player.currentTrack">
+                    <span class="title text-truncate">{{
+                      player.currentTrack.name
+                    }}</span>
+                    <em>-</em>
+                    <span class="artists"
+                      ><ArtistFormat
+                        fontSize="16px"
+                        :artistList="player.currentTrack.ar"
+                        @click="store.showLyric = false"
+                      ></ArtistFormat
+                    ></span>
+                  </div>
 
-            <div class="progress">
-              <span class="cur-time text-style-info">{{
-                timeFormat(player.progress)
-              }}</span>
-              <VueSlider
-                class="progress-slider"
-                v-model="progress"
-                :min="0"
-                :max="player?.currentTrack?.dt"
-                dotSize="6"
-                height="2px"
-                :dragOnClick="true"
-                :lazy="true"
-                tooltip="hover"
-                :tooltip-formatter="timeFormat"
-                :process-style="{ backgroundColor: color.fontColor }"
-                :dot-style="{ boxShadow: `0px 0px 0px 2px ${color.fontColor}` }"
-              ></VueSlider>
-              <span class="total-time text-style-info">
-                {{ player.getCurrentDuration }}
-              </span>
+                  <div class="progress">
+                    <span class="cur-time text-style-info">{{
+                      timeFormat(player.progress)
+                    }}</span>
+                    <VueSlider
+                      class="progress-slider"
+                      v-model="progress"
+                      :min="0"
+                      :max="player?.currentTrack?.dt"
+                      dotSize="6"
+                      height="2px"
+                      :dragOnClick="true"
+                      :lazy="true"
+                      tooltip="hover"
+                      :tooltip-formatter="timeFormat"
+                      :process-style="{ backgroundColor: color.fontColor }"
+                      :dot-style="{
+                        boxShadow: `0px 0px 0px 2px ${color.fontColor}`,
+                      }"
+                    ></VueSlider>
+                    <span class="total-time text-style-info">
+                      {{ player.getCurrentDuration }}
+                    </span>
+                  </div>
+                </div>
+              </transition>
+            </teleport>
+            <div class="detail" :style="{ color: color.fontColor }" v-else>
+              <div class="control">
+                <span
+                  class="prev material-icons-round font-size-32"
+                  @click="player.playPrev()"
+                  >skip_previous</span
+                >
+                <span
+                  class="next material-icons-round font-size-32"
+                  @click="player.playNext()"
+                >
+                  skip_next</span
+                >
+                <span
+                  class="material-icons-round font-size-24"
+                  @click="togglePIP"
+                  v-if="isPIP !== -1"
+                >
+                  picture_in_picture_alt
+                </span>
+                <span class="gap"></span>
+                <span
+                  class="play material-icons-round font-size-48"
+                  @click="player.playOrPause()"
+                >
+                  {{ player.isPlaying ? "pause" : "play_arrow" }}</span
+                >
+                <span class="like material-icons-round font-size-24"
+                  >favorite_border</span
+                >
+              </div>
+              <div class="info" v-if="player.currentTrack">
+                <span class="title text-truncate">{{
+                  player.currentTrack.name
+                }}</span>
+                <em>-</em>
+                <span class="artists"
+                  ><ArtistFormat
+                    fontSize="16px"
+                    :artistList="player.currentTrack.ar"
+                    @click="store.showLyric = false"
+                  ></ArtistFormat
+                ></span>
+              </div>
+
+              <div class="progress">
+                <span class="cur-time text-style-info">{{
+                  timeFormat(player.progress)
+                }}</span>
+                <VueSlider
+                  class="progress-slider"
+                  v-model="progress"
+                  :min="0"
+                  :max="player?.currentTrack?.dt"
+                  dotSize="6"
+                  height="2px"
+                  :dragOnClick="true"
+                  :lazy="true"
+                  tooltip="hover"
+                  :tooltip-formatter="timeFormat"
+                  :process-style="{ backgroundColor: color.fontColor }"
+                  :dot-style="{
+                    boxShadow: `0px 0px 0px 2px ${color.fontColor}`,
+                  }"
+                ></VueSlider>
+                <span class="total-time text-style-info">
+                  {{ player.getCurrentDuration }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -115,7 +203,7 @@
       :currentLyric="lyricList[curIndex].content"
       :nextLyric="lyricList[curIndex + 1]?.content || ''"
       :color="color || {}"
-      :isPIP="isPIP || false"
+      :isPIP="isPIP ? true : false"
       v-if="lyricList"
     ></PipLyric>
   </div>
@@ -240,7 +328,6 @@ export default {
       // 判断字体颜色与背景色是否相似
       const color = tinyColor(result[0].color);
       const mainColor = tinyColor(data.color.main);
-      console.log(Math.abs(color.getLuminance() - mainColor.getLuminance()));
       if (Math.abs(color.getLuminance() - mainColor.getLuminance()) < 0.2) {
         color.isDark() ? color.lighten(60) : color.lighten(20);
       }
@@ -275,7 +362,6 @@ export default {
 
     // 切换歌词显示
     const toggleLyric = (val) => {
-      console.log(val);
       data.showLyric = val;
       loadingIndex.value = val;
     };
@@ -284,7 +370,6 @@ export default {
       getColor();
       getData(player.currentTrack.id);
       data.isPIP = document.pictureInPictureElement;
-      if (data.isPIP === null) data.isPIP = -1;
     }
 
     // 监听播放进度，设置歌词curIndex
@@ -371,7 +456,7 @@ export default {
   background: var(--background-color-secondary);
   z-index: 30;
 
-  transition: background $transition-time-default ease;
+  transition: all $transition-time-default ease;
 
   &::before {
     content: "";
@@ -437,50 +522,6 @@ export default {
         border-radius: $border-radius-default * 2;
       }
     }
-
-    .control {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      padding: 4px 5%;
-      padding-top: 20px;
-
-      > * {
-        margin: 0 8px;
-      }
-      .gap {
-        flex: 1 1 0;
-      }
-    }
-
-    .info {
-      display: flex;
-      width: 100%;
-
-      .title {
-        max-width: 45%;
-        overflow: hidden;
-      }
-
-      .artists {
-        max-width: 50%;
-      }
-
-      em {
-        margin: 0 8px;
-      }
-    }
-
-    .progress {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      margin: 8px 0;
-      .progress-slider {
-        flex: 1 1 0;
-        margin: 0 8px;
-      }
-    }
   }
   .right-side {
     flex: 1 1 0;
@@ -533,9 +574,74 @@ export default {
         @include calc-width(5);
       }
 
-      .control {
-        margin-top: 10vh;
+      .cover {
+        margin-bottom: 25vh;
       }
+    }
+  }
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+
+  .control {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 4px 5%;
+    padding-top: 20px;
+
+    > * {
+      margin: 0 8px;
+    }
+    .gap {
+      flex: 1 1 0;
+    }
+  }
+
+  .info {
+    display: flex;
+    width: 100%;
+
+    .title {
+      max-width: 45%;
+      overflow: hidden;
+    }
+
+    .artists {
+      max-width: 50%;
+    }
+
+    em {
+      margin: 0 8px;
+    }
+  }
+
+  .progress {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 8px 0;
+    .progress-slider {
+      flex: 1 1 0;
+      margin: 0 8px;
+    }
+  }
+}
+
+@media screen and(max-width:$sm) {
+  .detail {
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    @include calc-width(5);
+    z-index: 40;
+
+    .control {
+      padding: 0;
+      order: 3;
     }
   }
 }

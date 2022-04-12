@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { Howl, Howler } from "howler";
 import { ElNotification } from "element-plus";
 import { getTrackDetail, getMP3 } from "../apis/track";
+import { getPlaylistDetail } from "../apis/playlist";
+
 import { timeFormat } from "../utils/common";
 
 let howler = null;
@@ -125,6 +127,8 @@ export const usePlayer = defineStore("player", {
               position: "bottom-right",
               type: "error",
             });
+
+            this.playNext();
             return;
           }
         });
@@ -199,6 +203,19 @@ export const usePlayer = defineStore("player", {
         type: "success",
       });
     },
+
+    // 通过id获取歌单所有歌曲并重置播放列表
+    playSongByPlaylist(id) {
+      let ids = [];
+      getPlaylistDetail(id).then((res) => {
+        res.playlist.trackIds.map((item) => {
+          ids.push(item.id);
+        });
+        this.trackList = ids;
+        this.currentIndex = 0;
+        this.replaceCurrentTrack(ids[0]);
+      });
+    },
   },
   // 开启数据缓存
   persist: {
@@ -206,7 +223,7 @@ export const usePlayer = defineStore("player", {
     strategies: [
       {
         storage: localStorage,
-        paths: ["progress", "vloume", "trackList", "currentIndex"],
+        paths: ["progress", "volume", "trackList", "currentIndex"],
       },
     ],
   },

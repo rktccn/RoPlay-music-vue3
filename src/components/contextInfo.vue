@@ -22,7 +22,7 @@
       </div>
       <div class="gap"></div>
       <div class="control">
-        <button class="play primary">
+        <button class="play primary" @click="player.playSongByPlaylist(id)">
           <span class="material-icons-round">play_arrow</span>
           播放
         </button>
@@ -40,6 +40,7 @@ import { dateFormat } from "../utils/common";
 
 import createTextModal from "../components/textModal.js";
 import ArtistFormat from "./artistFormat.vue";
+import { usePlayer } from "../store/player";
 export default {
   name: "contextInfo",
   props: {
@@ -52,12 +53,16 @@ export default {
       publishTime: null,
       tag: null,
       description: null,
+      id: null,
     });
     let typeList = ["playlist", "album", "artist"];
+
+    const player = usePlayer();
 
     const initPlaylist = () => {
       data.tag = "歌单";
       data.description = props.item.description;
+      data.id = props.item.id;
     };
 
     const initAlbum = () => {
@@ -99,7 +104,7 @@ export default {
       createTextModal(`${data.tag}介绍`, data.description);
     };
 
-    return { ...toRefs(data), getImgUrl, showDescribe };
+    return { ...toRefs(data), player, getImgUrl, showDescribe };
   },
   components: {
     ArtistFormat,
