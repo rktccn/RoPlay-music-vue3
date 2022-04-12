@@ -9,6 +9,7 @@
           }?param=48y48`"
           alt=""
           class="cover"
+          @click="store.showLyric = true"
         />
         <div class="music-info text-truncate" v-if="currentTrack">
           <div class="title text-truncate">{{ currentTrack.name }}</div>

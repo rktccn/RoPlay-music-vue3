@@ -24,7 +24,7 @@ export default {
     nextLyric: { type: String, required: true },
     color: { type: Object, required: true },
     // 开启画中画
-    isPIP: { type: Boolean, default: false },
+    isPIP: { type: Boolean, required: true },
   },
   setup(props) {
     const lyric = ref(null);

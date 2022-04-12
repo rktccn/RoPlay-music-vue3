@@ -18,8 +18,16 @@ const store = useStore();
 const player = usePlayer();
 player.init();
 
+const clientWidth = document.documentElement.clientWidth
+  ? document.documentElement.clientWidth
+  : document.body.clientWidth;
+
+const isSm = (width) => {
+  width <= 768 ? true : false;
+};
+
 const showHeader = () => {
-  if (route.meta.hideHeader && window.innerWidth <= 768) {
+  if (route.meta.hideHeader && isSm(clientWidth)) {
     return false;
   }
   return true;
@@ -56,6 +64,7 @@ const showHeader = () => {
   <transition name="slide-up" mode="out-in">
     <LyricPage v-if="store.showLyric"></LyricPage>
   </transition>
+
   <teleport to="body">
     <transition name="fade" mode="out-in">
       <div

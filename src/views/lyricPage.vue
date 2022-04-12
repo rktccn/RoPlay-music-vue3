@@ -1,117 +1,135 @@
 <template lang="">
   <div class="lyric-page" :style="setColor()">
-    <div class="left-side">
-      <div
-        class="close material-icons-round font-size-48"
-        @click="store.showLyric = false"
+    <ScrollTab
+      :tabIndex="showLyric"
+      :active="active"
+      @selectChange="toggleLyric"
+      class="scroll"
+    >
+      <ScrollTabCol class="item" :loading="loadingIndex === 0" :active="active">
+        <div class="left-side">
+          <div class="close material-icons-round font-size-48">expand_more</div>
+          <div class="inner">
+            <!-- 歌曲封面 -->
+            <div class="cover" @click="toggleLyric">
+              <img
+                :src="`${
+                  player?.currentTrack?.al?.picUrl ||
+                  'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
+                }?param=1024y1024`"
+                alt=""
+              />
+            </div>
+
+            <div class="control">
+              <span
+                class="prev material-icons-round font-size-32"
+                @click="player.playPrev()"
+                >skip_previous</span
+              >
+              <span
+                class="next material-icons-round font-size-32"
+                @click="player.playNext()"
+              >
+                skip_next</span
+              >
+              <span
+                class="material-icons-round font-size-24"
+                @click="togglePIP"
+                v-if="isPIP !== -1"
+              >
+                picture_in_picture_alt
+              </span>
+              <span class="gap"></span>
+              <span
+                class="play material-icons-round font-size-48"
+                @click="player.playOrPause()"
+              >
+                {{ player.isPlaying ? "pause" : "play_arrow" }}</span
+              >
+              <span class="like material-icons-round font-size-24"
+                >favorite_border</span
+              >
+            </div>
+            <div class="info" v-if="player.currentTrack">
+              <span class="title text-truncate">{{
+                player.currentTrack.name
+              }}</span>
+              <em>-</em>
+              <span class="artists"
+                ><ArtistFormat
+                  fontSize="16px"
+                  :artistList="player.currentTrack.ar"
+                  @click="store.showLyric = false"
+                ></ArtistFormat
+              ></span>
+            </div>
+
+            <div class="progress">
+              <span class="cur-time text-style-info">{{
+                timeFormat(player.progress)
+              }}</span>
+              <VueSlider
+                class="progress-slider"
+                v-model="progress"
+                :min="0"
+                :max="player?.currentTrack?.dt"
+                dotSize="6"
+                height="2px"
+                :dragOnClick="true"
+                :lazy="true"
+                tooltip="hover"
+                :tooltip-formatter="timeFormat"
+                :process-style="{ backgroundColor: color.fontColor }"
+                :dot-style="{ boxShadow: `0px 0px 0px 2px ${color.fontColor}` }"
+              ></VueSlider>
+              <span class="total-time text-style-info">
+                {{ player.getCurrentDuration }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </ScrollTabCol>
+
+      <ScrollTabCol class="item" :loading="loadingIndex === 1" :active="active">
+        <div></div>
+        <ul class="list right-side" v-if="lyricList" ref="list">
+          <li
+            v-for="(lyric, index) in lyricList"
+            :key="index"
+            :class="{ active: curIndex === index }"
+            class="lyric-item"
+            @click="clickLyric(index)"
+          >
+            <span>
+              {{ lyric.content }}
+            </span>
+          </li>
+        </ul>
+        <span class="list right-side" v-if="!lyricList"
+          ><li class="lyric-item active">没有音乐</li>
+        </span></ScrollTabCol
       >
-        expand_more
-      </div>
-      <div class="inner">
-        <!-- 歌曲封面 -->
-        <div class="cover">
-          <img
-            :src="`${
-              player?.currentTrack?.al?.picUrl ||
-              'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
-            }?param=1024y1024`"
-            alt=""
-          />
-        </div>
-
-        <div class="control">
-          <span
-            class="prev material-icons-round font-size-32"
-            @click="player.playPrev()"
-            >skip_previous</span
-          >
-          <span
-            class="next material-icons-round font-size-32"
-            @click="player.playNext()"
-          >
-            skip_next</span
-          >
-          <span class="material-icons-round font-size-24" @click="togglePIP">
-            picture_in_picture_alt
-          </span>
-          <span class="gap"></span>
-          <span
-            class="play material-icons-round font-size-48"
-            @click="player.playOrPause()"
-          >
-            {{ player.isPlaying ? "pause" : "play_arrow" }}</span
-          >
-          <span class="like material-icons-round font-size-24"
-            >favorite_border</span
-          >
-        </div>
-        <div class="info" v-if="player.currentTrack">
-          <span class="title text-truncate">{{
-            player.currentTrack.name
-          }}</span>
-          <em>-</em>
-          <span class="artists"
-            ><ArtistFormat
-              fontSize="16px"
-              :artistList="player.currentTrack.ar"
-              @click="store.showLyric = false"
-            ></ArtistFormat
-          ></span>
-        </div>
-
-        <div class="progress">
-          <span class="cur-time text-style-info">{{
-            timeFormat(player.progress)
-          }}</span>
-          <VueSlider
-            class="progress-slider"
-            v-model="progress"
-            :min="0"
-            :max="player?.currentTrack?.dt"
-            dotSize="6"
-            height="2px"
-            :dragOnClick="true"
-            :lazy="true"
-            tooltip="hover"
-            :tooltip-formatter="timeFormat"
-            :process-style="{ backgroundColor: color.fontColor }"
-            :dot-style="{ boxShadow: `0px 0px 0px 2px ${color.fontColor}` }"
-          ></VueSlider>
-          <span class="total-time text-style-info">
-            {{ player.getCurrentDuration }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <ul class="list right-side" v-if="lyricList" ref="list">
-      <li
-        v-for="(lyric, index) in lyricList"
-        :key="index"
-        :class="{ active: curIndex === index }"
-        class="lyric-item"
-        @click="clickLyric(index)"
-      >
-        <span>
-          {{ lyric.content }}
-        </span>
-      </li>
-    </ul>
-    <span class="list right-side" v-if="!lyricList"
-      ><li class="lyric-item active">没有音乐</li>
-    </span>
+    </ScrollTab>
     <PipLyric
       :currentLyric="lyricList[curIndex].content"
       :nextLyric="lyricList[curIndex + 1]?.content || ''"
       :color="color || {}"
-      :isPIP="isPIP"
+      :isPIP="isPIP || false"
       v-if="lyricList"
     ></PipLyric>
-    <!-- <PipLyric></PipLyric> -->
   </div>
 </template>
 <script>
-import { reactive, toRefs, watch, ref, computed, nextTick } from "vue";
+import {
+  reactive,
+  toRefs,
+  watch,
+  ref,
+  computed,
+  nextTick,
+  onMounted,
+} from "vue";
 import { usePlayer } from "../store/player";
 import { getLyric } from "../apis/track";
 import { initLyric } from "../utils/lyric";
@@ -123,6 +141,8 @@ import { useStore } from "../store";
 import ArtistFormat from "../components/artistFormat.vue";
 import VueSlider from "vue-slider-component";
 import PipLyric from "../components/pipLyric.vue";
+import ScrollTabCol from "../components/scrollTab/scrollTabCol.vue";
+import ScrollTab from "../components/scrollTab/scrollTab.vue";
 
 export default {
   name: "LyricPage",
@@ -138,9 +158,13 @@ export default {
         secondary: null,
         fontColor: null,
       },
-      isPIP: false,
+      isPIP: -1, // -1不支持,0关闭,1开启
+      // 切换歌词显示  1 显示
+      showLyric: 0,
+      active: false, // 是否启用滑动切换
     });
     const list = ref(null);
+    let loadingIndex = ref(0); // 1 加载歌词
 
     const progress = computed({
       get: () => player.getProgress,
@@ -183,6 +207,8 @@ export default {
 
     // 设置滚动样式
     const setScroll = () => {
+      if (!data.showLyric) return; // 封面页不滚动
+
       if (!list.value || list.value?.children?.length === 0) return;
 
       let el = list.value.children[data.curIndex];
@@ -241,15 +267,24 @@ export default {
     // 切换画中画
     const togglePIP = () => {
       if (document.pictureInPictureElement) {
-        data.isPIP = false;
+        data.isPIP = 0;
       } else {
-        data.isPIP = true;
+        data.isPIP = 1;
       }
+    };
+
+    // 切换歌词显示
+    const toggleLyric = (val) => {
+      console.log(val);
+      data.showLyric = val;
+      loadingIndex.value = val;
     };
 
     if (player.currentTrack) {
       getColor();
       getData(player.currentTrack.id);
+      data.isPIP = document.pictureInPictureElement;
+      if (data.isPIP === null) data.isPIP = -1;
     }
 
     // 监听播放进度，设置歌词curIndex
@@ -276,6 +311,13 @@ export default {
       }
     );
 
+    watch(
+      () => data.showLyric,
+      () => {
+        setScroll();
+      }
+    );
+
     // 监听歌词滚动,设置滚动样式
     watch(
       () => data.curIndex,
@@ -284,22 +326,36 @@ export default {
       }
     );
 
+    onMounted(() => {
+      // 移动端开启滑动切换
+      if (window.innerWidth <= 768) {
+        data.active = true;
+        data.showLyric = 0; // 封面页不滚动
+      } else {
+        data.showLyric = 1;
+      }
+    });
+
     return {
       ...toRefs(data),
       list,
       player,
       store,
       progress,
+      loadingIndex,
       clickLyric,
       setColor,
       timeFormat,
       togglePIP,
+      toggleLyric,
     };
   },
   components: {
     ArtistFormat,
     VueSlider,
     PipLyric,
+    ScrollTabCol,
+    ScrollTab,
   },
 };
 </script>
@@ -327,12 +383,17 @@ export default {
     backdrop-filter: brightness(0.9);
   }
 
+  .scroll {
+    z-index: 2;
+  }
+
   .left-side {
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
     z-index: 1;
     .inner {
       @include calc-width(3);
@@ -371,6 +432,7 @@ export default {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+
         width: 100%;
         border-radius: $border-radius-default * 2;
       }
@@ -430,6 +492,7 @@ export default {
   height: 0vh;
   overflow-y: scroll;
   padding: 49vh 0;
+  padding-left: 4vw;
   font-size: 28px;
   line-height: 1.5;
   // 隐藏滚动条
@@ -443,7 +506,7 @@ export default {
     border-radius: $border-radius-default;
     transition: all $transition-time-default
       cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    font-weight: 600;
+    font-weight: bold;
     opacity: 0.48;
     cursor: pointer;
 
@@ -454,6 +517,26 @@ export default {
   .active {
     font-size: 34px;
     opacity: 0.98;
+  }
+}
+
+.hide {
+  @media screen and (max-width: $sm) {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: $sm) {
+  .lyric-page {
+    .left-side {
+      .inner {
+        @include calc-width(5);
+      }
+
+      .control {
+        margin-top: 10vh;
+      }
+    }
   }
 }
 </style>

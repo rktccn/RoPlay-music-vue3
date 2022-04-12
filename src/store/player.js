@@ -176,10 +176,28 @@ export const usePlayer = defineStore("player", {
         this.trackList.splice(index, 1);
 
         if (this.trackList.length === 0) {
-          // 清除音乐
           Howler.stop();
         }
+
+        ElNotification({
+          title: "删除成功",
+          message: "已从播放列表中删除",
+          position: "bottom-right",
+          type: "success",
+        });
       }
+    },
+
+    // 传入id,添加到播放列表
+    addTrack(id) {
+      if (this.checkInTrackList(id)) return;
+      this.trackList.push(id);
+      ElNotification({
+        title: "添加成功",
+        message: "已添加到播放列表",
+        position: "bottom-right",
+        type: "success",
+      });
     },
   },
   // 开启数据缓存
