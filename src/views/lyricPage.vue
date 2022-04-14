@@ -296,9 +296,7 @@ export default {
     // 设置滚动样式
     const setScroll = () => {
       if (!data.showLyric) return; // 封面页不滚动
-
       if (!list.value || list.value?.children?.length === 0) return;
-
       let el = list.value.children[data.curIndex];
       if (!el) return;
       el.scrollIntoView({

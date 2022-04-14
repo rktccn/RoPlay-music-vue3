@@ -99,7 +99,7 @@
   </div>
 </template>
 <script>
-import { computed, reactive, toRefs } from "vue";
+import { computed, reactive, toRefs, watch } from "vue";
 import { timeFormat } from "../utils/common";
 import { usePlayer } from "../store/player";
 
@@ -119,6 +119,7 @@ export default {
       isLiked: false,
       canPlay: 0,
       trackUrl: null,
+      rate: 0, // 播放进度 0-100
     });
 
     const player = usePlayer();
@@ -162,6 +163,25 @@ export default {
       route.path === "/currentList" ? goBack() : router.push(`/currentList`);
     };
 
+    // 设置移动端进度条
+    const setProgressStyle = () => {
+      let rate = player.progress / player.currentTrack?.dt;
+      if (rate < 0) {
+        rate = 0;
+      } else if (rate > 1) {
+        rate = 1;
+      }
+      rate = rate * 100;
+
+      let style = {
+        background: null,
+      };
+
+      let color = `linear-gradient(90deg ,rgba(23, 125, 176) ${rate}%, #fff ${rate}%)`;
+      style.background = color;
+      return style;
+    };
+
     return {
       ...toRefs(data),
       player,
@@ -172,6 +192,7 @@ export default {
       timeFormat,
       setVolumeIcon,
       goCurrentList,
+      setProgressStyle,
     };
   },
   components: { ArtistFormat, VueSlider },
