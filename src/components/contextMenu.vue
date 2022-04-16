@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="context-menu" ref="contextMenu">
+  <div class="context-menu" ref="contextMenu" id="contextMenu">
     <div class="inner block">
       <ul>
         <li @click="playSong">
@@ -85,7 +85,7 @@ export default {
     // 点击外部事件关闭
     const handleClick = (e) => {
       if (!contextMenu.value.contains(e.target)) {
-        document.onmousedown = null;
+        document.removeEventListener("mousedown", handleClick);
         props.onClose();
       }
     };
@@ -95,12 +95,12 @@ export default {
       getPos();
       contextMenu.value.style.top = menuTop;
       contextMenu.value.style.left = menuLeft;
-      document.onmousedown = handleClick;
+      document.addEventListener("mousedown", handleClick);
       checkIsInList();
     });
 
     onUnmounted(() => {
-      document.onmousedown = null;
+      document.removeEventListener("mousedown", handleClick);
     });
 
     return {

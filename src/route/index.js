@@ -150,6 +150,13 @@ const routes = [
     path: "/room",
     redirect: "/",
   },
+
+  // login
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/login/login.vue"),
+  },
 ];
 
 const router = createRouter({

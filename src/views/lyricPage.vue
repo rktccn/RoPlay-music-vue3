@@ -517,7 +517,24 @@ export default {
       border-radius: $border-radius-default * 2;
       line-height: 0;
       background: black;
-      @include shadow();
+      
+      &::before {
+        content: "";
+        background: inherit;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0px 10px 40px 0px rgb(76 70 124 / 50%);
+        display: block;
+        position: absolute;
+        top: 10%;
+        // right: 8%;
+        left: 8%;
+        transform: scale(0.9);
+        filter: blur(10px);
+        opacity: 0.68;
+        border-radius: 15px;
+        z-index: 0;
+      }
 
       img {
         position: absolute;

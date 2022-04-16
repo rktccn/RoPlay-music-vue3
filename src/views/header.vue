@@ -71,7 +71,11 @@ watch(
         />
       </div>
     </div>
-    <div class="right">{{ keyword }}</div>
+    <div class="right">
+      <router-link to="/login" class="material-icons-round font-size-36">
+        account_circle</router-link
+      >
+    </div>
   </div>
 </template>
 
@@ -150,8 +154,10 @@ watch(
   }
 
   .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     flex: 2;
-    text-align: right;
   }
 }
 </style>

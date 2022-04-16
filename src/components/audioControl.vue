@@ -51,13 +51,13 @@
         >
           skip_next
         </li>
-        <li class="volume">
+        <li class="volume" ref="volumeBar">
           <span
             class="material-icons-round font-size-20"
-            @click="player.setVolume(0)"
+            @click="showVolume = !showVolume"
             >{{ setVolumeIcon() }}</span
           >
-          <div class="volume-bar">
+          <div class="volume-bar" v-show="showVolume">
             <vue-slider
               v-model="volume"
               :min="0"
@@ -65,6 +65,8 @@
               tooltip="none"
               :interval="0.1"
               dotSize="6"
+              :height="64"
+              direction="btt"
             ></vue-slider>
           </div>
         </li>
@@ -99,7 +101,7 @@
   </div>
 </template>
 <script>
-import { computed, reactive, toRefs, watch } from "vue";
+import { computed, onMounted, reactive, ref, toRefs, watch } from "vue";
 import { timeFormat } from "../utils/common";
 import { usePlayer } from "../store/player";
 
@@ -120,6 +122,7 @@ export default {
       canPlay: 0,
       trackUrl: null,
       rate: 0, // 播放进度 0-100
+      showVolume: false,
     });
 
     const player = usePlayer();
@@ -127,6 +130,7 @@ export default {
     const currentTrack = computed(() => player.currentTrack);
     const router = useRouter();
     const route = useRoute();
+    const volumeBar = ref(null);
 
     const progress = computed({
       get: () => player.getProgress,
@@ -154,6 +158,14 @@ export default {
         return "volume_down";
       }
     };
+
+    // 点击外部关闭音量条
+    const handleClick = (e) => {
+      if (!volumeBar.value.contains(e.target)) {
+        data.showVolume = false;
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
 
     // 跳转到播放列表
     const goCurrentList = () => {
@@ -189,6 +201,7 @@ export default {
       currentTrack,
       progress,
       volume,
+      volumeBar,
       timeFormat,
       setVolumeIcon,
       goCurrentList,
@@ -262,9 +275,10 @@ export default {
           left: 50%;
           bottom: 24px;
           transform: translateX(-50%);
-          width: 60px;
-
-          // background-color: pink;
+          padding: 16px 8px;
+          border-radius: $border-radius-default;
+          background-color: var(--background-color-primary);
+          @include shadow();
         }
       }
       .play-or-pause {

@@ -1,3 +1,5 @@
+import { nextTick, onMounted } from "vue";
+
 /**
  * 日期格式化
  * @param Number time
@@ -53,25 +55,3 @@ export function isScrollBottom() {
     return false;
   }
 }
-
-// const loadMore = async () => {
-//   if (loading || data.tracks === null) return;
-//   if (
-//     trackList.value.getBoundingClientRect().bottom <= document.body.clientHeight
-//   ) {
-//     loading = true;
-//     data.offset++;
-//     await getPlaylistTracks({ id, offset: ++offset }).then((res) => {
-//       if (offset >= data.maxPage) {
-//         data.tracks.push(...res.songs.splice(-overTracks));
-//         data.hasMore = false;
-//         document
-//           .getElementsByClassName("el-main")[0]
-//           .removeEventListener("scroll", loadMore);
-//         return;
-//       }
-//       data.tracks.push(...res.songs);
-//       loading = false;
-//     });
-//   }
-// };

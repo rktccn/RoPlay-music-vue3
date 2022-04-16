@@ -88,6 +88,14 @@ input::-moz-placeholder {
   color: #ccc;
 }
 
+// 下边两行是去掉input 输入框右边的上下箭头按钮
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
 input[type="submit"],
 input[type="button"] {
   cursor: pointer;
