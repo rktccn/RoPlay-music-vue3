@@ -22,7 +22,7 @@ $transition-time-default: 0.3s;
   --view-size: calc((100vw - 220px) - (5vw + 20px) * 2);
 
   @media screen and (max-width: $sm) {
-    --view-size: calc(100vw - (20px) * 2);
+    --view-size: calc(100vw - (20px) * 2 - 6px);
   }
 }
 

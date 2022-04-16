@@ -60,6 +60,11 @@
           <span class="material-icons-round icon"> qr_code </span>二维码登陆
         </div>
       </li>
+      <li class="item block">
+        <div class="inner">
+          <span class="material-icons-round icon"> person </span>搜索用户名
+        </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -124,11 +129,9 @@ export default {
   align-items: center;
   justify-content: center;
   margin-bottom: 36px;
-  margin-top: 36px;
   .name {
     font-size: 2.75rem;
     font-weight: bolder;
-    white-space: pre-line;
   }
 
   .gap {
@@ -157,7 +160,7 @@ export default {
 
   .item {
     position: relative;
-    @include calc-width(1.9);
+    @include calc-width(1.4);
     transition: all $transition-time-default;
 
     .inner {
@@ -235,7 +238,6 @@ export default {
   margin-top: 32px;
   height: 36px;
   border-radius: 50px;
-  padding: 12px 18px;
   transition: all $transition-time-default;
   cursor: pointer;
 
@@ -282,6 +284,35 @@ export default {
   }
 }
 
+@media screen and(max-width:$lg) {
+  .login {
+    @include calc-width(9);
+  }
+
+  .logo {
+    .neteast {
+      @include calc-width(2);
+    }
+  }
+
+  .login-mode {
+    .item {
+      @include calc-width(2.1);
+
+      .inner {
+        font-size: 12px;
+        .icon {
+          font-size: 3.25rem;
+        }
+      }
+    }
+  }
+
+  .form {
+    width: 70%;
+  }
+}
+
 @media screen and(max-width:$md) {
   .login {
     @include calc-width(9);
@@ -295,7 +326,7 @@ export default {
 
   .login-mode {
     .item {
-      @include calc-width(2.9);
+      @include calc-width(2.1);
 
       .inner {
         font-size: 12px;
@@ -332,7 +363,7 @@ export default {
 
   .login-mode {
     .item {
-      @include calc-width(1.5);
+      @include calc-width(1.15);
 
       .inner {
         font-size: 12px;
