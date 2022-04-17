@@ -5,11 +5,13 @@ import Cookie from "js-cookie";
  * 手机登录
  * - phone: 手机号码
  * - password: 密码
+ * - captcha: 验证码,使用 /captcha/sent接口传入手机号获取验证码,调用此接口传入验证码,可使用验证码登录,传入后 password 参数将失效
  * - countrycode: 国家码，用于国外手机号登录，例如美国传入：1
  * - md5_password: md5加密后的密码,传入后 password 将失效
  * @param {Object} params
  * @param {string} params.phone
  * @param {string} params.password
+ * @param {string=} params.captcha
  * @param {string=} params.countrycode
  * @param {string=} params.md5_password
  */
@@ -23,6 +25,44 @@ export function loginWithPhone(params) {
     },
   }).then((res) => {
     console.log(res);
+    return res;
+  });
+}
+
+/**
+ * 发送验证码
+ * 说明 : 调用此接口 ,传入手机号码, 可发送验证码
+ * - phone: 手机号码
+ * - countrycode: 国家码，用于国外手机号登录，例如美国传入：1
+ * @param {Object} params
+ * @param {string} params.phone
+ * @param {string=} params.countrycode
+ */
+export function sendCaptcha(params) {
+  return req({
+    method: "post",
+    url: "/captcha/sent",
+    params,
+  }).then((res) => {
+    return res;
+  });
+}
+
+/**
+ * 验证验证码
+ * 说明 : 调用此接口 ,传入手机号码和验证码, 可校验验证码是否正确
+ * - phone: 手机号码
+ * - captcha: 验证码
+ * @param {Object} params
+ * @param {string} params.phone
+ * @param {string=} params.captcha
+ */
+export function verifyCaptcha(params) {
+  return req({
+    method: "post",
+    url: "/captcha/verify",
+    params,
+  }).then((res) => {
     return res;
   });
 }
@@ -74,15 +114,16 @@ export function loginQrCodeKey() {
  * @param {string=} params.qrimg 传入后会额外返回二维码图片base64编码
  */
 export function loginQrCodeCreate(params) {
-  return (req.get("/login/qr/create"),
-  {
-    params: {
-      ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
-    },
-  }).then((res) => {
-    return res;
-  });
+  return req
+    .get("/login/qr/create", {
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
+    })
+    .then((res) => {
+      return res;
+    });
 }
 
 /**

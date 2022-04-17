@@ -12,50 +12,91 @@
     </div>
 
     <!-- 验证码 -->
-    <div class="form phone">
-      <input
-        type="tel"
-        name="phone"
-        id="phone"
-        autocomplete="off"
-        placeholder="请输入手机号"
-      />
-      <div class="captcha">
+    <div class="form">
+      <form class="phone" v-if="logMode === 'phone'">
         <input
-          type="number"
-          name="captcha"
-          id=""
+          type="tel"
+          name="phone"
+          id="phone"
           autocomplete="off"
-          placeholder="请输入验证码"
+          placeholder="请输入手机号"
         />
-        <span
-          class="send-sms primary"
-          :class="isSending ? 'container-primary' : 'primary'"
-          @click="sendSms"
-          >发送验证码</span
-        >
+        <div class="captcha">
+          <input
+            type="number"
+            name="captcha"
+            id=""
+            autocomplete="off"
+            placeholder="请输入验证码"
+          />
+          <span
+            class="send-sms primary"
+            :class="isSending ? 'container-primary' : 'primary'"
+            @click="sendSms"
+            >发送验证码</span
+          >
+        </div>
+      </form>
+
+      <!-- 密码登陆 -->
+      <form class="password-form" v-if="logMode === 'password'">
+        <input
+          type="text"
+          name="account"
+          id="account"
+          autocomplete="off"
+          placeholder="请输入手机号或邮箱"
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          autocomplete="off"
+          placeholder="请输入密码"
+        />
+      </form>
+
+      <!-- 二维码登陆 -->
+      <div class="qrcode" v-if="logMode === 'qr'">
+        <div class="qrcode-container block" v-loading="qrPic === null">
+          <img :src="qrPic" alt="" />
+        </div>
+        <div class="qrcode-text">
+          <span class="material-icons-round icon"> qrcode </span>
+          使用手机扫描二维码登陆
+        </div>
       </div>
 
       <div class="login-button primary">
         <span class="material-icons-round icon"> login </span>
         登陆
       </div>
-
       <div class="reg-button block">创建账户</div>
     </div>
-
     <ul class="login-mode">
-      <li class="item block" :class="{ active: logMode === 'phone' }">
+      <li
+        class="item block"
+        :class="{ active: logMode === 'phone' }"
+        @click="logMode = 'phone'"
+      >
         <div class="inner">
           <span class="material-icons-round icon">textsms </span>验证码登陆
         </div>
       </li>
-      <li class="item block">
+      <li
+        class="item block"
+        :class="{ active: logMode === 'password' }"
+        @click="logMode = 'password'"
+      >
         <div class="inner">
           <span class="material-icons-round icon"> password </span>密码登陆
         </div>
       </li>
-      <li class="item block">
+      <li
+        class="item block"
+        :class="{ active: logMode === 'qr' }"
+        @click="logMode = 'qr'"
+      >
         <div class="inner">
           <span class="material-icons-round icon"> qr_code </span>二维码登陆
         </div>
@@ -69,14 +110,26 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, watch } from "vue";
+import md5 from "crypto-js/md5";
+import {
+  loginQrCodeKey,
+  loginQrCodeCreate,
+  loginWithPhone,
+  loginWithEmail,
+  sendCaptcha,
+  verifyCaptcha,
+} from "../../apis/login";
+
 export default {
   name: "Login",
   setup() {
     const data = reactive({
       logMode: "phone", // phone, password, qr
       isSending: false, // 是否正在发送验证码
+      qrPic: null, // 二维码图片
     });
+    let qrRefreshTime = 0; // 二维码刷新时间
 
     // 判断是否为邮箱
     const isEmail = (str) => {
@@ -118,6 +171,124 @@ export default {
 
       // 发送成功
     };
+
+    // 验证码登陆
+    const phoneLogin = () => {
+      const phone = document.getElementById("phone").value;
+      const captcha = document.getElementById("captcha").value;
+      if (!isPhone(phone)) {
+        alert("请输入正确的手机号");
+        return;
+      }
+      if (!captcha) {
+        alert("请输入验证码");
+        return;
+      }
+
+      // 验证验证码
+      verifyCaptcha({ phone, captcha }).then((res) => {
+        if (res.code === 0) {
+          // 验证成功
+          loginWithPhone(phone).then((res) => {
+            if (res.code === 0) {
+              // 登陆成功
+              window.location.href = "/";
+            } else {
+              alert(res.msg);
+            }
+          });
+        } else {
+          alert(res.msg);
+        }
+      });
+    };
+
+    // 发送验证码
+    const sendCaptchaFn = () => {
+      const phone = document.getElementById("phone").value;
+      if (!isPhone(phone)) {
+        alert("请输入正确的手机号");
+        return;
+      }
+      sendCaptcha({ phone }).then((res) => {
+        if (res.code === 0) {
+          // 发送成功
+        } else {
+          alert(res.msg);
+        }
+      });
+    };
+
+    // 密码登陆
+    // 判断输入的账户类型，使用不同的接口登陆
+    const passwordLogin = () => {
+      const phone = document.getElementById("phone").value;
+      const password = document.getElementById("password").value;
+      if (!isPhone(phone)) {
+        alert("请输入正确的手机号");
+        return;
+      }
+      if (!password) {
+        alert("请输入密码");
+        return;
+      }
+
+      password = md5(password).toString();
+      if (data.logMode === "phone") {
+        // 手机号登陆
+        loginWithPhone({ phone, md5_password: password }).then((res) => {
+          if (res.code === 0) {
+            // 登陆成功
+            window.location.href = "/";
+          } else {
+            alert(res.msg);
+          }
+        });
+      } else if (data.logMode === "email") {
+        // 邮箱登陆
+        loginWithEmail({ email, md5_password: password }).then((res) => {
+          if (res.code === 0) {
+            // 登陆成功
+            window.location.href = "/";
+          } else {
+            alert(res.msg);
+          }
+        });
+      }
+    };
+
+    // 生成登陆二维码
+    const createQrCode = () => {
+      console.log("123123");
+      if (data.logMode !== "qr") return;
+      if (qrRefreshTime > 0) return;
+      data.qrPic = null;
+      loginQrCodeKey().then((res) => {
+        loginQrCodeCreate({ key: res.data.unikey, qrimg: true }).then(
+          (res2) => {
+            data.qrPic = res2.data.qrimg;
+
+            // 两分钟更新一次图片
+            const time = 120000;
+            qrRefreshTime = time;
+            console.log(data.qrPic);
+            setTimeout(() => {
+              qrRefreshTime = 0;
+              createQrCode();
+            }, time);
+          }
+        );
+      });
+    };
+
+    console.log(md5("123456").toString());
+
+    watch(
+      () => data.logMode,
+      () => {
+        // createQrCode();
+      }
+    );
 
     return { ...toRefs(data), sendSms };
   },
@@ -212,18 +383,21 @@ export default {
   margin: 0 auto;
   margin-top: 36px;
 
-  > * {
-    margin-bottom: 16px;
-  }
+  form {
+    > * {
+      margin-bottom: 16px;
+    }
 
-  input {
-    height: 36px;
-    border-radius: 50px;
-    padding: 12px 18px;
-    transition: box-shadow $transition-time-default;
+    input {
+      height: 36px;
+      width: 100%;
+      border-radius: 50px;
+      padding: 12px 18px;
+      transition: box-shadow $transition-time-default;
 
-    &:focus {
-      box-shadow: 0 0 0 2px var(--main-color);
+      &:focus {
+        box-shadow: 0 0 0 2px var(--main-color);
+      }
     }
   }
 }
@@ -281,6 +455,28 @@ export default {
         background-color: var(--primary-container-color);
       }
     }
+  }
+}
+
+.qrcode {
+  .qrcode-container {
+    width: 256px;
+    height: 256px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .qrcode-text {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    margin-top: 16px;
+    text-align: center;
   }
 }
 
