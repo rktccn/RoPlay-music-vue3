@@ -1,16 +1,25 @@
 :root {
   --main-color: rgb(23, 125, 176);
-  --primary-container-color: #c7e6ff;
-
   --hover-color: rgb(144, 147, 153, 0.2);
 
   --text-color-primary: #454f63;
-  --text-color-secondary: rgba(69, 79, 99, 0.75);
-
   --text-color-primary-container: #001e30;
 
+  --text-color-secondary: rgba(69, 79, 99, 0.75);
+  --text-color-unable: rgba(65, 71, 77, 0.75);
+
   --background-color-primary: #ffffff;
+  --background-color-primary-container: #c7e6ff;
+
   --background-color-secondary: #f4f5fe;
+  --background-color-unable: #dde3ea;
+}
+
+.block {
+  background-color: var(--background-color-primary);
+  border-radius: $border-radius-default;
+  padding: 8px 12px;
+  transition: all $transition-time-default;
 }
 
 .primary {
@@ -19,8 +28,13 @@
 }
 
 .container-primary {
-  background-color: var(--primary-container-color);
-  color: var(--text-color-secondary);
+  background-color: var(--background-color-primary-container);
+  color: var(--text-color-primary-container);
+}
+
+.unable {
+  background-color: var(--background-color-unable);
+  color: var(--text-color-unable);
 }
 
 // vue-silder 主题设置

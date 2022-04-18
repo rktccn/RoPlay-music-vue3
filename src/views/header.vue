@@ -72,9 +72,17 @@ watch(
       </div>
     </div>
     <div class="right">
-      <router-link to="/login" class="material-icons-round font-size-36">
+      <router-link
+        to="/login"
+        class="material-icons-round font-size-36"
+        v-if="store.isLoggedIn === -1"
+      >
         account_circle</router-link
       >
+
+      <span class="avator">
+        <img :src="`${store.userInfo.avatarUrl}?param=128y128`" alt="" />
+      </span>
     </div>
   </div>
 </template>
@@ -158,6 +166,20 @@ watch(
     align-items: center;
     justify-content: flex-end;
     flex: 2;
+
+    height: 100%;
+
+    .avator {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      line-height: 0;
+
+      img {
+        height: 80%;
+        border-radius: 50%;
+      }
+    }
   }
 }
 </style>

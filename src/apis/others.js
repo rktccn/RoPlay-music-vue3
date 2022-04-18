@@ -17,6 +17,23 @@ import Cookie from "js-cookie";
  * @param {number=} params.type
  */
 export function search(params) {
+  let typeList = {
+    单曲: 1,
+    专辑: 10,
+    歌手: 100,
+    歌单: 1000,
+    用户: 1002,
+    MV: 1004,
+    歌词: 1006,
+    电台: 1009,
+    视频: 1014,
+    综合: 1018,
+  };
+
+  if (params.type && typeof params.type !== "number") {
+    params.type = typeList[params.type];
+  }
+
   return req
     .get("/cloudsearch", {
       params,

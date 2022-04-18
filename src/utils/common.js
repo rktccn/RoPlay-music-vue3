@@ -1,4 +1,6 @@
 import { nextTick, onMounted } from "vue";
+import { useStore } from "../store";
+import { getUserPlaylist } from "../apis/user";
 
 /**
  * 日期格式化
@@ -53,5 +55,21 @@ export function isScrollBottom() {
     return true;
   } else {
     return false;
+  }
+}
+
+// 获取登陆用户所有信息
+export function getUserInfo() {
+  const store = useStore();
+
+  if (store.isLoggedIn === -1) return;
+  const userId = store.userInfo.userId;
+  if (store.isLoggedIn === 1) return;
+  if (store.isLoggedIn === 2) {
+    // 获取用户歌单
+    getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
+      store.userPlaylist = res.playlist;
+      console.log(res);
+    });
   }
 }

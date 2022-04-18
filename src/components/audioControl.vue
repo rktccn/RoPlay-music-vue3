@@ -165,7 +165,6 @@ export default {
         data.showVolume = false;
       }
     };
-    document.addEventListener("mousedown", handleClick);
 
     // 跳转到播放列表
     const goCurrentList = () => {
@@ -193,6 +192,17 @@ export default {
       style.background = color;
       return style;
     };
+
+    watch(
+      () => data.showVolume,
+      (val) => {
+        if (val) {
+          document.addEventListener("mousedown", handleClick);
+        } else {
+          document.removeEventListener("mousedown", handleClick);
+        }
+      }
+    );
 
     return {
       ...toRefs(data),

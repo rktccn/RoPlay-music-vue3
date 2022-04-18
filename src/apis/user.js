@@ -34,28 +34,6 @@ export function userAccount() {
 }
 
 /**
- * 获取用户歌单
- * 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户歌单
- * - uid : 用户 id
- * - limit : 返回数量 , 默认为 30
- * - offset : 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
- * @param {Object} params
- * @param {number} params.uid
- * @param {number} params.limit
- * @param {number=} params.offset
- */
-export function userPlaylist(params) {
-  return req
-    .get("/user/playlist", {
-      params: {
-        ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
-      },
-    })
-    .then((res) => res);
-}
-
-/**
  * 喜欢音乐列表（需要登录）
  * 说明 : 调用此接口 , 传入用户 id, 可获取已喜欢音乐id列表(id数组)
  * - uid: 用户 id
@@ -201,6 +179,89 @@ export function cloudDiskTrackDelete(id) {
       params: {
         cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
         id,
+      },
+    })
+    .then((res) => res);
+}
+
+/**
+ * 获取用户歌单
+ * 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户歌单
+ * - uid : 用户 id
+ * - limit : 返回数量 , 默认为 30
+ * - offset : 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
+ * @param {Object} params
+ * @param {number} params.uid
+ * @param {number} params.limit
+ * @param {number=} params.offset
+ */
+export function getUserPlaylist(params) {
+  return req
+    .get("/user/playlist", {
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
+    })
+    .then((res) => res);
+}
+
+/**
+ * 获取用户电台
+ * 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户电台
+ * - uid : 用户 id
+ * @param {number} uid
+ */
+export function getUserDj(uid) {
+  return req
+    .get("/user/dj", {
+      params: {
+        uid,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
+    })
+    .then((res) => res);
+}
+
+/**
+ * 获取用户关注列表
+ * 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户关注列表
+ * - uid : 用户 id
+ * - limit : 返回数量 , 默认为 30
+ * - offset : 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
+ * @param {Object} params
+ * @param {number} params.uid
+ * @param {number} params.limit
+ * @param {number=} params.offset
+ */
+export function getUserFollows(params) {
+  return req
+    .get("/user/follows", {
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      },
+    })
+    .then((res) => res);
+}
+
+/**
+ * 获取用户粉丝列表
+ * 说明 : 登录后调用此接口 , 传入用户 id, 可以获取用户粉丝列表
+ * - uid : 用户 id
+ * - limit : 返回数量 , 默认为 30
+ * - offset : 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
+ * @param {Object} params
+ * @param {number} params.uid
+ * @param {number} params.limit
+ * @param {number=} params.offset
+ */
+export function getUserFans(params) {
+  return req
+    .get("/user/followeds", {
+      params: {
+        ...params,
+        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => res);

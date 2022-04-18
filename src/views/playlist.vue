@@ -68,16 +68,37 @@ export default {
     const getData = async () => {
       await getPlaylistDetail(id)
         .then((res) => {
-          data.item = res.playlist;
-          data.trackCount = res.playlist.trackCount;
-        })
-        .catch((err) => {
-          ElMessageBox.alert("没有相关内容", "错误", {
+          console.log(res);
+          if (res.code === 200) {
+            data.item = res.playlist;
+            data.trackCount = res.playlist.trackCount;
+
+            return;
+          }
+
+          let msg = "";
+          if (res.code === 404) {
+            msg = "歌单不存在";
+          } else if (res.code === 20001) {
+            msg = "需要登陆";
+          } else {
+            msg = "没有相关内容";
+          }
+
+          ElMessageBox.alert(msg, "错误", {
             confirmButtonText: "返回主页",
             callback: () => {
               router.push({ name: "home" });
             },
           });
+        })
+        .catch((err) => {
+          // ElMessageBox.alert("没有相关内容", "错误", {
+          //   confirmButtonText: "返回主页",
+          //   callback: () => {
+          //     router.push({ name: "home" });
+          //   },
+          // });
         });
 
       await getPlaylistTracks({ id }).then((res) => {

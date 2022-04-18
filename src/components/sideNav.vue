@@ -1,8 +1,30 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, watch } from "vue";
 import { useStore } from "../store";
 
 const store = useStore();
+let playlistItem = [];
+
+watch(
+  () => store.userPlaylist,
+  () => {
+    if (store.userPlaylist[0]) {
+      playlistItem = [];
+      for (let i = 0; i < 4; i++) {
+        let item = store.userPlaylist[i];
+        playlistItem.push({
+          itemName: item.name.trim(),
+          path: `/playlist/${item.id}`,
+          icon: "",
+          needLog: true,
+        });
+      }
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 const list = reactive([
   {
@@ -37,7 +59,7 @@ const list = reactive([
   {
     listName: "我的歌单",
     needLog: true,
-    listItem: [],
+    listItem: playlistItem,
   },
 ]);
 </script>
@@ -46,7 +68,7 @@ const list = reactive([
   <div class="side-nav">
     <span class="logo">Ro&nbsp;Play</span>
     <div class="list">
-      <template v-for="(item, i) in list" :key="i">
+      <template v-for="(item, index) in list" :key="index">
         <ul v-if="item.needLog ? true : true">
           <ol class="list-title white">
             {{
@@ -60,10 +82,12 @@ const list = reactive([
               @click="store.setOverlay(false)"
             >
               <router-link :to="value.path" class="item-link">
-                <span class="material-icons-round">
+                <span class="material-icons-round" v-if="value.icon !== ''">
                   {{ value.icon }}
                 </span>
-                {{ value.itemName }}
+                <div class="text-truncate">
+                  {{ value.itemName }}
+                </div>
               </router-link>
             </li>
           </template>
@@ -81,12 +105,6 @@ const list = reactive([
   100% {
     transform: translateX(100%);
   }
-  // 0% {
-  //   transform: translateX(0);
-  // }
-  // 100% {
-  //   transform: translateX(-100%);
-  // }
 }
 .side-nav {
   display: flex;
@@ -121,17 +139,18 @@ const list = reactive([
   .list-item {
     color: var(--el-text-color-primary);
     font-size: 16px;
-
     .item-link {
       position: relative;
       display: flex;
+      align-items: center;
+
+      overflow: hidden;
       width: 100%;
       height: 100%;
       padding: 3px 6px;
       margin: 6px 0;
       margin-left: -6px;
       border-radius: 6px;
-      overflow: hidden;
 
       span {
         margin-right: 8px;

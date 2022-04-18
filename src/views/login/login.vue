@@ -67,12 +67,55 @@
         </div>
       </div>
 
-      <div class="login-button primary">
+      <div class="login-button primary" v-if="logMode !== 'user'">
         <span class="material-icons-round icon"> login </span>
         登陆
       </div>
-      <div class="reg-button block">创建账户</div>
+      <div class="reg-button block" v-if="logMode !== 'user'">创建账户</div>
+
+      <!-- 搜索用户名 -->
+      <form class="search-user" v-if="logMode === 'user'">
+        <input
+          type="text"
+          name="search-user"
+          id="search-user"
+          autocomplete="off"
+          placeholder="请输入用户名"
+          v-model="searchUser"
+        />
+        <div class="search-user-result">
+          <div
+            class="search-user-item block"
+            v-for="(user, index) in searchUserList"
+            :key="index"
+            @click="
+              selectUserIndex === index
+                ? (selectUserIndex = -1)
+                : (selectUserIndex = index)
+            "
+            :class="{ primary: selectUserIndex === index }"
+          >
+            <div class="avatar">
+              <img :src="`${user.avatarUrl}?param=48y48`" alt="" />
+            </div>
+            <span class="name text-truncate">{{ user.nickname }}</span>
+            <span class="material-icons-round icon">
+              {{ selectUserIndex === index ? "close" : "check" }}
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="login-button primary"
+          :class="{ unable: selectUserIndex === -1 }"
+          @click="getUserPlaylistFn"
+        >
+          确定
+        </div>
+      </form>
     </div>
+
+    <!-- 登陆模式切换 -->
     <ul class="login-mode">
       <li
         class="item block"
@@ -101,7 +144,11 @@
           <span class="material-icons-round icon"> qr_code </span>二维码登陆
         </div>
       </li>
-      <li class="item block">
+      <li
+        class="item block"
+        :class="{ active: logMode === 'user' }"
+        @click="logMode = 'user'"
+      >
         <div class="inner">
           <span class="material-icons-round icon"> person </span>搜索用户名
         </div>
@@ -120,16 +167,23 @@ import {
   sendCaptcha,
   verifyCaptcha,
 } from "../../apis/login";
+import { search } from "../../apis/others";
+import { useStore } from "../../store";
+import { getUserInfo } from "../../utils/common";
 
 export default {
   name: "Login",
   setup() {
     const data = reactive({
-      logMode: "phone", // phone, password, qr
+      logMode: "phone", // phone, password, qr, user
       isSending: false, // 是否正在发送验证码
       qrPic: null, // 二维码图片
+      searchUserList: [], // 搜索用户列表
+      searchUser: "", // 搜索用户名
+      selectUserIndex: -1, // 选中的用户索引
     });
     let qrRefreshTime = 0; // 二维码刷新时间
+    const store = useStore();
 
     // 判断是否为邮箱
     const isEmail = (str) => {
@@ -187,10 +241,10 @@ export default {
 
       // 验证验证码
       verifyCaptcha({ phone, captcha }).then((res) => {
-        if (res.code === 0) {
+        if (res.code === 200) {
           // 验证成功
           loginWithPhone(phone).then((res) => {
-            if (res.code === 0) {
+            if (res.code === 200) {
               // 登陆成功
               window.location.href = "/";
             } else {
@@ -211,7 +265,7 @@ export default {
         return;
       }
       sendCaptcha({ phone }).then((res) => {
-        if (res.code === 0) {
+        if (res.code === 200) {
           // 发送成功
         } else {
           alert(res.msg);
@@ -223,7 +277,7 @@ export default {
     // 判断输入的账户类型，使用不同的接口登陆
     const passwordLogin = () => {
       const phone = document.getElementById("phone").value;
-      const password = document.getElementById("password").value;
+      let password = document.getElementById("password").value;
       if (!isPhone(phone)) {
         alert("请输入正确的手机号");
         return;
@@ -237,7 +291,7 @@ export default {
       if (data.logMode === "phone") {
         // 手机号登陆
         loginWithPhone({ phone, md5_password: password }).then((res) => {
-          if (res.code === 0) {
+          if (res.code === 200) {
             // 登陆成功
             window.location.href = "/";
           } else {
@@ -247,7 +301,7 @@ export default {
       } else if (data.logMode === "email") {
         // 邮箱登陆
         loginWithEmail({ email, md5_password: password }).then((res) => {
-          if (res.code === 0) {
+          if (res.code === 200) {
             // 登陆成功
             window.location.href = "/";
           } else {
@@ -281,7 +335,32 @@ export default {
       });
     };
 
-    console.log(md5("123456").toString());
+    // 搜索用户
+    const searchUser = () => {
+      if (data.searchUser === "") return;
+      search({
+        keywords: data.searchUser,
+        limit: 10,
+        type: "用户",
+      }).then((res) => {
+        if (res.code === 200) {
+          console.log(res);
+          data.searchUserList = res.result.userprofiles;
+        }
+      });
+    };
+
+    // 获取用户歌单
+    const getUserPlaylistFn = () => {
+      if (data.selectUserIndex === -1) return;
+
+      console.log(data.searchUserList[data.selectUserIndex]);
+
+      store.setUserInfo({
+        logMode: "name",
+        userInfo: data.searchUserList[data.selectUserIndex],
+      });
+    };
 
     watch(
       () => data.logMode,
@@ -290,7 +369,19 @@ export default {
       }
     );
 
-    return { ...toRefs(data), sendSms };
+    watch(
+      () => data.searchUser,
+      (val) => {
+        if (val === "") {
+          data.searchUserList = [];
+          data.selectUserIndex = -1;
+        } else {
+          searchUser();
+        }
+      }
+    );
+
+    return { ...toRefs(data), sendSms, getUserPlaylistFn };
   },
 };
 </script>
@@ -366,7 +457,8 @@ export default {
     }
 
     &:active {
-      background-color: var(--primary-container-color);
+      background-color: var(--background-color-primary-container);
+      color: var(--text-color-primary-container);
     }
 
     &.active {
@@ -420,7 +512,8 @@ export default {
   }
 
   &:active {
-    background-color: var(--primary-container-color);
+    background-color: var(--background-color-primary-container);
+    color: var(--text-color-primary-container);
   }
 }
 
@@ -452,7 +545,8 @@ export default {
       transition: background-color $transition-time-default;
 
       &:active {
-        background-color: var(--primary-container-color);
+        background-color: var(--background-color-primary-container);
+        color: var(--text-color-primary-container);
       }
     }
   }
@@ -477,6 +571,60 @@ export default {
     font-weight: bolder;
     margin-top: 16px;
     text-align: center;
+  }
+}
+
+.search-user {
+  .search-user-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-height: 260px;
+    overflow-x: scroll;
+    margin-top: 16px;
+
+    .search-user-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 4px 0;
+      border-bottom: 1px solid var(--border-color);
+      cursor: pointer;
+
+      &:active {
+        background-color: var(--background-color-primary-container);
+        color: var(--text-color-primary-container);
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: $border-radius-default;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
+      }
+
+      .name {
+        flex: 1 1 0;
+        font-size: 1.25rem;
+        font-weight: bolder;
+        margin-left: 16px;
+      }
+
+      .icon {
+        flex-basis: 1;
+        font-weight: bolder;
+      }
+    }
+  }
+
+  .login-button {
+    margin-top: 8px;
+    margin-bottom: 24px;
   }
 }
 

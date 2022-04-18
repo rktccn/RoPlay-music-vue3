@@ -11,6 +11,8 @@ import LyricPage from "./views/lyricPage.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "./store/index";
 import { usePlayer } from "./store/player";
+import { getUserInfo } from "./utils/common";
+getUserInfo();
 
 const route = useRoute();
 const store = useStore();
@@ -37,7 +39,7 @@ const showHeader = () => {
 <template>
   <el-container class="wrap">
     <el-aside width="220px" :class="{ active: store.getOverlay }">
-      <SideNav></SideNav>
+      <SideNav :key="store.userPlaylist"></SideNav>
     </el-aside>
     <el-container>
       <el-header v-if="showHeader()">
