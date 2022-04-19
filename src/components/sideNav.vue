@@ -3,26 +3,28 @@ import { reactive, watch } from "vue";
 import { useStore } from "../store";
 
 const store = useStore();
-let playlistItem = [];
+let playlistItem = reactive({
+  listName: "我的歌单",
+  needLog: true,
+  listItem: [],
+});
+// 如果登陆，则传入四个歌单到歌单列表
+const getList = () => {
+  console.log(store.userPlaylist);
+  if (store.isLoggedIn !== -1) {
+    for (let i = 0; i < 4; i++) {
+      const item = store.userPlaylist[i];
+      if (!item) return;
+      playlistItem.listItem.push(item);
+    }
+  }
+};
 
 watch(
   () => store.userPlaylist,
   () => {
-    if (store.userPlaylist[0]) {
-      playlistItem = [];
-      for (let i = 0; i < 4; i++) {
-        let item = store.userPlaylist[i];
-        playlistItem.push({
-          itemName: item.name.trim(),
-          path: `/playlist/${item.id}`,
-          icon: "",
-          needLog: true,
-        });
-      }
-    }
-  },
-  {
-    immediate: true,
+    playlistItem.listItem = [];
+    getList();
   }
 );
 
@@ -56,11 +58,6 @@ const list = reactive([
       { itemName: "云盘", path: "/cloud", icon: "home", needLog: true },
     ],
   },
-  {
-    listName: "我的歌单",
-    needLog: true,
-    listItem: playlistItem,
-  },
 ]);
 </script>
 
@@ -93,6 +90,25 @@ const list = reactive([
           </template>
         </ul>
       </template>
+      <ul v-if="playlistItem.needLog">
+        <ol class="list-title white">
+          {{
+            playlistItem.listName
+          }}
+        </ol>
+        <li
+          class="list-item"
+          @click="store.setOverlay(false)"
+          v-for="(playlist, i) in playlistItem.listItem"
+          :key="i"
+        >
+          <router-link :to="`/playlist/${playlist.id}`" class="item-link">
+            <div class="text-truncate">
+              {{ playlist.name }}
+            </div>
+          </router-link>
+        </li>
+      </ul>
     </div>
   </div>
 </template>

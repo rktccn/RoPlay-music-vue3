@@ -58,13 +58,22 @@
 
       <!-- 二维码登陆 -->
       <div class="qrcode" v-if="logMode === 'qr'">
-        <div class="qrcode-container block" v-loading="qrPic === null">
-          <img :src="qrPic" alt="" />
+        <div class="qrcode-container block" v-loading="qr.pic === null">
+          <img :src="qr.pic" alt="" />
+          <!-- 提示浮层 -->
+          <div
+            class="qrcode-tip"
+            :class="{ click: qr.tip.text === '二维码已过期' }"
+            v-if="qr.tip.text !== null"
+            @click="refreshQrCode"
+          >
+            <span class="material-icons-round icon font-size-48">
+              {{ qr.tip.icon }}
+            </span>
+            {{ qr.tip.text }}
+          </div>
         </div>
-        <div class="qrcode-text">
-          <span class="material-icons-round icon"> qrcode </span>
-          使用手机扫描二维码登陆
-        </div>
+        <div class="qrcode-text">使用手机扫描二维码登陆</div>
       </div>
 
       <div class="login-button primary" v-if="logMode !== 'user'">
@@ -81,33 +90,33 @@
           id="search-user"
           autocomplete="off"
           placeholder="请输入用户名"
-          v-model="searchUser"
+          v-model="search.user"
         />
         <div class="search-user-result">
           <div
             class="search-user-item block"
-            v-for="(user, index) in searchUserList"
+            v-for="(user, index) in search.userList"
             :key="index"
             @click="
-              selectUserIndex === index
-                ? (selectUserIndex = -1)
-                : (selectUserIndex = index)
+              search.selectUserIndex === index
+                ? (search.selectUserIndex = -1)
+                : (search.selectUserIndex = index)
             "
-            :class="{ primary: selectUserIndex === index }"
+            :class="{ primary: search.selectUserIndex === index }"
           >
             <div class="avatar">
               <img :src="`${user.avatarUrl}?param=48y48`" alt="" />
             </div>
             <span class="name text-truncate">{{ user.nickname }}</span>
             <span class="material-icons-round icon">
-              {{ selectUserIndex === index ? "close" : "check" }}
+              {{ search.selectUserIndex === index ? "close" : "check" }}
             </span>
           </div>
         </div>
 
         <div
           class="login-button primary"
-          :class="{ unable: selectUserIndex === -1 }"
+          :class="{ unable: search.selectUserIndex === -1 }"
           @click="getUserPlaylistFn"
         >
           确定
@@ -162,10 +171,11 @@ import md5 from "crypto-js/md5";
 import {
   loginQrCodeKey,
   loginQrCodeCreate,
+  loginQrCodeCheck,
   loginWithPhone,
-  loginWithEmail,
   sendCaptcha,
   verifyCaptcha,
+  loginWithEmail,
 } from "../../apis/login";
 import { search } from "../../apis/others";
 import { useStore } from "../../store";
@@ -177,12 +187,22 @@ export default {
     const data = reactive({
       logMode: "phone", // phone, password, qr, user
       isSending: false, // 是否正在发送验证码
-      qrPic: null, // 二维码图片
-      searchUserList: [], // 搜索用户列表
-      searchUser: "", // 搜索用户名
-      selectUserIndex: -1, // 选中的用户索引
+      // 二维码登陆
+      qr: {
+        pic: null, // 二维码图片
+        tip: {
+          icon: null, // 提示图标
+          text: null, // 提示文字
+        },
+        key: "", // 二维码key
+      },
+      // 搜索登陆
+      search: {
+        userList: [], // 搜索用户列表
+        user: "", // 搜索用户名
+        selectUserIndex: -1, // 选中的用户索引
+      },
     });
-    let qrRefreshTime = 0; // 二维码刷新时间
     const store = useStore();
 
     // 判断是否为邮箱
@@ -313,75 +333,120 @@ export default {
 
     // 生成登陆二维码
     const createQrCode = () => {
-      console.log("123123");
       if (data.logMode !== "qr") return;
-      if (qrRefreshTime > 0) return;
-      data.qrPic = null;
+      if (!data.qr.pic || data.qr.tip.text !== "二维码已过期")
+        data.qr.pic = null;
       loginQrCodeKey().then((res) => {
+        data.qr.key = res.data.unikey;
+        console.log(data.qr.key);
         loginQrCodeCreate({ key: res.data.unikey, qrimg: true }).then(
           (res2) => {
-            data.qrPic = res2.data.qrimg;
-
-            // 两分钟更新一次图片
-            const time = 120000;
-            qrRefreshTime = time;
-            console.log(data.qrPic);
-            setTimeout(() => {
-              qrRefreshTime = 0;
-              createQrCode();
-            }, time);
+            data.qr.pic = res2.data.qrimg;
           }
         );
       });
     };
 
+    // 检测二维码扫描状态
+    const checkQrCode = () => {
+      if (data.logMode !== "qr") return;
+      return loginQrCodeCheck(data.qr.key).then((res) => {
+        // 根据返回值修改tip
+        console.log(res);
+        if (res.code === 801) {
+          data.qr.tip = {
+            icon: null,
+            text: null,
+          };
+        }
+        if (res.code === 802) {
+          data.qr.tip = {
+            icon: "check",
+            text: "请在手机上确认",
+          };
+        }
+
+        if (res.code === 800) {
+          data.qr.tip = {
+            icon: "warning_amber",
+            text: "二维码已过期",
+          };
+          return;
+        }
+
+        if (res.code === 803) {
+          data.qr.tip = {
+            icon: "check",
+            text: "登陆成功",
+          };
+          return;
+        }
+
+        // 循环检测
+        setTimeout(() => {
+          checkQrCode();
+        }, 1000);
+      });
+    };
+
+    // 当二维码过期时刷新二维码
+    const refreshQrCode = () => {
+      if (data.logMode !== "qr") return;
+      if (data.qr.tip.text !== "二维码已过期") return;
+      checkQrCode();
+      createQrCode();
+    };
+
     // 搜索用户
     const searchUser = () => {
-      if (data.searchUser === "") return;
+      if (data.search.user === "") return;
       search({
-        keywords: data.searchUser,
+        keywords: data.search.user,
         limit: 10,
         type: "用户",
       }).then((res) => {
         if (res.code === 200) {
           console.log(res);
-          data.searchUserList = res.result.userprofiles;
+          data.search.userList = res.result.userprofiles;
         }
       });
     };
 
     // 获取用户歌单
     const getUserPlaylistFn = () => {
-      if (data.selectUserIndex === -1) return;
+      if (data.search.selectUserIndex === -1) return;
 
-      console.log(data.searchUserList[data.selectUserIndex]);
+      console.log(data.search.userList[data.search.selectUserIndex]);
 
       store.setUserInfo({
         logMode: "name",
-        userInfo: data.searchUserList[data.selectUserIndex],
+        userInfo: data.search.userList[data.search.selectUserIndex],
       });
     };
 
     watch(
       () => data.logMode,
-      () => {
-        // createQrCode();
+      async (val) => {
+        if (val === "qr") {
+          await checkQrCode();
+          createQrCode();
+        }
       }
     );
 
     watch(
-      () => data.searchUser,
+      () => data.search.user,
       (val) => {
         if (val === "") {
-          data.searchUserList = [];
-          data.selectUserIndex = -1;
+          data.search.userList = [];
+          data.search.selectUserIndex = -1;
         } else {
           searchUser();
         }
       }
     );
 
-    return { ...toRefs(data), sendSms, getUserPlaylistFn };
+    return { ...toRefs(data), sendSms, getUserPlaylistFn, refreshQrCode };
   },
 };
 </script>
@@ -554,6 +619,7 @@ export default {
 
 .qrcode {
   .qrcode-container {
+    position: relative;
     width: 256px;
     height: 256px;
     display: flex;
@@ -563,6 +629,29 @@ export default {
 
     img {
       width: 100%;
+    }
+
+    .qrcode-tip {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--background-color-primary);
+      font-size: 24px;
+      font-weight: bolder;
+
+      .icon {
+        font-weight: bolder;
+        margin-bottom: 12px;
+        cursor: auto;
+      }
+
+      &.click {
+        cursor: pointer;
+      }
     }
   }
 

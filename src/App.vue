@@ -39,7 +39,7 @@ const showHeader = () => {
 <template>
   <el-container class="wrap">
     <el-aside width="220px" :class="{ active: store.getOverlay }">
-      <SideNav :key="store.userPlaylist"></SideNav>
+      <SideNav></SideNav>
     </el-aside>
     <el-container>
       <el-header v-if="showHeader()">

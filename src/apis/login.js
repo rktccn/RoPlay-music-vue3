@@ -118,7 +118,7 @@ export function loginQrCodeCreate(params) {
     .get("/login/qr/create", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        timestamp: new Date().getTime(),
       },
     })
     .then((res) => {
@@ -136,7 +136,7 @@ export function loginQrCodeCheck(key) {
     .get("/login/qr/check", {
       params: {
         key,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        timestamp: new Date().getTime(),
       },
     })
     .then((res) => {
