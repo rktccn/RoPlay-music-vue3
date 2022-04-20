@@ -14,20 +14,24 @@
     <!-- 验证码 -->
     <div class="form">
       <form class="phone" v-if="logMode === 'phone'">
-        <input
-          type="tel"
-          name="phone"
-          id="phone"
-          autocomplete="off"
-          placeholder="请输入手机号"
-        />
-        <div class="captcha">
+        <div>
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            autocomplete="off"
+            placeholder="请输入手机号"
+          />
+        </div>
+        <div class="captcha" id="captcha">
           <input
             type="number"
             name="captcha"
             id=""
             autocomplete="off"
             placeholder="请输入验证码"
+            v-model="captcha"
+            @keydown.enter="login"
           />
           <span
             class="send-sms primary"
@@ -40,20 +44,25 @@
 
       <!-- 密码登陆 -->
       <form class="password-form" v-if="logMode === 'password'">
-        <input
-          type="text"
-          name="account"
-          id="account"
-          autocomplete="off"
-          placeholder="请输入手机号或邮箱"
-        />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          autocomplete="off"
-          placeholder="请输入密码"
-        />
+        <div>
+          <input
+            type="text"
+            name="account"
+            id="account"
+            autocomplete="off"
+            placeholder="请输入手机号或邮箱"
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            autocomplete="off"
+            placeholder="请输入密码"
+            @keydown.enter="login"
+          />
+        </div>
       </form>
 
       <!-- 二维码登陆 -->
@@ -76,7 +85,12 @@
         <div class="qrcode-text">使用手机扫描二维码登陆</div>
       </div>
 
-      <div class="login-button primary" v-if="logMode !== 'user'">
+      <!-- 登陆按钮 -->
+      <div
+        class="login-button primary"
+        v-if="logMode !== 'user' && logMode !== 'qr'"
+        @click="login"
+      >
         <span class="material-icons-round icon"> login </span>
         登陆
       </div>
@@ -179,7 +193,6 @@ import {
 } from "../../apis/login";
 import { search } from "../../apis/others";
 import { useStore } from "../../store";
-import { getUserInfo } from "../../utils/common";
 
 export default {
   name: "Login",
@@ -187,6 +200,8 @@ export default {
     const data = reactive({
       logMode: "phone", // phone, password, qr, user
       isSending: false, // 是否正在发送验证码
+      captcha: "", // 验证码
+
       // 二维码登陆
       qr: {
         pic: null, // 二维码图片
@@ -223,11 +238,16 @@ export default {
       if (data.isSending) return;
       const phone = document.getElementById("phone").value;
       if (!isPhone(phone)) {
-        alert("请输入正确的手机号");
+        addTip({
+          parent: document.getElementById("phone").parentElement,
+          icon: "error",
+          text: "请输入正确的手机号",
+          state: "error",
+        });
         return;
       }
       // 发送验证码
-
+      sendCaptchaFn();
       // 倒计时
       let time = 61;
       data.isSending = true;
@@ -251,11 +271,21 @@ export default {
       const phone = document.getElementById("phone").value;
       const captcha = document.getElementById("captcha").value;
       if (!isPhone(phone)) {
-        alert("请输入正确的手机号");
+        addTip({
+          parent: document.getElementById("phone").parentElement,
+          state: "error",
+          text: "请输入正确的手机号",
+          icon: "error",
+        });
         return;
       }
-      if (!captcha) {
-        alert("请输入验证码");
+      if (captcha === "") {
+        addTip({
+          parent: document.getElementById("captcha").parentElement,
+          state: "error",
+          text: "请输入验证码",
+          icon: "error",
+        });
         return;
       }
 
@@ -266,7 +296,8 @@ export default {
           loginWithPhone(phone).then((res) => {
             if (res.code === 200) {
               // 登陆成功
-              window.location.href = "/";
+              console.log(res);
+              // window.location.href = "/";
             } else {
               alert(res.msg);
             }
@@ -280,15 +311,49 @@ export default {
     // 发送验证码
     const sendCaptchaFn = () => {
       const phone = document.getElementById("phone").value;
-      if (!isPhone(phone)) {
-        alert("请输入正确的手机号");
-        return;
-      }
+
       sendCaptcha({ phone }).then((res) => {
         if (res.code === 200) {
           // 发送成功
+          ElNotification({
+            title: "成功",
+            message: "发送成功",
+            position: "bottom-right",
+            type: "success",
+          });
         } else {
           alert(res.msg);
+        }
+      });
+    };
+
+    // 检查验证码
+    const checkCaptcha = () => {
+      const phone = document.getElementById("phone").value;
+      if (!isPhone(phone)) {
+        return;
+      }
+      if (!data.captcha === "") {
+        return;
+      }
+
+      // 验证验证码
+      verifyCaptcha({ phone, captcha: data.captcha }).then((res) => {
+        if (res.code === 200) {
+          console.log(res);
+          addTip({
+            parent: document.getElementById("captcha"),
+            icon: "check_circle",
+            text: "",
+            state: "success",
+          });
+        } else {
+          addTip({
+            parent: document.getElementById("captcha"),
+            icon: "error",
+            text: "请检查验证码",
+            state: "error",
+          });
         }
       });
     };
@@ -296,38 +361,79 @@ export default {
     // 密码登陆
     // 判断输入的账户类型，使用不同的接口登陆
     const passwordLogin = () => {
-      const phone = document.getElementById("phone").value;
+      const account = document.getElementById("account").value;
       let password = document.getElementById("password").value;
-      if (!isPhone(phone)) {
-        alert("请输入正确的手机号");
+      if (!isPhone(account) && !isEmail(account)) {
+        addTip({
+          parent: document.getElementById("account").parentElement,
+          state: "error",
+          text: "请输入手机号或邮箱",
+          icon: "error",
+        });
         return;
       }
       if (!password) {
-        alert("请输入密码");
+        addTip({
+          parent: document.getElementById("password").parentElement,
+          state: "error",
+          text: "请输入密码",
+          icon: "error",
+        });
         return;
       }
 
       password = md5(password).toString();
-      if (data.logMode === "phone") {
+      if (isPhone(account)) {
         // 手机号登陆
-        loginWithPhone({ phone, md5_password: password }).then((res) => {
-          if (res.code === 200) {
-            // 登陆成功
-            window.location.href = "/";
-          } else {
-            alert(res.msg);
+        loginWithPhone({ phone: account, md5_password: password }).then(
+          (res) => {
+            console.log(res);
+            if (res.code === 200) {
+              // 登陆成功
+              // window.location.href = "/";
+            } else if (res.code === 501) {
+              addTip({
+                parent: document.getElementById("account").parentElement,
+                state: "error",
+                text: "账号不存在",
+                icon: "error",
+              });
+            } else if (res.code === 502) {
+              addTip({
+                parent: document.getElementById("password").parentElement,
+                state: "error",
+                text: "密码错误",
+                icon: "error",
+              });
+            }
           }
-        });
-      } else if (data.logMode === "email") {
+        );
+      } else if (isEmail(account)) {
         // 邮箱登陆
-        loginWithEmail({ email, md5_password: password }).then((res) => {
-          if (res.code === 200) {
-            // 登陆成功
-            window.location.href = "/";
-          } else {
-            alert(res.msg);
+        loginWithEmail({ email: account, md5_password: password }).then(
+          (res) => {
+            console.log(res);
+
+            if (res.code === 200) {
+              // 登陆成功
+              // window.location.href = "/";
+            } else if (res.code === 501) {
+              addTip({
+                parent: document.getElementById("account").parentElement,
+                state: "error",
+                text: "账号不存在",
+                icon: "error",
+              });
+            } else if (res.code === 502) {
+              addTip({
+                parent: document.getElementById("password").parentElement,
+                state: "error",
+                text: "密码错误",
+                icon: "error",
+              });
+            }
           }
-        });
+        );
       }
     };
 
@@ -415,13 +521,42 @@ export default {
     // 获取用户歌单
     const getUserPlaylistFn = () => {
       if (data.search.selectUserIndex === -1) return;
-
-      console.log(data.search.userList[data.search.selectUserIndex]);
-
       store.setUserInfo({
         logMode: "name",
         userInfo: data.search.userList[data.search.selectUserIndex],
       });
+    };
+
+    // 添加tip
+    // 传入param参数，并添加元素
+    // param.parent 父节点
+    // param.state  success|error
+    // param.icon
+    // param.text
+    // <div class="tip">
+    // <span class="material-icons-round icon"> icon </span>
+    // text
+    // </div>;
+    const addTip = (param) => {
+      // 如果已经添加了tip则删除
+      if (param.parent.querySelector(".tip")) {
+        param.parent.removeChild(param.parent.querySelector(".tip"));
+      }
+
+      const tip = document.createElement("div");
+      tip.classList.add("tip");
+      tip.innerHTML = `<span class="material-icons-round icon"> ${param.icon} </span> ${param.text}`;
+      tip.classList.add(param.state);
+      param.parent.appendChild(tip);
+      setTimeout(() => {
+        tip.classList.remove(param.state);
+        tip.remove();
+      }, 3000);
+    };
+
+    const login = () => {
+      if (data.logMode === "phone") phoneLogin();
+      if (data.logMode === "password") passwordLogin();
     };
 
     watch(
@@ -446,10 +581,50 @@ export default {
       }
     );
 
-    return { ...toRefs(data), sendSms, getUserPlaylistFn, refreshQrCode };
+    watch(
+      () => data.captcha,
+      () => {
+        checkCaptcha();
+      }
+    );
+
+    return {
+      ...toRefs(data),
+      sendSms,
+      getUserPlaylistFn,
+      refreshQrCode,
+      login,
+    };
   },
 };
 </script>
+<style lang="scss">
+.tip {
+  position: absolute;
+  top: 0;
+  right: 100%;
+
+  display: flex;
+  align-items: center;
+  height: 100%;
+  transform: translateX(-12px);
+
+  font-size: 12px;
+  white-space: nowrap;
+
+  &.error {
+    .icon {
+      color: var(--error-color);
+    }
+  }
+
+  &.success {
+    .icon {
+      color: var(--main-color);
+    }
+  }
+}
+</style>
 <style lang="scss" scoped>
 .logo {
   display: flex;
@@ -543,6 +718,7 @@ export default {
   form {
     > * {
       margin-bottom: 16px;
+      position: relative;
     }
 
     input {
@@ -588,6 +764,10 @@ export default {
 }
 
 .phone {
+  > * {
+    position: relative;
+  }
+
   .captcha {
     position: relative;
     display: flex;

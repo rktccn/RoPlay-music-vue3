@@ -21,7 +21,6 @@ export function loginWithPhone(params) {
     url: "/login/cellphone",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
     },
   }).then((res) => {
     console.log(res);
@@ -61,7 +60,10 @@ export function verifyCaptcha(params) {
   return req({
     method: "post",
     url: "/captcha/verify",
-    params,
+    params: {
+      ...params,
+      timestamp: new Date().getTime(),
+    },
   }).then((res) => {
     return res;
   });
@@ -82,7 +84,6 @@ export function loginWithEmail(params) {
     .post("/login", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
       },
     })
     .then((res) => {
@@ -96,9 +97,7 @@ export function loginWithEmail(params) {
 export function loginQrCodeKey() {
   return req
     .get("/login/qr/key", {
-      params: {
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
-      },
+      params: {},
     })
     .then((res) => {
       return res;
@@ -153,9 +152,7 @@ export function refreshCookie() {
   return req({
     url: "/login/refresh",
     method: "post",
-    params: {
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
-    },
+    params: {},
   }).then((res) => {
     return res;
   });
@@ -169,9 +166,7 @@ export function logout() {
   return req({
     url: "/logout",
     method: "post",
-    params: {
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
-    },
+    params: {},
   }).then((res) => {
     return res;
   });
