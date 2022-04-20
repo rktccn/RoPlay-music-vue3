@@ -193,6 +193,7 @@ import {
 } from "../../apis/login";
 import { search } from "../../apis/others";
 import { useStore } from "../../store";
+import Cookie from "js-cookie";
 
 export default {
   name: "Login",
@@ -269,7 +270,7 @@ export default {
     // 验证码登陆
     const phoneLogin = () => {
       const phone = document.getElementById("phone").value;
-      const captcha = document.getElementById("captcha").value;
+      const captcha = data.captcha;
       if (!isPhone(phone)) {
         addTip({
           parent: document.getElementById("phone").parentElement,
@@ -281,7 +282,7 @@ export default {
       }
       if (captcha === "") {
         addTip({
-          parent: document.getElementById("captcha").parentElement,
+          parent: document.getElementById("captcha"),
           state: "error",
           text: "请输入验证码",
           icon: "error",
@@ -290,20 +291,28 @@ export default {
       }
 
       // 验证验证码
-      verifyCaptcha({ phone, captcha }).then((res) => {
+      verifyCaptcha({ phone, captcha: data.captcha }).then((res) => {
         if (res.code === 200) {
-          // 验证成功
-          loginWithPhone(phone).then((res) => {
+          loginWithPhone({ phone, captcha: data.captcha }).then((res) => {
             if (res.code === 200) {
-              // 登陆成功
-              console.log(res);
-              // window.location.href = "/";
+              store.userInfo = res.account;
+              result.cookie = result.cookie.replace("HTTPOnly", "");
             } else {
-              alert(res.msg);
+              addTip({
+                parent: document.getElementById("captcha"),
+                state: "error",
+                text: res.msg,
+                icon: "error",
+              });
             }
           });
         } else {
-          alert(res.msg);
+          addTip({
+            parent: document.getElementById("captcha"),
+            state: "error",
+            text: "验证码错误",
+            icon: "error",
+          });
         }
       });
     };
@@ -323,37 +332,6 @@ export default {
           });
         } else {
           alert(res.msg);
-        }
-      });
-    };
-
-    // 检查验证码
-    const checkCaptcha = () => {
-      const phone = document.getElementById("phone").value;
-      if (!isPhone(phone)) {
-        return;
-      }
-      if (!data.captcha === "") {
-        return;
-      }
-
-      // 验证验证码
-      verifyCaptcha({ phone, captcha: data.captcha }).then((res) => {
-        if (res.code === 200) {
-          console.log(res);
-          addTip({
-            parent: document.getElementById("captcha"),
-            icon: "check_circle",
-            text: "",
-            state: "success",
-          });
-        } else {
-          addTip({
-            parent: document.getElementById("captcha"),
-            icon: "error",
-            text: "请检查验证码",
-            state: "error",
-          });
         }
       });
     };
@@ -578,13 +556,6 @@ export default {
         } else {
           searchUser();
         }
-      }
-    );
-
-    watch(
-      () => data.captcha,
-      () => {
-        checkCaptcha();
       }
     );
 
