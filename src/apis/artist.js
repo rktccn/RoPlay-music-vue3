@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 // 获取歌手单曲
 // 说明 : 调用此接口 , 传入歌手 id, 可获得歌手部分信息和热门歌曲
@@ -83,7 +83,7 @@ export function followAArtist(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;

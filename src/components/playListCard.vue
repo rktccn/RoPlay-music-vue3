@@ -48,15 +48,17 @@
       <div
         class="dec"
         :class="{ showDec: !showDec }"
-        v-show="isDecShow"
         :style="type === 'artist' ? { textAlign: 'center' } : ''"
+        v-show="showDec"
       >
         <div class="tit text-truncate">{{ title }}</div>
         <ArtistFormat
           v-if="showArtist && type !== 'playlist'"
           :artistList="artists"
         />
-        <div class="info text-truncate font-size-12">{{ setInfo() }}</div>
+        <div class="info text-truncate font-size-12" v-show="showArtist">
+          {{ setInfo() }}
+        </div>
       </div>
     </div>
   </div>
@@ -75,9 +77,9 @@ export default {
     type: { type: String, required: true },
     // id: { type: Number, required: true },
     size: { type: String, default: null },
-    showDec: { type: Boolean, default: true },
+    showDec: { type: Boolean, default: true }, // 控制歌单名和描述的显示
     showTime: { type: Boolean, default: false },
-    showArtist: { type: Boolean, default: true },
+    showArtist: { type: Boolean, default: true }, // 控制歌手和描述的显示
     item: { type: Object, required: true },
   },
   setup(props) {

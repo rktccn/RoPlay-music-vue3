@@ -33,7 +33,7 @@ const list = reactive([
     listName: "发现音乐",
     needLog: false,
     listItem: [
-      { itemName: "推荐", path: "/recommend", icon: "home", needLog: true },
+      { itemName: "推荐", path: "/feed", icon: "home", needLog: true },
       { itemName: "探索", path: "/", icon: "home", needLog: false },
       {
         itemName: "视频",

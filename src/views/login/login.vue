@@ -192,8 +192,9 @@ import {
   loginWithEmail,
 } from "../../apis/login";
 import { search } from "../../apis/others";
+import { userAccount } from "../../apis/user";
 import { useStore } from "../../store";
-import Cookie from "js-cookie";
+import { babelParse } from "@vue/compiler-sfc";
 
 export default {
   name: "Login",
@@ -295,8 +296,7 @@ export default {
         if (res.code === 200) {
           loginWithPhone({ phone, captcha: data.captcha }).then((res) => {
             if (res.code === 200) {
-              store.userInfo = res.account;
-              result.cookie = result.cookie.replace("HTTPOnly", "");
+              initUserInfo(res);
             } else {
               addTip({
                 parent: document.getElementById("captcha"),
@@ -368,7 +368,7 @@ export default {
             console.log(res);
             if (res.code === 200) {
               // 登陆成功
-              // window.location.href = "/";
+              initUserInfo(res);
             } else if (res.code === 501) {
               addTip({
                 parent: document.getElementById("account").parentElement,
@@ -390,10 +390,9 @@ export default {
         // 邮箱登陆
         loginWithEmail({ email: account, md5_password: password }).then(
           (res) => {
-            console.log(res);
-
             if (res.code === 200) {
               // 登陆成功
+              initUserInfo(res);
               // window.location.href = "/";
             } else if (res.code === 501) {
               addTip({
@@ -463,6 +462,7 @@ export default {
             icon: "check",
             text: "登陆成功",
           };
+          initUserInfo(res);
           return;
         }
 
@@ -535,6 +535,22 @@ export default {
     const login = () => {
       if (data.logMode === "phone") phoneLogin();
       if (data.logMode === "password") passwordLogin();
+    };
+
+    // 登陆成功后初始化用户信息
+    const initUserInfo = (val) => {
+      store.isLoggedIn = 1;
+      store.userCookie = val.cookie;
+      if (val.profile && val.profile !== {}) {
+        store.userInfo = val.profile;
+        window.location.href = "/";
+      } else {
+        userAccount().then((res) => {
+          console.log(res);
+          store.userInfo = res.profile;
+          window.location.href = "/";
+        });
+      }
     };
 
     watch(

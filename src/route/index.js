@@ -11,9 +11,9 @@ const routes = [
     },
   },
   {
-    path: "/recommend",
-    name: "recommend",
-    component: () => import("../views/recommend.vue"),
+    path: "/feed",
+    name: "feed",
+    component: () => import("../views/feed/feed.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,
@@ -23,7 +23,7 @@ const routes = [
   {
     path: "/video",
     name: "video",
-    component: () => import("../views/recommend.vue"),
+    component: () => import("../views/feed/feed.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,
@@ -33,7 +33,7 @@ const routes = [
   {
     path: "/radio",
     name: "radio",
-    component: () => import("../views/recommend.vue"),
+    component: () => import("../views/feed/feed.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,
@@ -43,7 +43,7 @@ const routes = [
   {
     path: "/like",
     name: "like",
-    component: () => import("../views/recommend.vue"),
+    component: () => import("../views/feed/feed.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,
@@ -53,7 +53,7 @@ const routes = [
   {
     path: "/recent",
     name: "recent",
-    component: () => import("../views/recommend.vue"),
+    component: () => import("../views/feed/feed.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,
@@ -63,7 +63,7 @@ const routes = [
   {
     path: "/cloud",
     name: "cloud",
-    component: () => import("../views/recommend.vue"),
+    component: () => import("../views/feed/feed.vue"),
     meta: {
       // keepAlive: true,
       // savePosition: true,

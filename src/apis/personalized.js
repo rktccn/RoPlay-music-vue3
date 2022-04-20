@@ -1,12 +1,12 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 // 说明 : 私人 FM( 需要登录 )
 export function personalFM() {
   return req
     .get("/personal_fm", {
       params: {
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -25,7 +25,7 @@ export function dailyRecommendTracks() {
   return req
     .get("/recommend/songs", {
       params: {
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -44,7 +44,7 @@ export function dailyRecommendPlaylist(params) {
     .get("/recommend/resource", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -65,7 +65,7 @@ export function recommendPlaylist(params) {
     .get("/personalized", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -84,7 +84,7 @@ export function recommendNewSong(limit) {
     .get("/personalized/newsong", {
       params: {
         limit,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -103,7 +103,7 @@ export function recommendFM(limit) {
     .get("/personalized/djprogram", {
       params: {
         limit,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {

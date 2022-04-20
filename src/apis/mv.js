@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 /**
  * 获取 mv 数据

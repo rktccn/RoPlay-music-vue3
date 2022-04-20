@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 /**
  * 搜索
@@ -61,7 +61,7 @@ export function fmTrash(id) {
     url: "/fm_trash",
     method: "post",
     params: {
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
       id,
     },
   }).then((res) => {

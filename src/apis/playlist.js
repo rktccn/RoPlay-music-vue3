@@ -1,7 +1,5 @@
 import req from "../utils/http";
-import Cookies from "js-cookie";
-const cookie = `MUSIC_U=${Cookies.get("MUSIC_U")};`;
-
+import { useStore } from "../store/index";
 /**
  * 获取歌单详情
  * 说明 : 歌单能看到歌单名字, 但看不到具体歌单内容 , 调用此接口 , 传入歌单 id, 可以获取对应歌单内的所有的音乐(未登录状态只能获取不完整的歌单,登录后是完整的)，
@@ -17,7 +15,7 @@ export function getPlaylistDetail(id) {
       params: {
         id,
         timestamp: new Date().getTime(),
-        cookie,
+        cookie: useStore().userCookie,
       },
     })
     .then((res) => {
@@ -58,6 +56,8 @@ export function highQualityPlaylist(params) {
  * @param {number=} params.limit
  */
 export function topPlaylist(params) {
+  console.log(useStore().userCookie);
+
   return req
     .get("/top/playlist", {
       params,
@@ -101,7 +101,7 @@ export function subscribePlaylist(params) {
   return req
     .get("/playlist/subscribe", {
       params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     })
     .then((res) => {
       return res;
@@ -120,7 +120,7 @@ export function deletePlaylist(id) {
     method: "post",
     params: {
       id,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -144,7 +144,7 @@ export function createPlaylist(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -168,7 +168,7 @@ export function addOrRemoveTrackFromPlaylist(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -194,7 +194,7 @@ export function getPlaylistTracks(params) {
     params: {
       ...params,
       timestamp: new Date().getTime(),
-      cookie,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;

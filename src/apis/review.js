@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 /**
  * 新版评论接口
@@ -103,7 +103,7 @@ export function likeComment(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -131,7 +131,7 @@ export function writeComment(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -159,7 +159,7 @@ export function deleteComment(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -183,7 +183,7 @@ export function likeResource(params) {
     method: "post",
     params: {
       ...params,
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;

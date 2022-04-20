@@ -10,6 +10,7 @@ export const useStore = defineStore("main", {
       isLoggedIn: -1, // -1: 未登录, 1: 已登录, 2: 通过搜索用户名登陆
       userInfo: {}, // 用户信息
       userPlaylist: [], // 用户歌单
+      userCookie: "",
     };
   },
   getters: {
@@ -53,7 +54,7 @@ export const useStore = defineStore("main", {
       {
         key: "user",
         storage: localStorage,
-        paths: ["isLoggedIn", "userInfo"],
+        paths: ["isLoggedIn", "userInfo", "userCookie"],
       },
     ],
   },

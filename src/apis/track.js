@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 /**
  * 获取音乐 url
@@ -17,7 +17,7 @@ export function getMP3(id, br = 320000) {
       params: {
         id,
         br,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -90,7 +90,7 @@ export function likeATrack(params) {
     .get("/like", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -114,7 +114,7 @@ export function scrobble(params) {
     .get("/scrobble", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {

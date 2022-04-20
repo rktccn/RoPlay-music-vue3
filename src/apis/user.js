@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 /**
  * 获取用户详情
@@ -12,7 +12,7 @@ export function userDetail(uid) {
     .get("/user/detial", {
       params: {
         uid,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
       withCredentials,
     })
@@ -27,7 +27,7 @@ export function userAccount() {
   return req
     .get("/user/account", {
       params: {
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -44,7 +44,7 @@ export function userLikedSongsIDs(uid) {
     .get("/likelist", {
       params: {
         uid,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -61,7 +61,7 @@ export function dailySignin(type = 0) {
     .get("/daily_signin", {
       params: {
         type,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -81,7 +81,7 @@ export function likedAlbums(params) {
     .get("/album/sublist", {
       params: {
         limit: params.limit,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -96,7 +96,7 @@ export function likedArtists(params) {
     .get("/artist/sublist", {
       params: {
         limit: params.limit,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -111,7 +111,7 @@ export function likedMVs(params) {
     .get("/mv/sublist", {
       params: {
         limit: params.limit,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -128,7 +128,7 @@ export function uploadSong(file) {
     url: "/cloud",
     method: "post",
     params: {
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
     },
     data: formData,
     headers: {
@@ -151,7 +151,7 @@ export function cloudDisk(params = {}) {
     .get("/user/cloud", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -163,7 +163,7 @@ export function cloudDisk(params = {}) {
 export function cloudDiskTrackDetail(id) {
   return req.get("/user/cloud/detial", {
     params: {
-      cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+      cookie: useStore().userCookie || "",
       id,
     },
   });
@@ -177,7 +177,7 @@ export function cloudDiskTrackDelete(id) {
   return req
     .get("/user/cloud/del", {
       params: {
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
         id,
       },
     })
@@ -200,7 +200,7 @@ export function getUserPlaylist(params) {
     .get("/user/playlist", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -217,7 +217,7 @@ export function getUserDj(uid) {
     .get("/user/dj", {
       params: {
         uid,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -239,7 +239,7 @@ export function getUserFollows(params) {
     .get("/user/follows", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -261,7 +261,7 @@ export function getUserFans(params) {
     .get("/user/followeds", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);

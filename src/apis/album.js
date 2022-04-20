@@ -1,5 +1,5 @@
 import req from "../utils/http";
-import Cookie from "js-cookie";
+import { useStore } from "../store/index";
 
 //获取专辑内容
 export function getAlbum(id) {
@@ -51,7 +51,7 @@ export function likeAAlbum(params) {
     .post("/album/sub", {
       params: {
         ...params,
-        cookie: `MUSIC_U=${Cookie.get("MUSIC_U")};`,
+        cookie: useCookie,
       },
     })
     .then((res) => {
