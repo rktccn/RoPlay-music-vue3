@@ -7,6 +7,7 @@ export function personalFM() {
     .get("/personal_fm", {
       params: {
         cookie: useStore().userCookie || "",
+        timestamp: new Date().getTime(),
       },
     })
     .then((res) => {

@@ -1,11 +1,11 @@
 // 当前播放列表
 <template lang="">
   <div class="play-now section">
-    <h4 class="text-style-title">当前播放</h4>
+    <h4 class="text-style-title" v-if="!player.isPersonalFM">当前播放</h4>
     <TrackList
       class="play-now-track primary"
       :tracks="[tracks[currentIndex]]"
-      v-if="tracks.length"
+      v-if="tracks.length && !player.isPersonalFM"
       :canHover="false"
       :key="currentIndex + tracks.length"
     ></TrackList>
@@ -65,7 +65,7 @@ export default {
       }
     );
 
-    return { ...toRefs(data), currentIndex };
+    return { ...toRefs(data), player, currentIndex };
   },
   components: { TrackList },
 };

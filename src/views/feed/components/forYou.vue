@@ -6,18 +6,35 @@
       <li class="block personal_fm">
         <div class="cover">
           <img
-            src="http://p2.music.126.net/v4V40sXKnaqsG0ACyY0aDg==/109951164912221924.jpg?param=240y240"
+            :src="`${
+              player.personalFMCurrent.album.picUrl || ''
+            }?param=240y240`"
             alt="歌曲封面"
           />
         </div>
         <div class="info">
-          <span class="name font-size-24 text-truncate">温柔</span>
-          <span class="artist text-style-info text-truncate">五月天</span>
+          <span
+            class="name font-size-24 text-truncate"
+            v-if="personalFMCurrent !== {}"
+            >{{ personalFMCurrent.name }}</span
+          >
+          <span
+            class="artist text-style-info text-truncate"
+            v-if="personalFMCurrent !== {}"
+            ><ArtistFormat
+              :artistList="personalFMCurrent.artists"
+            ></ArtistFormat
+          ></span>
           <div class="control">
-            <span class="material-icons-round play-pause icon font-size-32"
-              >play_arrow</span
+            <span
+              class="material-icons-round play-pause icon font-size-32"
+              @click="player.playPersonalFM()"
             >
-            <span class="material-icons-round next icon font-size-32"
+              {{ player.isPlaying ? "pause" : "play_arrow" }}
+            </span>
+            <span
+              class="material-icons-round next icon font-size-32"
+              @click="player.playNextPersonalFM()"
               >skip_next</span
             >
             <span class="material-icons-round like icon font-size-24"
@@ -67,8 +84,11 @@
 <script>
 import { reactive, toRefs } from "vue";
 import { getPlaylistDetail } from "../../../apis/playlist";
+import { usePlayer } from "../../../store/player";
+import { storeToRefs } from "pinia";
 
 import PlayListCard from "../../../components/playListCard.vue";
+import ArtistFormat from "../../../components/artistFormat.vue";
 
 export default {
   name: "ForYou",
@@ -76,15 +96,22 @@ export default {
     const data = reactive({
       item: null,
     });
+    const player = usePlayer();
+    const { personalFMCurrent } = storeToRefs(player);
 
-    getPlaylistDetail(2130746789).then((res) => {
-      data.item = res.playlist;
-    });
+    // 获取数据
+    const getData = () => {
+      getPlaylistDetail(2130746789).then((res) => {
+        data.item = res.playlist;
+      });
+    };
 
-    return { ...toRefs(data) };
+    // getData();
+    return { ...toRefs(data), player, personalFMCurrent };
   },
   components: {
     PlayListCard,
+    ArtistFormat,
   },
 };
 </script>
@@ -109,8 +136,8 @@ export default {
     margin-left: 5%;
     border-radius: $border-radius-default;
     overflow: hidden;
-
     img {
+      border-radius: $border-radius-default;
       width: 100%;
     }
   }

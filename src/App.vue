@@ -11,18 +11,6 @@ import LyricPage from "./views/lyricPage.vue";
 import { useRoute } from "vue-router";
 import { useStore } from "./store/index";
 import { usePlayer } from "./store/player";
-import { getUserInfo } from "./utils/common";
-import { userAccount } from "./apis/user";
-import Cookie from "js-cookie";
-// Cookie.set("test", "test");
-if (Cookie.get("userCookie")) {
-  console.log(Cookie.get("userCookie"));
-  userAccount().then((res) => {
-    console.log(res);
-  });
-}
-
-getUserInfo();
 
 const route = useRoute();
 const store = useStore();

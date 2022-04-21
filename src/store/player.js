@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useStore } from ".";
 import { Howl, Howler } from "howler";
 import { ElNotification } from "element-plus";
 import { getTrackDetail, getMP3 } from "../apis/track";
@@ -6,6 +7,8 @@ import { getPlaylistDetail } from "../apis/playlist";
 import { getAlbum } from "../apis/album";
 import { timeFormat } from "../utils/common";
 import { getArtist } from "../apis/artist";
+import { personalFM } from "../apis/personalized";
+import { getUserPlaylist } from "../apis/user";
 
 export const usePlayer = defineStore("player", {
   state: () => {
@@ -20,6 +23,11 @@ export const usePlayer = defineStore("player", {
       trackList: [386538, 528272281],
       currentIndex: 0, // 当前歌曲在列表中的index
       deleteTrackIndex: -1, // 从播放列表中删除的歌曲index
+
+      // 私人FM
+      isPersonalFM: false, // 是否是私人FM
+      personalFMCurrent: {}, // 当前歌曲信息
+      personalFMNext: [], // 会储存三首未播放的歌曲，如果为空则加载新推荐
 
       howler: null,
     };
@@ -40,11 +48,35 @@ export const usePlayer = defineStore("player", {
 
   actions: {
     init() {
+      // 初始化用户信息
+      const store = useStore();
+
+      if (store.isLoggedIn === -1) return;
+      const userId = store.userInfo.userId;
+
+      // 密码登陆
+      if (store.isLoggedIn === 1) {
+        // 获取私人FM
+        this.getPersonalFM();
+      }
+
+      // 搜索用户名
+      if (store.isLoggedIn === 2) {
+        // 获取用户歌单
+        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
+          store.userPlaylist = res.playlist;
+        });
+      }
+      this.isPersonalFM = false;
+      if (this.currentIndex > this.trackList.length) {
+        this.currentIndex = 0;
+      }
       if (!this.trackList || this.trackList.length === 0) return;
       this.replaceCurrentTrack(
         this.trackList[this.currentIndex],
         false,
-        this.progress
+        this.progress,
+        false
       );
     },
 
@@ -68,6 +100,8 @@ export const usePlayer = defineStore("player", {
 
     // 上一首
     playPrev() {
+      if (this.isPersonalFM) return;
+
       if (!this.trackList || this.trackList.length === 0) return;
       this.currentIndex === 0
         ? (this.currentIndex = this.trackList.length - 1)
@@ -78,12 +112,16 @@ export const usePlayer = defineStore("player", {
 
     // 下一首
     playNext() {
-      if (!this.trackList || this.trackList.length === 0) return;
-      this.currentIndex === this.trackList.length - 1
-        ? (this.currentIndex = 0)
-        : this.currentIndex++;
+      if (this.isPersonalFM) {
+        this.playNextPersonalFM();
+      } else {
+        if (!this.trackList || this.trackList.length === 0) return;
+        this.currentIndex === this.trackList.length - 1
+          ? (this.currentIndex = 0)
+          : this.currentIndex++;
 
-      this.replaceCurrentTrack(this.trackList[this.currentIndex]);
+        this.replaceCurrentTrack(this.trackList[this.currentIndex]);
+      }
     },
 
     // 播放指定歌曲
@@ -106,17 +144,27 @@ export const usePlayer = defineStore("player", {
     },
 
     // 替换当前歌曲
-    replaceCurrentTrack(id, autoPlay = true, progress = 0) {
+    replaceCurrentTrack(
+      id,
+      autoPlay = true,
+      progress = 0,
+      isPersonalFM = false
+    ) {
+      this.isPersonalFM = isPersonalFM;
+
       getTrackDetail(id).then((res) => {
         getMP3(id).then((res2) => {
           if (res2.data[0].url) {
-            let index = this.trackList.indexOf(id);
-            if (index === -1) {
-              this.trackList.push(id);
-              this.currentIndex = this.trackList.length - 1;
-            } else {
-              this.currentIndex = index;
+            if (!this.isPersonalFM) {
+              let index = this.trackList.indexOf(id);
+              if (index === -1) {
+                this.trackList.push(id);
+                this.currentIndex = this.trackList.length - 1;
+              } else {
+                this.currentIndex = index;
+              }
             }
+            console.log(this.currentTrack);
             this.currentTrack = res.songs[0];
             this.playSong(res2.data[0].url, autoPlay, progress);
           } else {
@@ -241,6 +289,45 @@ export const usePlayer = defineStore("player", {
         this.replaceCurrentTrack(ids[0]);
       });
     },
+
+    // 获取私人FM歌曲
+    async getPersonalFM() {
+      if (this.personalFMNext.length === 0) {
+        await personalFM().then((res) => {
+          this.personalFMNext = res.data;
+          if (!this.personalFMCurrent.name) {
+            this.personalFMCurrent = this.personalFMNext[0];
+            this.personalFMNext.splice(0, 1);
+          }
+        });
+      }
+    },
+
+    // 播放私人fm歌曲
+    async playPersonalFM() {
+      if (!this.personalFMCurrent.name) {
+        await this.getPersonalFM();
+      }
+      if (this.isPersonalFM) {
+        this.playOrPause();
+      } else {
+        this.replaceCurrentTrack(this.personalFMCurrent.id, true, 0, true);
+      }
+    },
+
+    // 播放下一首私人FM
+    async playNextPersonalFM() {
+      console.log("下一首");
+      if (this.personalFMNext.length === 0) {
+        await this.getPersonalFM();
+      }
+      this.personalFMCurrent = this.personalFMNext[0];
+      this.personalFMNext.splice(0, 1);
+      this.replaceCurrentTrack(this.personalFMCurrent.id, true, 0, true);
+      if (this.personalFMNext.length === 0) {
+        this.getPersonalFM();
+      }
+    },
   },
   // 开启数据缓存
   persist: {
@@ -248,7 +335,7 @@ export const usePlayer = defineStore("player", {
     strategies: [
       {
         storage: localStorage,
-        paths: ["progress", "volume", "trackList", "currentIndex"],
+        paths: ["progress", "volume", "currentIndex", "currentTrack"],
       },
     ],
   },
