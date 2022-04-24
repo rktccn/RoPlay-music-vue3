@@ -10,7 +10,6 @@ let playlistItem = reactive({
 });
 // 如果登陆，则传入四个歌单到歌单列表
 const getList = () => {
-  console.log(store.userPlaylist);
   if (store.isLoggedIn !== -1) {
     for (let i = 0; i < 4; i++) {
       const item = store.userPlaylist[i];

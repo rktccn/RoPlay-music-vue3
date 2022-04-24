@@ -115,6 +115,7 @@ export function scrobble(params) {
       params: {
         ...params,
         cookie: useStore().userCookie || "",
+        timestamp: new Date().getTime(),
       },
     })
     .then((res) => {

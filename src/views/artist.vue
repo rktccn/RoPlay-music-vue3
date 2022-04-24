@@ -102,7 +102,6 @@ export default {
 
       getArtistAlbum({ id, limit: 2 }).then((res) => {
         data.albums = res.hotAlbums;
-        console.log(data.albums);
       });
 
       getArtistMv({ id, limit: 16 }).then((res) => {

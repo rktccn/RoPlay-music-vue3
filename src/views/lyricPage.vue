@@ -200,7 +200,7 @@
       >
     </ScrollTab>
     <PipLyric
-      :currentLyric="lyricList[curIndex].content"
+      :currentLyric="lyricList[curIndex]?.content || ''"
       :nextLyric="lyricList[curIndex + 1]?.content || ''"
       :color="color || {}"
       :isPIP="isPIP ? true : false"
@@ -517,7 +517,7 @@ export default {
       border-radius: $border-radius-default * 2;
       line-height: 0;
       background: black;
-      
+
       &::before {
         content: "";
         background: inherit;

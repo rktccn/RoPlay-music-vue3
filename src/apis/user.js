@@ -14,7 +14,6 @@ export function userDetail(uid) {
         uid,
         cookie: useStore().userCookie || "",
       },
-      withCredentials,
     })
     .then((res) => res);
 }
@@ -265,4 +264,21 @@ export function getUserFans(params) {
       },
     })
     .then((res) => res);
+}
+
+/**
+ * 获取用户播放记录
+ * 说明 : 登录后调用此接口 , 传入用户 id, 可获取用户播放记录
+ * - uid : 用户 id
+ * - type : type=1 时只返回 weekData, type=0 时返回 allData
+ * @param {Object} params
+ * @param {number} params.uid
+ * @param {number} params.type
+ */
+export function userPlayHistory(params) {
+  return req({
+    url: `/user/record`,
+    method: "get",
+    params,
+  });
 }

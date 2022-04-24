@@ -541,14 +541,15 @@ export default {
     const initUserInfo = (val) => {
       store.isLoggedIn = 1;
       store.userCookie = val.cookie;
+      console.log(val);
       if (val.profile && val.profile !== {}) {
         store.userInfo = val.profile;
-        window.location.href = "/";
+        // window.location.href = "/";
       } else {
         userAccount().then((res) => {
           console.log(res);
           store.userInfo = res.profile;
-          window.location.href = "/";
+          // window.location.href = "/";
         });
       }
     };

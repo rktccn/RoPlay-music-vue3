@@ -157,6 +157,27 @@ const routes = [
     name: "Login",
     component: () => import("../views/login/login.vue"),
   },
+
+  // 日推
+  {
+    path: "/dailysongs",
+    name: "DailySongs",
+    component: () => import("../views/songList.vue"),
+  },
+
+  //听歌排行
+  {
+    path: "/songsrecord",
+    name: "SongsRecord",
+    component: () => import("../views/songList.vue"),
+  },
+
+  //我的收藏
+  {
+    path: "/favouritesongs",
+    name: "FavouriteSongs",
+    component: () => import("../views/songList.vue"),
+  },
 ];
 
 const router = createRouter({

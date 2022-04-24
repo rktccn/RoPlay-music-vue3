@@ -4,7 +4,7 @@
     :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
     ref="refItem"
     :style="setStyle()"
-    @dblclick="player.replaceCurrentTrack(id, canPlay)"
+    @dblclick="player.replaceCurrentTrack(id)"
     @click.right="showContextMenu"
   >
     <div class="inner">

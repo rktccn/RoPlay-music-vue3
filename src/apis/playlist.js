@@ -56,8 +56,6 @@ export function highQualityPlaylist(params) {
  * @param {number=} params.limit
  */
 export function topPlaylist(params) {
-  console.log(useStore().userCookie);
-
   return req
     .get("/top/playlist", {
       params,

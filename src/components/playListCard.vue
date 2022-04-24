@@ -130,7 +130,7 @@ export default {
 
     const setPlayList = () => {
       const playlist = props.item;
-      data.imgUrl = `${playlist.coverImgUrl}?param=480y480`;
+      data.imgUrl = `${playlist.coverImgUrl || playlist.picUrl}?param=480y480`;
       let date = dateFormat(playlist.createTime, false);
       data.publishTime = date;
       data.updataTime = dateFormat(playlist.updateTime, false);
@@ -204,7 +204,6 @@ export default {
         maxWidth: null,
       };
       if (props.size) {
-        console.log(props.size);
         style.width = props.size;
         style.maxWidth = props.size;
       }

@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useStore } from ".";
 import { Howl, Howler } from "howler";
 import { ElNotification } from "element-plus";
-import { getTrackDetail, getMP3 } from "../apis/track";
+import { getTrackDetail, getMP3, scrobble } from "../apis/track";
 import { getPlaylistDetail } from "../apis/playlist";
 import { getAlbum } from "../apis/album";
 import { timeFormat } from "../utils/common";
@@ -120,7 +120,12 @@ export const usePlayer = defineStore("player", {
           ? (this.currentIndex = 0)
           : this.currentIndex++;
 
-        this.replaceCurrentTrack(this.trackList[this.currentIndex]);
+        this.replaceCurrentTrack(
+          this.trackList[this.currentIndex],
+          true,
+          -1,
+          false
+        );
       }
     },
 
@@ -139,6 +144,9 @@ export const usePlayer = defineStore("player", {
       document.title = `Ro Play - ${this.currentTrack.name} · ${this.currentTrack.ar[0].name}`;
 
       this.howler.once("end", () => {
+        let id = this.currentTrack.id;
+        let time = this.currentTrack.dt / 1000;
+        scrobble({ id, time, sourceid: 0 });
         this.playNext();
       });
     },
@@ -147,7 +155,7 @@ export const usePlayer = defineStore("player", {
     replaceCurrentTrack(
       id,
       autoPlay = true,
-      progress = 0,
+      progress = 0, // 如果为-1则播放下一首
       isPersonalFM = false
     ) {
       this.isPersonalFM = isPersonalFM;
@@ -164,7 +172,6 @@ export const usePlayer = defineStore("player", {
                 this.currentIndex = index;
               }
             }
-            console.log(this.currentTrack);
             this.currentTrack = res.songs[0];
             this.playSong(res2.data[0].url, autoPlay, progress);
           } else {
@@ -174,8 +181,10 @@ export const usePlayer = defineStore("player", {
               position: "bottom-right",
               type: "error",
             });
+            if (progress === -1) {
+              this.playNext();
+            }
 
-            this.playNext();
             return;
           }
         });
@@ -317,7 +326,6 @@ export const usePlayer = defineStore("player", {
 
     // 播放下一首私人FM
     async playNextPersonalFM() {
-      console.log("下一首");
       if (this.personalFMNext.length === 0) {
         await this.getPersonalFM();
       }
@@ -335,7 +343,13 @@ export const usePlayer = defineStore("player", {
     strategies: [
       {
         storage: localStorage,
-        paths: ["progress", "volume", "currentIndex", "currentTrack"],
+        paths: [
+          "progress",
+          "volume",
+          "currentIndex",
+          "trackList",
+          "currentTrack",
+        ],
       },
     ],
   },

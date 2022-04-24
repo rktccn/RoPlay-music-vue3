@@ -74,7 +74,6 @@ export default {
     // const drawBackground = () => {};
 
     function draw(canvas, rotation = 0) {
-      console.log("开始");
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 

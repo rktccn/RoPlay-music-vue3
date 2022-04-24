@@ -110,7 +110,6 @@ export default {
     let loading = false;
 
     topPlaylist({ limit: 50 }).then((res) => {
-      console.log(res);
       data.playlists = res.playlists;
     });
 
@@ -122,7 +121,6 @@ export default {
           limit: 20,
           cat: data.tab,
         }).then((res) => {
-          console.log(res.playlists);
           data.playlists = data.playlists.concat(res.playlists); // 拼接数组
           loading = false;
           if (res.playlists.length < 20) {

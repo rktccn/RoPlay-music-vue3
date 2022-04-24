@@ -17,6 +17,7 @@ const store = useStore();
 
 const player = usePlayer();
 player.init();
+store.init();
 
 const clientWidth = document.documentElement.clientWidth
   ? document.documentElement.clientWidth

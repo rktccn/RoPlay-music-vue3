@@ -7,7 +7,7 @@
         <div class="cover">
           <img
             :src="`${
-              player.personalFMCurrent.album.picUrl || ''
+              player.personalFMCurrent?.album?.picUrl || ''
             }?param=240y240`"
             alt="歌曲封面"
           />
@@ -30,7 +30,9 @@
               class="material-icons-round play-pause icon font-size-32"
               @click="player.playPersonalFM()"
             >
-              {{ player.isPlaying ? "pause" : "play_arrow" }}
+              {{
+                player.isPlaying && player.isPersonalFM ? "pause" : "play_arrow"
+              }}
             </span>
             <span
               class="material-icons-round next icon font-size-32"
@@ -50,23 +52,29 @@
         </div>
       </li>
       <!-- 日推 -->
-      <li class="playlist">
-        <PlayListCard
-          type="playlist"
-          size="100%"
-          :showArtist="false"
-          :item="item"
-          v-if="item"
-        ></PlayListCard>
+      <li class="daily-songs" v-if="dailySongs[0]">
+        <div class="cover">
+          <img :src="`${dailySongs[0].al.picUrl}?param=480y480`" alt="" />
+          <div class="sign primary">
+            <span>{{ getDate() }}</span>
+          </div>
+          <div class="mask" @click.self="goToDailySongs">
+            <span class="material-icons-round" @click="playDailySongs">
+              play_arrow
+            </span>
+          </div>
+        </div>
+        <div class="name" @click.self="goToDailySongs">今日推荐</div>
       </li>
+
       <!-- 推荐歌单 -->
       <li class="playlist">
         <PlayListCard
           type="playlist"
           size="100%"
           :showArtist="false"
-          :item="item"
-          v-if="item"
+          :item="dailyPlaylist[0]"
+          v-if="dailyPlaylist[0]"
         ></PlayListCard>
       </li>
       <li class="playlist">
@@ -74,8 +82,8 @@
           type="playlist"
           size="100%"
           :showArtist="false"
-          :item="item"
-          v-if="item"
+          :item="dailyPlaylist[1]"
+          v-if="dailyPlaylist[1]"
         ></PlayListCard>
       </li>
     </ul>
@@ -83,31 +91,72 @@
 </template>
 <script>
 import { reactive, toRefs } from "vue";
-import { getPlaylistDetail } from "../../../apis/playlist";
 import { usePlayer } from "../../../store/player";
 import { storeToRefs } from "pinia";
+import {
+  dailyRecommendPlaylist,
+  dailyRecommendTracks,
+} from "../../../apis/personalized";
 
 import PlayListCard from "../../../components/playListCard.vue";
 import ArtistFormat from "../../../components/artistFormat.vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "ForYou",
   setup() {
     const data = reactive({
       item: null,
+      dailySongs: [], // 日推歌曲
+      dailyPlaylist: [], // 日推歌单
     });
     const player = usePlayer();
     const { personalFMCurrent } = storeToRefs(player);
+    const router = useRouter();
 
     // 获取数据
     const getData = () => {
-      getPlaylistDetail(2130746789).then((res) => {
-        data.item = res.playlist;
+      dailyRecommendPlaylist().then((res) => {
+        console.log(res);
+        data.dailyPlaylist.push(res.recommend[0]);
+        data.dailyPlaylist.push(res.recommend[1]);
+      });
+
+      dailyRecommendTracks().then((res) => {
+        data.dailySongs = res.data.dailySongs;
       });
     };
 
-    // getData();
-    return { ...toRefs(data), player, personalFMCurrent };
+    // 获取当前日期
+    const getDate = () => {
+      const date = new Date();
+      const day = date.getDate();
+      return day;
+    };
+
+    // 播放歌曲,将id传入歌曲列表
+    const playDailySongs = () => {
+      console.log("123123");
+      if (data.dailySongs.length === 0) return;
+      player.trackList = data.dailySongs.map((item) => {
+        return item.id;
+      });
+      player.replaceCurrentTrack(data.dailySongs[0].id);
+    };
+
+    const goToDailySongs = () => {
+      router.push("/dailySongs");
+    };
+
+    getData();
+    return {
+      ...toRefs(data),
+      player,
+      personalFMCurrent,
+      getDate,
+      playDailySongs,
+      goToDailySongs,
+    };
   },
   components: {
     PlayListCard,
@@ -159,6 +208,89 @@ export default {
 
       .icon {
         margin-right: 4px;
+      }
+    }
+  }
+}
+
+.daily-songs {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.6vw 0.9vw;
+  overflow: hidden;
+  grid-column: span 2;
+  cursor: pointer;
+  .cover {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 3px;
+    border-radius: $border-radius-default;
+    transition: all $transition-time-default;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+    }
+
+    img {
+      width: 100%;
+      transition: all $transition-time-default;
+    }
+
+    .sign {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 21%;
+      height: 21%;
+      border-radius: 100% 0% 0 0%;
+      font-weight: bolder;
+      font-size: 38px;
+      z-index: 1;
+
+      span {
+        display: block;
+        transform: translate(-20px, -14px);
+      }
+    }
+
+    .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0);
+      transition: all $transition-time-default;
+      z-index: 1;
+
+      span {
+        font-size: 5rem;
+        color: #fff;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+      }
+      .mask {
+        background-color: rgba(0, 0, 0, 0.2);
+
+        span {
+          opacity: 1;
+        }
       }
     }
   }

@@ -38,10 +38,6 @@ export default {
   },
   emits: ["selectChange"],
   setup(props, { emit }) {
-    console.log(props.active);
-    // if (!props.active) return;
-    // console.log("开始");
-
     const clientWidth = document.documentElement.clientWidth
       ? document.documentElement.clientWidth
       : document.body.clientWidth;

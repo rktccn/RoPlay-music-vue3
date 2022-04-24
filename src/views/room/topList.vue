@@ -60,10 +60,8 @@ export default {
     // 获取排行榜
     const getData = () => {
       getTopList().then((res) => {
-        console.log(res);
         data.TopLists = res.list;
         data.TopArtist = res.artistToplist;
-        console.log(data.TopArtist.artists);
       });
     };
 

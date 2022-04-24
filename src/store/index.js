@@ -22,6 +22,8 @@ export const useStore = defineStore("main", {
     },
   },
   actions: {
+    init() {},
+
     setMusicId(param) {
       this.musicId = param;
     },

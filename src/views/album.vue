@@ -40,7 +40,6 @@ export default {
 
     const getData = async () => {
       await getAlbum(id).then((res) => {
-        console.log(res);
         data.tracks = res.songs;
         data.item = res.album;
       });

@@ -68,7 +68,6 @@ export default {
     const getData = async () => {
       await getPlaylistDetail(id)
         .then((res) => {
-          console.log(res);
           if (res.code === 200) {
             data.item = res.playlist;
             data.trackCount = res.playlist.trackCount;
@@ -105,7 +104,6 @@ export default {
         data.tracks = res.songs;
         data.maxPage = Math.ceil(data.trackCount / 20) - 1;
         overTracks = data.trackCount % 20; // 多余歌曲
-        console.log(data.maxPage);
 
         if (data.maxPage === 0) {
           loading = false;

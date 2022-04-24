@@ -1,12 +1,8 @@
 <template lang="">
   <div>
-    <ForYou></ForYou>
+    <ForYou class="section"></ForYou>
 
-    <!-- 根据推荐显示歌曲和热评 -->
-    <section>
-      <div class="text-style-title">一言</div>
-    </section>
-
+    <FavouriteAndRecord class="section"></FavouriteAndRecord>
     <!-- 心动模式 -->
     <section>
       <div class="text-style-title">根据「温柔」推荐</div>
@@ -30,12 +26,14 @@
 </template>
 <script>
 import ForYou from "./components/forYou.vue";
+import FavouriteAndRecord from "./components/favouriteAndRecord.vue";
 
 export default {
   name: "Feed",
   setup() {},
   components: {
     ForYou,
+    FavouriteAndRecord,
   },
 };
 </script>
