@@ -16,14 +16,25 @@
           </div>
           <div class="inner" id="lyricPageInner">
             <!-- 歌曲封面 -->
-            <div class="cover" @click="toggleLyric">
-              <img
+            <div
+              class="cover"
+              @click="toggleLyric"
+              :style="{
+                backgroundImage: `url(
+                    ${
+                      player?.currentTrack?.al?.picUrl ||
+                      'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
+                    }?param=1024y1024)`,
+              }"
+            >
+              <div></div>
+              <!-- <img
                 :src="`${
                   player?.currentTrack?.al?.picUrl ||
                   'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
                 }?param=1024y1024`"
                 alt=""
-              />
+              /> -->
             </div>
 
             <!-- 移动端播放控件会传送至body -->
@@ -516,33 +527,33 @@ export default {
       padding-top: 100%;
       border-radius: $border-radius-default * 2;
       line-height: 0;
-      background: black;
 
       &::before {
         content: "";
         background: inherit;
         width: 100%;
         height: 100%;
-        box-shadow: 0px 10px 40px 0px rgb(76 70 124 / 50%);
+        box-shadow: 0px 10px 40px 0px rgba(47, 47, 47, 0.5);
         display: block;
         position: absolute;
         top: 10%;
-        // right: 8%;
         left: 8%;
         transform: scale(0.9);
-        filter: blur(10px);
+        filter: blur(20px);
         opacity: 0.68;
         border-radius: 15px;
         z-index: 0;
       }
 
-      img {
+      div {
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-
+        top: 0;
+        left: 0;
         width: 100%;
+        height: 100%;
+        background-image: inherit;
+        background-size: contain;
+        background-position: center;
         border-radius: $border-radius-default * 2;
       }
     }

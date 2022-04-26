@@ -168,3 +168,49 @@ export function getArtistList(params) {
       return res;
     });
 }
+
+/**
+ * 关注歌手新歌
+ * 说明 : 登录后调用此接口可获取关注歌手新歌
+ * - limit: 取出评论数量 , 默认为 20
+ * - before: 上一页数据返回的 publishTime 的数据
+
+ * @param {Object} params
+ * @param {number=} params.limit
+ * @param {number=} params.before
+ */
+export function getFollowedArtistNewMvs(params) {
+  return req
+    .get("/artist/new/mv", {
+      params: {
+        ...params,
+        cookie: useStore().userCookie || "",
+      },
+    })
+    .then((res) => {
+      return res;
+    });
+}
+
+/**
+ * 关注歌手新 MV
+ * 说明 :登录后调用此接口可获取关注歌手新 MV
+ * - limit: 取出评论数量 , 默认为 20
+ * - before: 上一页数据返回的 publishTime 的数据
+
+ * @param {Object} params
+ * @param {number=} params.limit
+ * @param {number=} params.before
+ */
+export function getFollowedArtistNewSongs(params) {
+  return req
+    .get("/artist/new/song", {
+      params: {
+        ...params,
+        cookie: useStore().userCookie || "",
+      },
+    })
+    .then((res) => {
+      return res;
+    });
+}

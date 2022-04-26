@@ -43,7 +43,7 @@ import { useStore } from "../../../store";
 import { useRouter } from "vue-router";
 import { usePlayer } from "../../../store/player";
 export default {
-  name: "FavouriteAndRecord",
+  name: "FeedFavouriteAndRecord",
   setup() {
     const router = useRouter();
     const data = reactive({
@@ -68,15 +68,13 @@ export default {
 
     // 获取前30首歌曲名称
     const getFavouriteSongsName = () => {
-      userLikedSongsIDs().then((res) => {
-        console.log(res);
-        data.favouriteSongsCount = res.ids.length;
-        favouriteIds = res.ids;
-        const ids = res.ids.slice(0, 25);
-        getTrackDetail(ids.join(",")).then((res) => {
-          data.favouriteSongsName = res.songs.map((item) => {
-            return item.name;
-          });
+      let ids = player.likedSongIDs;
+      data.favouriteSongsCount = ids.length;
+      favouriteIds = ids;
+      const arr = ids.slice(0, 25).join(",");
+      getTrackDetail(arr).then((res) => {
+        data.favouriteSongsName = res.songs.map((item) => {
+          return item.name;
         });
       });
     };
@@ -183,6 +181,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: pointer;
 
     .icon {
       font-size: 48px;

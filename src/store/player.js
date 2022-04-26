@@ -8,7 +8,7 @@ import { getAlbum } from "../apis/album";
 import { timeFormat } from "../utils/common";
 import { getArtist } from "../apis/artist";
 import { personalFM } from "../apis/personalized";
-import { getUserPlaylist } from "../apis/user";
+import { getUserPlaylist, userLikedSongsIDs } from "../apis/user";
 
 export const usePlayer = defineStore("player", {
   state: () => {
@@ -28,6 +28,9 @@ export const usePlayer = defineStore("player", {
       isPersonalFM: false, // 是否是私人FM
       personalFMCurrent: {}, // 当前歌曲信息
       personalFMNext: [], // 会储存三首未播放的歌曲，如果为空则加载新推荐
+
+      // 个人信息
+      likedSongIDs: [], // 喜欢的歌曲id
 
       howler: null,
     };
@@ -58,6 +61,11 @@ export const usePlayer = defineStore("player", {
       if (store.isLoggedIn === 1) {
         // 获取私人FM
         this.getPersonalFM();
+
+        // 获取收藏的歌曲
+        userLikedSongsIDs().then((res) => {
+          this.likedSongIDs = res.ids;
+        });
       }
 
       // 搜索用户名

@@ -3,30 +3,20 @@
     <ForYou class="section"></ForYou>
 
     <FavouriteAndRecord class="section"></FavouriteAndRecord>
-    <!-- 心动模式 -->
-    <section>
-      <div class="text-style-title">根据「温柔」推荐</div>
-    </section>
 
-    <!-- 歌单雷达 -->
-    <section>
-      <div class="text-style-title">歌单雷达</div>
-    </section>
+    <!-- <MyPlaylist></MyPlaylist> -->
 
-    <!-- 推荐歌单 -->
-    <section>
-      <div class="text-style-title">推荐歌单</div>
-    </section>
+    <!-- <Follow></Follow> -->
 
-    <!-- 动态更新 -->
-    <section>
-      <div class="text-style-title">不要错过</div>
-    </section>
+    <Playlist></Playlist>
   </div>
 </template>
 <script>
 import ForYou from "./components/forYou.vue";
 import FavouriteAndRecord from "./components/favouriteAndRecord.vue";
+import MyPlaylist from "./components/myPlaylist.vue";
+import Follow from "./components/follow.vue";
+import Playlist from "./components/playlist.vue";
 
 export default {
   name: "Feed",
@@ -34,6 +24,9 @@ export default {
   components: {
     ForYou,
     FavouriteAndRecord,
+    MyPlaylist,
+    Follow,
+    Playlist,
   },
 };
 </script>

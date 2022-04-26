@@ -50,7 +50,13 @@
           </span>
         </div>
         <div class="like" :class="{ normal: itemWidth <= 2 }">
-          <span class="material-icons-round"> favorite_border </span>
+          <span
+            class="material-symbols-rounded"
+            :class="{ fill: isLiked }"
+            @click="toggleLike"
+          >
+            favorite
+          </span>
         </div>
       </div>
       <span
@@ -65,7 +71,7 @@
 import { onBeforeUnmount, onMounted, reactive, ref, toRefs } from "vue";
 import { timeFormat } from "../utils/common.js";
 import { usePlayer } from "../store/player.js";
-import { getMP3 } from "../apis/track.js";
+import { getMP3, likeATrack } from "../apis/track.js";
 
 import ArtistFormat from "./artistFormat.vue";
 import createContextMenu from "./contextMenu.js";
@@ -169,6 +175,7 @@ export default {
       data.title = track.name;
       data.id = track.id;
       getMusicUrl();
+      data.isLiked = player.likedSongIDs.includes(track.id);
     };
 
     initData();
@@ -183,6 +190,19 @@ export default {
     // 打开右键菜单
     const showContextMenu = (e) => {
       createContextMenu(e, data.id);
+    };
+
+    // 切换收藏
+    const toggleLike = async () => {
+      if (data.isLiked) {
+        await likeATrack({ id: data.id, like: false });
+        data.isLiked = false;
+        player.likedSongIDs.splice(player.likedSongIDs.indexOf(data.id), 1);
+      } else {
+        await likeATrack({ id: data.id, like: true });
+        data.isLiked = true;
+        player.likedSongIDs.push(data.id);
+      }
     };
 
     onMounted(() => {
@@ -201,6 +221,7 @@ export default {
       calcWidth,
       setStyle,
       showContextMenu,
+      toggleLike,
     };
   },
   components: {
@@ -302,6 +323,10 @@ export default {
       position: absolute;
       right: 0;
       top: 0;
+    }
+
+    .fill {
+      color: #ea4c89;
     }
 
     display: none;

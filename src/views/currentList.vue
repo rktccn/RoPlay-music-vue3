@@ -15,7 +15,7 @@
     <h4 class="text-style-title">播放列表</h4>
     <TrackList
       :tracks="tracks"
-      v-if="tracks.length"
+      v-if="tracks.length !== 0"
       :key="tracks.length"
     ></TrackList>
     <p v-if="!tracks.length">暂无歌曲</p>
@@ -44,13 +44,20 @@ export default {
     });
 
     const { trackList, currentIndex } = storeToRefs(player);
-    let offset = 0;
     let loading = false;
 
     const getTracks = (val) => {
       if (val.length !== 0) {
         getTrackDetail(val).then((res) => {
           data.tracks = data.tracks.concat(res.songs);
+          console.log(res.songs);
+          if (res.songs.length < 50) {
+            data.hasMore = false;
+            document
+              .getElementsByClassName("el-main")[0]
+              .removeEventListener("scroll", loadMore);
+            return;
+          }
           loading = false;
         });
       }
@@ -60,16 +67,10 @@ export default {
     const loadMore = () => {
       if (loading) return;
       if (isScrollBottom()) {
-        console.log("加载");
         loading = true;
-        offset += 50;
-        if (offset > trackList.value.length) {
-          data.hasMore = false;
-          document
-            .getElementsByClassName("el-main")[0]
-            .removeEventListener("scroll", loadMore);
-        }
-        let arr = trackList.value.slice(offset, offset + 50).join(",");
+        let arr = trackList.value
+          .slice(data.tracks.length, data.tracks.length + 50)
+          .join(",");
         getTracks(arr);
       }
     };

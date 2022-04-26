@@ -103,7 +103,7 @@ import ArtistFormat from "../../../components/artistFormat.vue";
 import { useRouter } from "vue-router";
 
 export default {
-  name: "ForYou",
+  name: "FeedForYou",
   setup() {
     const data = reactive({
       item: null,

@@ -6,6 +6,7 @@ export default {
   name: "exploreBanner",
   setup() {
     const data = reactive({
+      bannerHeight: "280px",
       bannerList: null,
       category: [
         {
@@ -41,42 +42,41 @@ export default {
 </script>
 
 <template lang="">
-  <div class="feed">
-    <!-- banner -->
-    <!-- |--- 分类(歌手 排行 歌单 电台) -->
-    <section class="section-focus">
-      <div class="banner">
-        <el-carousel height="280px" direction="vertical" :autoplay="true">
-          <el-carousel-item v-for="(item, index) in bannerList" :key="index">
-            <div
-              class="banner-item"
-              :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
-            >
-              <div
-                :style="`background-image: url(${item.imageUrl}?param=756y280) `"
-              ></div>
-            </div>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
-      <div class="category">
-        <div
-          class="category-inner"
-          v-for="(item, index) in category"
-          :key="index"
-        >
-          <router-link :to="item.path">
-            <span class="category-item">
-              <span class="category-icon material-icons-round font-size-48">
-                {{ item.iconName }}
-              </span>
-              <em>{{ item.name }}</em>
+  <!-- banner -->
+  <!-- |--- 分类(歌手 排行 歌单 电台) -->
+  <section class="section-focus">
+    <div class="banner" id="banner-main">
+      <el-carousel :height="bannerHeight" direction="vertical" :autoplay="true">
+        <el-carousel-item v-for="(item, index) in bannerList" :key="index">
+          <div
+            class="banner-item"
+            :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
+          >
+            <img :src="`${item.imageUrl}?param=756y280`" alt="" />
+            <!-- <div
+              :style="`background-image: url(${item.imageUrl}?param=756y280) `"
+            ></div> -->
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+    <div class="category">
+      <div
+        class="category-inner"
+        v-for="(item, index) in category"
+        :key="index"
+      >
+        <router-link :to="item.path">
+          <span class="category-item">
+            <span class="category-icon material-icons-round font-size-48">
+              {{ item.iconName }}
             </span>
-          </router-link>
-        </div>
+            <em>{{ item.name }}</em>
+          </span>
+        </router-link>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>
@@ -94,17 +94,18 @@ export default {
     overflow: hidden;
     .el-carousel {
       .banner-item {
+        position: relative;
         height: 100%;
         width: 100%;
         background-repeat: no-repeat;
         background-size: cover;
-        div {
-          height: 100%;
-          width: 100%;
 
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: contain;
+        img {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          height: 100%;
         }
       }
 
@@ -114,8 +115,18 @@ export default {
         .banner-item {
           height: 230px;
           width: 100%;
-          div {
-            height: 230px;
+        }
+      }
+
+      @media screen and (max-width: $sm) {
+        height: auto;
+
+        .banner-item {
+          height: 100%;
+          width: 100%;
+
+          img {
+            height: auto;
             width: 100%;
           }
         }

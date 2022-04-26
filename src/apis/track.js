@@ -111,7 +111,7 @@ export function likeATrack(params) {
  */
 export function scrobble(params) {
   return req
-    .get("/scrobble", {
+    .post("/scrobble", {
       params: {
         ...params,
         cookie: useStore().userCookie || "",
