@@ -178,6 +178,13 @@ const routes = [
     name: "FavouriteSongs",
     component: () => import("../views/songList.vue"),
   },
+
+  // 个人页面
+  {
+    path: "/personal",
+    name: "PersonalPage",
+    component: () => import("../views/personalPage/personalPage.vue"),
+  },
 ];
 
 const router = createRouter({

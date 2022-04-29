@@ -32,6 +32,10 @@ const toggleSideNav = () => {
   sideNav.value = !sideNav.value;
 };
 
+const goTo = (name) => {
+  router.push({ name });
+};
+
 watch(
   () => route.params.keyword,
   () => {
@@ -79,8 +83,7 @@ watch(
       >
         account_circle</router-link
       >
-
-      <span class="avator">
+      <span class="avator" @click="goTo('PersonalPage')">
         <img :src="`${store.userInfo.avatarUrl}?param=128y128`" alt="" />
       </span>
     </div>

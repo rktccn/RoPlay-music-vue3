@@ -6,7 +6,7 @@
     <div class="gap"></div>
     <div class="info">
       <span class="type font-size-12">{{ tag }}</span>
-      <h2 class="title font-size-26">{{ item.name }}</h2>
+      <h2 class="title font-size-26">{{ item?.name || item.nickname }}</h2>
       <p class="sub-title" v-if="type === 'album'">
         <span class="date">{{ publishTime }}</span>
         <em>·</em>
@@ -21,7 +21,7 @@
         {{ description }}
       </div>
       <div class="gap"></div>
-      <div class="control">
+      <div class="control" v-if="type !== 'user'">
         <button class="play primary" @click="playSong(id)">
           <span class="material-icons-round">play_arrow</span>
           播放
@@ -56,9 +56,15 @@ export default {
       id: null,
       playSong: () => {},
     });
-    let typeList = ["playlist", "album", "artist"];
+    let typeList = ["playlist", "album", "artist", "user"];
 
     const player = usePlayer();
+
+    const initUser = () => {
+      data.tag = "用户";
+      data.description = props.item.description || "暂无简介";
+      data.id = props.item.userId;
+    };
 
     const initPlaylist = () => {
       data.tag = "歌单";
@@ -84,7 +90,10 @@ export default {
 
     const getImgUrl = () => {
       let url =
-        props.item?.coverImgUrl || props.item?.picUrl || props.item?.img1v1Url;
+        props.item?.coverImgUrl ||
+        props.item?.picUrl ||
+        props.item?.img1v1Url ||
+        props.item?.avatarUrl;
       return `${url}?param=960y960`;
     };
 
@@ -98,6 +107,9 @@ export default {
           break;
         case 2:
           initArtist();
+          break;
+        case 3:
+          initUser();
           break;
         default:
           throw `type 必须为 ${typeList}`;

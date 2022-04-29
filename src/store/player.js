@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { useStore } from ".";
 import { Howl, Howler } from "howler";
 import { ElNotification } from "element-plus";
 import { getTrackDetail, getMP3, scrobble } from "../apis/track";
@@ -8,7 +7,6 @@ import { getAlbum } from "../apis/album";
 import { timeFormat } from "../utils/common";
 import { getArtist } from "../apis/artist";
 import { personalFM } from "../apis/personalized";
-import { getUserPlaylist, userLikedSongsIDs } from "../apis/user";
 
 export const usePlayer = defineStore("player", {
   state: () => {
@@ -51,30 +49,6 @@ export const usePlayer = defineStore("player", {
 
   actions: {
     init() {
-      // 初始化用户信息
-      const store = useStore();
-
-      if (store.isLoggedIn === -1) return;
-      const userId = store.userInfo.userId;
-
-      // 密码登陆
-      if (store.isLoggedIn === 1) {
-        // 获取私人FM
-        this.getPersonalFM();
-
-        // 获取收藏的歌曲
-        userLikedSongsIDs().then((res) => {
-          this.likedSongIDs = res.ids;
-        });
-      }
-
-      // 搜索用户名
-      if (store.isLoggedIn === 2) {
-        // 获取用户歌单
-        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
-          store.userPlaylist = res.playlist;
-        });
-      }
       this.isPersonalFM = false;
       if (this.currentIndex > this.trackList.length) {
         this.currentIndex = 0;

@@ -129,6 +129,7 @@ const showHeader = () => {
 }
 
 .el-main {
+  position: relative;
   background-color: var(--background-color-secondary);
   color: var(--text-color-primary);
   overflow-y: scroll;

@@ -107,7 +107,7 @@ export default {
     // 获取收藏歌曲
     const getLikedSong = () => {
       data.songs = [];
-      let arr = player.likedSongIDs.join(",");
+      let arr = store.likedSongIDs.join(",");
       getTrackDetail(arr).then((res) => {
         data.songs = res.songs;
       });

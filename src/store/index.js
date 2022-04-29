@@ -1,4 +1,6 @@
 import { defineStore } from "pinia";
+import { getUserPlaylist, userLikedSongsIDs } from "../apis/user";
+import { usePlayer } from "./player";
 
 export const useStore = defineStore("main", {
   state: () => {
@@ -9,7 +11,8 @@ export const useStore = defineStore("main", {
       // 登陆相关
       isLoggedIn: -1, // -1: 未登录, 1: 已登录, 2: 通过搜索用户名登陆
       userInfo: {}, // 用户信息
-      userPlaylist: [], // 用户歌单
+      userPlaylist: null, // 用户歌单
+      likedSongIDs: null, // 喜欢的歌曲id
       userCookie: "",
     };
   },
@@ -22,7 +25,36 @@ export const useStore = defineStore("main", {
     },
   },
   actions: {
-    init() {},
+    init() {
+      const player = usePlayer();
+      // 初始化用户信息
+      if (this.isLoggedIn === -1) return;
+      const userId = this.userInfo.userId;
+
+      // 密码登陆
+      if (this.isLoggedIn === 1) {
+        // 获取私人FM
+        player.getPersonalFM();
+
+        // 获取收藏的歌曲
+        userLikedSongsIDs().then((res) => {
+          this.likedSongIDs = res.ids;
+        });
+
+        // 获取用户歌单
+        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
+          this.userPlaylist = res.playlist;
+        });
+      }
+
+      // 搜索用户名
+      if (this.isLoggedIn === 2) {
+        // 获取用户歌单
+        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
+          this.userPlaylist = res.playlist;
+        });
+      }
+    },
 
     setMusicId(param) {
       this.musicId = param;
