@@ -105,6 +105,7 @@ export default {
       });
 
       getArtistMv({ id, limit: 16 }).then((res) => {
+        console.log(res.mvs);
         data.mvs = res.mvs;
       });
 

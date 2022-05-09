@@ -8,12 +8,11 @@ import { useStore } from "../store/index";
  * - 调用例子 : /mv/detail?mvid=5436712
  * @param {number} mvid mv 的 id
  */
-export function mvDetail(mvid) {
+export function getMVDetail(mvid) {
   return req
     .get("/mv/detail", {
       params: {
         mvid,
-        timestamp: new Date().getTime(),
       },
     })
     .then((res) => {
@@ -27,14 +26,16 @@ export function mvDetail(mvid) {
  * - id: mv id
  * - r: 分辨率,默认1080,可从 /mv/detail 接口获取分辨率列表
  * - 调用例子 : /mv/url?id=5436712 /mv/url?id=10896407&r=1080
- * @param {Object} params
- * @param {number} params.id
- * @param {number=} params.r
+ * @param {string} id
+ * @param {number=} r
  */
-export function mvUrl(params) {
+export function getMVUrl(id, r) {
   return req
     .get("/mv/url", {
-      params,
+      params: {
+        id,
+        r,
+      },
     })
     .then((res) => {
       return res;
@@ -46,7 +47,7 @@ export function mvUrl(params) {
  * 说明 : 调用此接口 , 传入 mvid 可获取相似 mv
  * @param {number} mvid
  */
-export function simiMv(mvid) {
+export function getSimiMv(mvid) {
   return req
     .get("/simi/mv", {
       params: {
@@ -103,7 +104,6 @@ export function allMV(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;
@@ -126,7 +126,6 @@ export function latestMV(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;
@@ -151,7 +150,6 @@ export function ToplistOfMV(params) {
     method: "post",
     params: {
       ...params,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;
@@ -171,7 +169,6 @@ export function mvReview(mvid) {
     method: "post",
     params: {
       mvid,
-      timestamp: new Date().getTime(),
     },
   }).then((res) => {
     return res;

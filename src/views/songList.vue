@@ -30,12 +30,13 @@
         {{ recordType === 1 ? "最近一周" : "所有时间" }}
       </button>
     </div>
-    <div v-loading="!songs[0]" class="list">
+    <div v-loading="!songs[0] && hasMore" class="list">
       <TrackList
         :tracks="songs"
         v-if="songs[0]"
         :type="type === 'SongsRecord' ? 'album' : ''"
       ></TrackList>
+      <span v-if="!songs[0] && !hasMore">暂无歌曲</span>
     </div>
   </div>
 </template>
@@ -63,6 +64,7 @@ export default {
 
       songs: [], // 日推歌曲
       recordType: 1, // 0: 总排行, 1: 周排行
+      hasMore: true,
     });
     const player = usePlayer();
 
@@ -101,6 +103,7 @@ export default {
         data.songs = res[key].map((item) => {
           return item.song;
         });
+        data.hasMore = false;
       });
     };
 

@@ -1,0 +1,221 @@
+<template lang="">
+  <div class="video">
+    <div class="left">
+      <div class="video-player">
+        <video
+          id="video"
+          class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered"
+          controls
+        >
+          <source src="videoUrl" v-if="videoUrl" type="video/mp4" />
+        </video>
+      </div>
+      <div class="video-info" v-if="videoInfo">
+        <div class="name">
+          <div class="title text-style-title">{{ videoInfo.name }}</div>
+          <em>-</em>
+          <div class="artist text-style-info">
+            <ArtistFormat
+              :artistList="videoInfo.artists"
+              fontSize="16px"
+            ></ArtistFormat>
+          </div>
+        </div>
+        <div class="describe" @click="showDescribe">{{ videoInfo.desc }}</div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="text-style-title">相似MV</div>
+      <ul class="video-list" v-if="simiMv">
+        <li class="item" v-for="(mv, index) in simiMv" :key="index">
+          <img :src="mv.cover" alt="" />
+          <div class="info">
+            <div class="name text-style-title">{{ mv.name }}</div>
+            <div class="artist">
+              <ArtistFormat :artistList="mv.artists"></ArtistFormat>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+import { onUnmounted, reactive, toRefs } from "vue-demi";
+import { getMVDetail, getMVUrl, getSimiMv } from "../apis/mv";
+import videojs from "video.js";
+import "video.js/dist/video-js.css";
+import { usePlayer } from "../store/player";
+import { useRoute } from "vue-router";
+
+import ArtistFormat from "../components/artistFormat.vue";
+import createTextModal from "../components/textModal";
+
+export default {
+  name: "Video",
+  setup() {
+    const data = reactive({
+      videoInfo: null,
+      videoUrl: null,
+      simiMv: null,
+    });
+    let vPlayer;
+    const player = usePlayer();
+    const route = useRoute();
+    const id = route.params.id;
+
+    const getData = async () => {
+      await getMVDetail(id).then((res) => {
+        data.videoInfo = res.data;
+      });
+
+      await getMVUrl(id).then((res) => {
+        data.videoUrl = res.data.url;
+      });
+
+      getSimiMv(id).then((res) => {
+        data.simiMv = res.mvs.splice(0, 3);
+      });
+
+      vPlayer = videojs(
+        "video",
+        {
+          autoplay: false,
+          poster: data.videoInfo.cover,
+          sources: [{ src: data.videoUrl, type: "video/mp4" }],
+          preload: "metadata",
+        },
+        function onPlayerReady() {
+          this.on("play", function () {
+            //开始播放
+            player.songPause();
+          });
+        }
+      );
+    };
+
+    getData();
+
+    const showDescribe = () => {
+      createTextModal(`MV介绍`, data.videoInfo.desc);
+    };
+
+    onUnmounted(() => {
+      vPlayer.dispose();
+    });
+
+    return { ...toRefs(data), showDescribe };
+  },
+  components: {
+    ArtistFormat,
+  },
+};
+</script>
+<style lang="scss" scoped>
+.video {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .left {
+    @include calc-width(7.4);
+
+    .video-player {
+      width: 100%;
+
+      #video {
+        width: 100%;
+      }
+    }
+
+    .video-info {
+      padding: 8px;
+    }
+
+    .name {
+      display: flex;
+      align-items: center;
+    }
+
+    em {
+      padding: 0 8px;
+    }
+
+    .describe {
+      @include text-overflow(2);
+      cursor: pointer;
+    }
+  }
+
+  .right {
+    @include calc-width(2.4);
+    .item {
+      position: relative;
+      width: 100%;
+      margin-bottom: 16px;
+      border-radius: $border-radius-default;
+      line-height: 0;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        opacity: 0;
+        transition: opacity $transition-time-default;
+      }
+
+      &:hover {
+        &::before {
+          opacity: 1;
+        }
+        .info {
+          display: block;
+        }
+      }
+
+      img {
+        width: 100%;
+      }
+
+      .info {
+        display: none;
+        line-height: 1.6;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        color: #fff;
+
+        .name {
+          animation: drop-right $transition-time-default;
+          @include text-overflow(1);
+        }
+
+        .artist {
+          animation: drop-right $transition-time-default * 1.5;
+          @include text-overflow(1);
+        }
+      }
+    }
+  }
+}
+
+@keyframes drop-right {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+</style>

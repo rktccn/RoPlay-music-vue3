@@ -34,10 +34,11 @@ export default {
       let params = {
         keywords: props.w,
         limit: 8,
-        type: 1014,
+        type: "MV",
       };
       search(params).then((res) => {
-        data.videoList = res.result.videos;
+        data.videoList = res.result.mvs;
+        console.log(res);
       });
     };
 

@@ -29,7 +29,9 @@
         :tracks="recordSongList.songList"
         type="album"
         class="tracklist"
+        v-if="recordSongList.songList[0]"
       ></TrackList>
+      <div class="no-song" v-if="!recordSongList.songList[0]">暂无歌曲</div>
     </div>
   </section>
 </template>
@@ -68,7 +70,7 @@ export default {
 
     // 获取前30首歌曲名称
     const getFavouriteSongsName = () => {
-      let ids = player.likedSongIDs;
+      let ids = store.likedSongIDs;
       data.favouriteSongsCount = ids.length;
       favouriteIds = ids;
       const arr = ids.slice(0, 25).join(",");
@@ -87,6 +89,9 @@ export default {
       data.recordSongList.scoreList = [];
 
       userPlayHistory({ uid: store.userInfo.userId, type }).then((res) => {
+        console.log(res);
+        if (res[key] === []) {
+        }
         for (let i = 0; i < 3; i++) {
           if (res[key][i] === undefined) {
             return;

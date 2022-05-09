@@ -23,26 +23,6 @@
               play_arrow
             </span>
           </div>
-          <div class="played-count font-size-12" v-if="playCount">
-            <span
-              v-if="type !== 'video'"
-              class="material-icons-round font-size-12"
-            >
-              headphones
-            </span>
-            <span
-              v-if="type === 'video'"
-              class="material-icons-round font-size-12"
-            >
-              smart_display
-            </span>
-
-            {{
-              playCount > 10000
-                ? parseInt(playCount / 1000) / 10 + "万"
-                : playCount
-            }}
-          </div>
         </div>
       </div>
       <div
@@ -102,7 +82,6 @@ export default {
     const router = useRouter();
     const data = reactive({
       imgUrl: null,
-      playCount: null,
       publishTime: null,
       updataTime: null,
       artists: null,
@@ -121,7 +100,6 @@ export default {
       data.imgUrl = `${
         video?.cover || video?.coverUrl || video?.imgurl
       }?param=480y270`;
-      data.playCount = video?.playCount ?? video?.playTime;
       data.publishTime = video?.publishTime;
       data.artists = video?.artists;
       data.title = video?.name ?? video?.title;
@@ -135,7 +113,6 @@ export default {
       data.publishTime = date;
       data.updataTime = dateFormat(playlist.updateTime, false);
       data.artists = playlist.creator;
-      data.playCount = playlist.playCount;
       data.title = playlist.name;
       data.info = playlist.description;
       data.id = playlist.id;

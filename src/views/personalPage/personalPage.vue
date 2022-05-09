@@ -64,12 +64,10 @@
 </template>
 <script>
 import { onMounted, reactive, toRefs, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "../../store";
-import { usePlayer } from "../../store/player";
 import { getTrackDetail } from "../../apis/track";
 import { isScrollBottom } from "../../utils/common";
-import { getUserPlaylist } from "../../apis/user";
 
 import ContextInfo from "../../components/contextInfo.vue";
 import TrackList from "../../components/trackList.vue";
@@ -79,13 +77,13 @@ import PlayListCard from "../../components/playListCard.vue";
 export default {
   name: "PersonalPage",
   setup() {
-    const store = useStore();
     const route = useRoute();
-    const player = usePlayer();
+    const router = useRouter();
+    const store = useStore();
 
     const data = reactive({
       userInfo: null,
-      selectedTab: 0,
+      selectedTab: route.query?.tab ? parseInt(route.query.tab) : 0,
       likedSongList: [],
       hasMoreSongs: true,
     });
@@ -144,9 +142,10 @@ export default {
 
     watch(
       () => data.selectedTab,
-      () => {
+      (val) => {
         loading = false;
         getData();
+        router.replace({ query: { ...route.query, tab: val } });
       },
       { immediate: true }
     );
@@ -171,7 +170,7 @@ export default {
   position: relative;
   display: flex;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 64px;
   .tab {
     margin-right: 20px;
     margin-bottom: 16px;

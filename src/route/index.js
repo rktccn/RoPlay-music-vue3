@@ -71,6 +71,7 @@ const routes = [
     },
   },
 
+  // 搜索
   {
     path: "/search/:keyword",
     name: "search",
@@ -91,6 +92,7 @@ const routes = [
     name: "currentList",
     component: () => import("../views/currentList.vue"),
   },
+
   {
     path: "/playlist/:id",
     name: "playlist",
@@ -127,6 +129,19 @@ const routes = [
   },
   {
     path: "/artist",
+    redirect: "/",
+  },
+
+  {
+    path: "/video/:id",
+    name: "video",
+    component: () => import("../views/video.vue"),
+    meta: {
+      hideHeader: true, // 移动端隐藏头部
+    },
+  },
+  {
+    path: "/video",
     redirect: "/",
   },
 

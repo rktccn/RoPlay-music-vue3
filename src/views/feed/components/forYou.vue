@@ -51,6 +51,7 @@
           </div>
         </div>
       </li>
+
       <!-- 日推 -->
       <li class="daily-songs" v-if="dailySongs[0]">
         <div class="cover">
@@ -178,6 +179,8 @@ export default {
   display: flex;
   align-items: center;
   grid-column: span 5;
+  margin-top: 0.6vw;
+  margin-bottom: 0.6vw;
   .cover {
     position: relative;
     width: 35%;
