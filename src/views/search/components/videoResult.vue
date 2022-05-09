@@ -2,7 +2,7 @@
   <div class="section block" v-if="videoList.length !== 0">
     <div class="title">
       <h4 class="text-style-title">视频</h4>
-      <router-link :to="`/search/${w}/videos`" class="text-style-info"
+      <router-link :to="`/search/${w}/mvs`" class="text-style-info"
         >查看全部</router-link
       >
     </div>

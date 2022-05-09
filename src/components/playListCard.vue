@@ -1,17 +1,23 @@
 <template>
   <div
     class="card"
-    :class="[{ video: type === 'video' }, { 'hover-show-dec': !showDec }]"
+    :class="[
+      { video: (type === 'video') | (type === 'mv') },
+      { 'hover-show-dec': !showDec },
+    ]"
     @mouseenter="isDecShow = true"
     @mouseleave="isDecShow = showDec"
     :style="setWidth()"
   >
     <div class="card-inner">
       <div class="cover">
-        <div class="cover-inner" :class="{ video: type === 'video' }">
+        <div
+          class="cover-inner"
+          :class="{ video: (type === 'video') | (type === 'mv') }"
+        >
           <div
             class="placeholder"
-            :class="{ video: type === 'video' }"
+            :class="{ video: (type === 'video') | (type === 'mv') }"
             :style="setStyle()"
           ></div>
           <div
@@ -64,7 +70,8 @@ export default {
   },
   setup(props) {
     //检查传入的参数
-    const type = ["playlist", "album", "artist", "video"];
+    const type = ["playlist", "album", "artist", "video", "mv"];
+
     const checkProps = () => {
       if (!type.includes(props.type)) {
         console.error(
@@ -148,6 +155,9 @@ export default {
         setAlbum();
         break;
       case "video":
+        setVideo();
+        break;
+      case "mv":
         setVideo();
         break;
       case "artist":

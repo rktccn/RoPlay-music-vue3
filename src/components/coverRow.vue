@@ -1,5 +1,8 @@
 <template lang="">
-  <div class="cover-row" :class="{ video: type === 'videos' }">
+  <div
+    class="cover-row"
+    :class="{ video: (type === 'videos') | (type === 'mvs') }"
+  >
     <slot></slot>
   </div>
 </template>
@@ -7,7 +10,7 @@
 export default {
   props: {
     type: {
-      // videos / other
+      // videos / mvs / other
       type: String,
       default: "other",
     },

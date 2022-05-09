@@ -5,7 +5,7 @@
     </div>
 
     <div :class="type" v-if="type !== 'songs'">
-      <CoverRow type="type">
+      <CoverRow :type="type">
         <li v-for="(item, index) in resultList" :key="index">
           <PlayListCard
             class="item"
@@ -67,6 +67,8 @@ export default {
     const getResult = async (params) => {
       const res = await search(params);
       data.resultList = data.resultList.concat(res.result[data.type]);
+      console.log(res.result);
+
       if (res.result[data.type].length < 30) {
         data.hasMore = false;
         document
@@ -120,7 +122,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.videos {
+.videos,
+.mvs {
   li {
     zoom: 0.83333;
   }

@@ -12,7 +12,9 @@
       </div>
       <div class="video-info" v-if="videoInfo">
         <div class="name">
-          <div class="title text-style-title">{{ videoInfo.name }}</div>
+          <div class="title text-style-title">
+            {{ videoInfo.name }}
+          </div>
           <em>-</em>
           <div class="artist text-style-info">
             <ArtistFormat
@@ -31,7 +33,7 @@
           <img :src="mv.cover" alt="" />
           <div class="info">
             <div class="name text-style-title">{{ mv.name }}</div>
-            <div class="artist">
+            <div class="artist text-truncate">
               <ArtistFormat :artistList="mv.artists"></ArtistFormat>
             </div>
           </div>
@@ -135,6 +137,11 @@ export default {
     .name {
       display: flex;
       align-items: center;
+      overflow: hidden;
+    }
+
+    .artist {
+      max-width: 50%;
     }
 
     em {
@@ -190,8 +197,10 @@ export default {
         display: none;
         line-height: 1.6;
         position: absolute;
-        top: 16px;
-        left: 16px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 16px;
         color: #fff;
 
         .name {

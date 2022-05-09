@@ -132,9 +132,18 @@ const routes = [
     redirect: "/",
   },
 
+  // video和mv
   {
     path: "/video/:id",
     name: "video",
+    component: () => import("../views/video.vue"),
+    meta: {
+      hideHeader: true, // 移动端隐藏头部
+    },
+  },
+  {
+    path: "/mv/:id",
+    name: "mv",
     component: () => import("../views/video.vue"),
     meta: {
       hideHeader: true, // 移动端隐藏头部
