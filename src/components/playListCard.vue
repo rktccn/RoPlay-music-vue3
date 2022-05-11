@@ -101,6 +101,10 @@ export default {
     });
     const player = usePlayer();
 
+    const goTo = () => {
+      router.push(`/${props.type}/${data.id}`);
+    };
+
     const setVideo = () => {
       const video = props.item;
 
@@ -111,6 +115,7 @@ export default {
       data.artists = video?.artists;
       data.title = video?.name ?? video?.title;
       data.id = video?.id ?? video?.vid;
+      data.playSong = goTo;
     };
 
     const setPlayList = () => {
@@ -196,11 +201,6 @@ export default {
       }
 
       return style;
-    };
-
-    const goTo = () => {
-      router.push(`/${props.type}/${data.id}`);
-      `1234`;
     };
 
     return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };

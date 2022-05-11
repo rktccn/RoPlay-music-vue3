@@ -29,12 +29,22 @@
     <div class="right">
       <div class="text-style-title">相似MV</div>
       <ul class="video-list" v-if="simiMv">
-        <li class="item" v-for="(mv, index) in simiMv" :key="index">
+        <li
+          class="item"
+          v-for="(mv, index) in simiMv"
+          :key="index"
+          @click.self="goTo(mv.id)"
+        >
           <img :src="mv.cover" alt="" />
-          <div class="info">
-            <div class="name text-style-title">{{ mv.name }}</div>
+          <div class="info" @click.self="goTo(mv.id)">
+            <div class="name text-style-title" @click.self="goTo(mv.id)">
+              {{ mv.name }}
+            </div>
             <div class="artist text-truncate">
-              <ArtistFormat :artistList="mv.artists"></ArtistFormat>
+              <ArtistFormat
+                :artistList="mv.artists"
+                @click.self="goTo(mv.id)"
+              ></ArtistFormat>
             </div>
           </div>
         </li>
@@ -48,7 +58,7 @@ import { getMVDetail, getMVUrl, getSimiMv } from "../apis/mv";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { usePlayer } from "../store/player";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import ArtistFormat from "../components/artistFormat.vue";
 import createTextModal from "../components/textModal";
@@ -64,6 +74,7 @@ export default {
     let vPlayer;
     const player = usePlayer();
     const route = useRoute();
+    const router = useRouter();
     const id = route.params.id;
 
     const getData = async () => {
@@ -102,11 +113,17 @@ export default {
       createTextModal(`MV介绍`, data.videoInfo.desc);
     };
 
+    const goTo = (id) => {
+      router.push({
+        params: { id },
+      });
+    };
+
     onUnmounted(() => {
       vPlayer.dispose();
     });
 
-    return { ...toRefs(data), showDescribe };
+    return { ...toRefs(data), showDescribe, goTo };
   },
   components: {
     ArtistFormat,
@@ -156,6 +173,7 @@ export default {
 
   .right {
     @include calc-width(2.4);
+    user-select: none;
     .item {
       position: relative;
       width: 100%;
@@ -163,6 +181,7 @@ export default {
       border-radius: $border-radius-default;
       line-height: 0;
       overflow: hidden;
+      cursor: pointer;
 
       &::before {
         content: "";

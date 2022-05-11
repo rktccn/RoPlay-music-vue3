@@ -19,7 +19,6 @@ export function getCloud(params) {
       cookie: useStore().userCookie || "",
     },
   }).then((res) => {
-    console.log(res);
     return res;
   });
 }

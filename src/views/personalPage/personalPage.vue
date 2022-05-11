@@ -89,7 +89,7 @@ export default {
     });
     let loading = false;
 
-    if (route.name === "PersonalPage") {
+    if (route.name === "PersonalPage" || route.name === "like") {
       data.userInfo = store.userInfo;
     }
 
@@ -128,7 +128,6 @@ export default {
 
     // 滚动到底部加载
     const scrollBottomLoad = () => {
-      console.log("123");
       if (isScrollBottom()) {
         getData();
       }

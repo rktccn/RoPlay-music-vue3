@@ -194,7 +194,7 @@ import {
 import { search } from "../../apis/others";
 import { userAccount } from "../../apis/user";
 import { useStore } from "../../store";
-import { babelParse } from "@vue/compiler-sfc";
+import { useRouter, useRoute } from "vue-router";
 
 export default {
   name: "Login",
@@ -221,6 +221,8 @@ export default {
       },
     });
     const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
 
     // 判断是否为邮箱
     const isEmail = (str) => {
@@ -537,21 +539,28 @@ export default {
       if (data.logMode === "password") passwordLogin();
     };
 
+    // 如果有redirect则跳转,否则返回
+    const redirect = () => {
+      console.log(route.query.redirect);
+      if (route.query.redirect) {
+        router.push(route.query.redirect);
+      } else {
+        router.push("/");
+      }
+    };
+
     // 登陆成功后初始化用户信息
     const initUserInfo = (val) => {
       store.isLoggedIn = 1;
       store.userCookie = val.cookie;
-      console.log(val);
       if (val.profile && val.profile !== {}) {
         store.userInfo = val.profile;
-        // window.location.href = "/";
       } else {
         userAccount().then((res) => {
-          console.log(res);
           store.userInfo = res.profile;
-          // window.location.href = "/";
         });
       }
+      redirect();
     };
 
     watch(

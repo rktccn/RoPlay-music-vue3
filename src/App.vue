@@ -47,14 +47,20 @@ const showHeader = () => {
       <el-main>
         <main class="main-inner">
           <router-view v-slot="{ Component }">
-            <keep-alive :max="10">
-              <component :is="Component" v-if="route.meta.keepAlive" />
+            <keep-alive>
+              <component
+                :is="Component"
+                v-if="$route.meta.keepAlive"
+                :key="$route.path"
+              />
             </keep-alive>
+            <component
+              :is="Component"
+              v-if="!$route.meta.keepAlive"
+              :key="$route.path"
+            />
           </router-view>
-          <router-view
-            v-if="!route.meta.keepAlive"
-            :key="route.fullPath"
-          ></router-view>
+
           <AudioControl class="audio-control"></AudioControl>
           <div class="control-placeholder"></div>
         </main>

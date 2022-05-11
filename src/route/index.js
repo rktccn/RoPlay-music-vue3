@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { useStore } from "../store/index";
 
 const routes = [
   {
@@ -15,9 +16,9 @@ const routes = [
     name: "feed",
     component: () => import("../views/feed/feed.vue"),
     meta: {
-      // keepAlive: true,
+      keepAlive: true,
       // savePosition: true,
-      // requireLogin: true,
+      requireLogin: true,
     },
   },
   {
@@ -43,31 +44,32 @@ const routes = [
   {
     path: "/like",
     name: "like",
-    component: () => import("../views/feed/feed.vue"),
+    component: () => import("../views/personalPage/personalPage.vue"),
     meta: {
-      // keepAlive: true,
+      keepAlive: true,
       // savePosition: true,
-      // requireLogin: true,
+      requireLogin: true,
     },
   },
+  // 最近播放
   {
     path: "/recent",
     name: "recent",
     component: () => import("../views/feed/feed.vue"),
     meta: {
-      // keepAlive: true,
+      keepAlive: true,
       // savePosition: true,
-      // requireLogin: true,
+      requireLogin: true,
     },
   },
   {
     path: "/cloud",
     name: "cloud",
-    component: () => import("../views/feed/feed.vue"),
+    component: () => import("../views/cloud.vue"),
     meta: {
-      // keepAlive: true,
+      keepAlive: true,
       // savePosition: true,
-      // requireLogin: true,
+      requireLogin: true,
     },
   },
 
@@ -93,6 +95,7 @@ const routes = [
     component: () => import("../views/currentList.vue"),
   },
 
+  // 歌单
   {
     path: "/playlist/:id",
     name: "playlist",
@@ -187,6 +190,9 @@ const routes = [
     path: "/dailysongs",
     name: "DailySongs",
     component: () => import("../views/songList.vue"),
+    meta: {
+      requireLogin: true,
+    },
   },
 
   //听歌排行
@@ -194,6 +200,9 @@ const routes = [
     path: "/songsrecord",
     name: "SongsRecord",
     component: () => import("../views/songList.vue"),
+    meta: {
+      requireLogin: true,
+    },
   },
 
   //我的收藏
@@ -201,6 +210,9 @@ const routes = [
     path: "/favouritesongs",
     name: "FavouriteSongs",
     component: () => import("../views/songList.vue"),
+    meta: {
+      requireLogin: true,
+    },
   },
 
   // 个人页面
@@ -208,12 +220,33 @@ const routes = [
     path: "/personal",
     name: "PersonalPage",
     component: () => import("../views/personalPage/personalPage.vue"),
+    meta: {
+      requireLogin: true,
+    },
   },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: routes,
+});
+
+// 需要登陆的页面处理
+router.beforeEach((to, from, next) => {
+  const store = useStore();
+  if (to.meta.requireLogin) {
+    console.log(store?.isLoggedIn);
+    if (store?.isLoggedIn === 1) {
+      next();
+    } else {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
