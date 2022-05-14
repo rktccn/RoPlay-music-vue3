@@ -32,29 +32,34 @@ const list = reactive([
     listName: "发现音乐",
     needLog: false,
     listItem: [
-      { itemName: "推荐", path: "/feed", icon: "home", needLog: true },
-      { itemName: "探索", path: "/", icon: "home", needLog: false },
       {
-        itemName: "视频",
-        path: "/video",
-        icon: "home",
-        needLog: false,
+        itemName: "推荐",
+        path: "/feed",
+        icon: "personalized_recommendations",
+        needLog: true,
       },
-      { itemName: "电台", path: "/radio", icon: "home", needLog: false },
+      { itemName: "探索", path: "/", icon: "music_note", needLog: false },
+      // {
+      //   itemName: "视频",
+      //   path: "/video",
+      //   icon: "home",
+      //   needLog: false,
+      // },
+      // { itemName: "电台", path: "/radio", icon: "home", needLog: false },
     ],
   },
   {
     listName: "我的音乐",
     needLog: false,
     listItem: [
-      { itemName: "收藏", path: "/like", icon: "home", needLog: true },
-      {
-        itemName: "最近播放",
-        path: "/recent",
-        icon: "home",
-        needLog: false,
-      },
-      { itemName: "云盘", path: "/cloud", icon: "home", needLog: true },
+      { itemName: "收藏", path: "/like", icon: "favorite", needLog: true },
+      // {
+      //   itemName: "最近播放",
+      //   path: "/recent",
+      //   icon: "home",
+      //   needLog: false,
+      // },
+      { itemName: "云盘", path: "/cloud", icon: "cloud", needLog: true },
     ],
   },
 ]);
@@ -65,7 +70,7 @@ const list = reactive([
     <span class="logo">Ro&nbsp;Play</span>
     <div class="list">
       <template v-for="(item, index) in list" :key="index">
-        <ul v-if="item.needLog ? true : true">
+        <ul v-if="item.needLog ? store.isLoggedIn === 1 : true">
           <ol class="list-title white">
             {{
               item.listName
@@ -74,11 +79,14 @@ const list = reactive([
           <template v-for="(value, j) in item.listItem" :key="j">
             <li
               class="list-item"
-              v-if="value.needLog ? true : true"
+              v-if="value.needLog ? store.isLoggedIn === 1 : true"
               @click="store.setOverlay(false)"
             >
               <router-link :to="value.path" class="item-link">
-                <span class="material-icons-round" v-if="value.icon !== ''">
+                <span
+                  class="material-symbols-rounded fill"
+                  v-if="value.icon !== ''"
+                >
                   {{ value.icon }}
                 </span>
                 <div class="text-truncate">
@@ -89,7 +97,7 @@ const list = reactive([
           </template>
         </ul>
       </template>
-      <ul v-if="playlistItem.needLog">
+      <ul>
         <ol class="list-title white">
           {{
             playlistItem.listName
