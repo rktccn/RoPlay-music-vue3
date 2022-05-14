@@ -14,14 +14,19 @@
       >
         favorite
       </span>
+      <span class="material-symbols-rounded icon" v-if="type === 'Cloud'">
+        cloud
+      </span>
 
       <div class="name">{{ title }}</div>
     </div>
     <div class="control">
-      <button class="play primary" @click="play">
+      <button class="play primary" @click="play" v-if="type !== 'Cloud'">
         <span class="material-symbols-rounded fill">play_arrow</span>
         播放
       </button>
+
+      <!-- 最近播放控件 -->
       <button
         class="play record-type block"
         @click="toggleRecord"
@@ -31,23 +36,24 @@
       </button>
     </div>
     <div v-loading="!songs[0] && hasMore" class="list">
-      <TrackList
-        :tracks="songs"
-        v-if="songs[0]"
-        :type="type === 'SongsRecord' ? 'album' : ''"
-      ></TrackList>
+      <TrackList :tracks="songs" v-if="songs[0]" :type="songType"></TrackList>
       <span v-if="!songs[0] && !hasMore">暂无歌曲</span>
     </div>
+    <p class="load-info font-size-12">
+      {{ hasMore ? "正在加载" : "已加载全部" }}
+    </p>
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
+import { onMounted, onUnmounted, reactive, toRefs } from "vue";
 import { dailyRecommendTracks } from "../apis/personalized";
-import { userPlayHistory, userLikedSongsIDs } from "../apis/user";
+import { userPlayHistory } from "../apis/user";
+import { getCloud } from "../apis/cloud";
 import { getTrackDetail } from "../apis/track";
 import { usePlayer } from "../store/player";
 import { useRoute } from "vue-router";
 import { useStore } from "../store";
+import { isScrollBottom } from "../utils/common";
 
 import TrackList from "../components/trackList.vue";
 
@@ -59,37 +65,47 @@ export default {
     let name = route.name;
 
     const data = reactive({
-      type: "", // 页面类型 "DailySongs","SongsRecord","FavouriteSongs"
+      type: "", // 页面类型 "DailySongs","SongsRecord","FavouriteSongs","Cloud"
       title: "",
+      songType: "song", // 歌曲类型
 
       songs: [], // 日推歌曲
       recordType: 1, // 0: 总排行, 1: 周排行
       hasMore: true,
     });
     const player = usePlayer();
+    let loading = false;
 
     const getData = () => {
       data.type = name;
-
       if (data.type === "DailySongs") {
         data.title = "每日歌曲推荐";
         getDailtRecommend();
+        data.songType = "song";
       }
       if (data.type === "SongsRecord") {
         data.title = "听歌排行";
         getRecordSongList();
+        data.songType = "album";
       }
       if (data.type === "FavouriteSongs") {
         data.title = "我的收藏";
         getLikedSong();
+        data.songType = "song";
+      }
+      if (data.type === "Cloud") {
+        data.title = "云盘歌曲";
+        getCloudSong();
+        data.songType = "cloud";
       }
     };
 
     // 获取每日推荐歌曲
     const getDailtRecommend = () => {
-      data.songs = [];
       dailyRecommendTracks().then((res) => {
         data.songs = res.data.dailySongs;
+        data.hasMore = false;
+        loading = false;
       });
     };
 
@@ -97,22 +113,36 @@ export default {
     const getRecordSongList = (type = 1) => {
       let key;
       type === 1 ? (key = "weekData") : (key = "allData");
-      data.songs = [];
-
       userPlayHistory({ uid: store.userInfo.userId, type }).then((res) => {
         data.songs = res[key].map((item) => {
           return item.song;
         });
         data.hasMore = false;
+        loading = false;
       });
     };
 
     // 获取收藏歌曲
     const getLikedSong = () => {
-      data.songs = [];
-      let arr = store.likedSongIDs.join(",");
+      let arr = store.likedSongIDs
+        .slice(data.songs.length, data.songs.length + 50)
+        .join(",");
+
       getTrackDetail(arr).then((res) => {
-        data.songs = res.songs;
+        data.songs.push(...res.songs);
+        if (res.songs.length < 50) {
+          data.hasMore = false;
+        }
+        loading = false;
+      });
+    };
+
+    // 获取云盘歌曲
+    const getCloudSong = () => {
+      getCloud({ limit: 50, offset: data.songs.length }).then((res) => {
+        data.songs = data.songs.concat(res.data);
+        loading = false;
+        data.hasMore = res.hasMore;
       });
     };
 
@@ -125,7 +155,8 @@ export default {
 
     // 播放歌曲,将id传入歌曲列表
     const play = () => {
-      if (data.songs.length === 0) return;
+      if (data.songs.length === 0 || data.type === "Cloud") return;
+
       player.trackList = data.songs.map((item) => {
         return item.id;
       });
@@ -139,6 +170,34 @@ export default {
     };
 
     getData();
+
+    const loadMore = () => {
+      console.log("滚动");
+      if (!data.hasMore) {
+        document
+          .getElementsByClassName("el-main")[0]
+          .removeEventListener("scroll", loadMore);
+      }
+
+      if (loading || !data.hasMore) return;
+      if (isScrollBottom()) {
+        loading = true;
+        getData();
+      }
+    };
+
+    onMounted(() => {
+      document
+        .getElementsByClassName("el-main")[0]
+        .addEventListener("scroll", loadMore);
+    });
+
+    onUnmounted(() => {
+      document
+        .getElementsByClassName("el-main")[0]
+        .removeEventListener("scroll", loadMore);
+    });
+
     return { ...toRefs(data), getDate, play, toggleRecord };
   },
   components: {
@@ -147,6 +206,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.load-info {
+  color: var(--text-color-secondary);
+}
+
 .title {
   display: flex;
   align-items: center;

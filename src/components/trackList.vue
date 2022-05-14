@@ -3,7 +3,7 @@
     <TrackListItem
       v-for="(track, index) in tracks"
       :key="index"
-      :item="track"
+      :item="type === 'cloud' ? track.simpleSong : track"
       :canHover="canHover"
       :showImg="showImg"
       :type="type"
@@ -20,7 +20,7 @@ export default {
     tracks: { type: Array, required: true }, // 传入歌曲列表
     canHover: { type: Boolean, default: true }, // 是否显示hover样式
     showImg: { type: Boolean, default: true }, // 是否显示封面
-    type: { type: String, default: "song" }, // 类型 song / album(隐藏封面和歌曲信息)
+    type: { type: String, default: "song" }, // 类型 song / album(隐藏封面和歌曲信息)/ cloud
   },
   setup() {},
   components: {

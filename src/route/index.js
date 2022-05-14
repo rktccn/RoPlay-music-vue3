@@ -62,10 +62,11 @@ const routes = [
       requireLogin: true,
     },
   },
+  // 云盘
   {
     path: "/cloud",
-    name: "cloud",
-    component: () => import("../views/cloud.vue"),
+    name: "Cloud",
+    component: () => import("../views/songList.vue"),
     meta: {
       keepAlive: true,
       // savePosition: true,
