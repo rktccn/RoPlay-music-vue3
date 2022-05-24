@@ -14,16 +14,16 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import TrackListItem from "../../../components/trackListItem.vue";
 
 import { getPlaylistTracks } from "../../../apis/playlist";
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 // 飙升 19723756   新歌 3779629  热歌 3778678
 
-export default {
+export default defineComponent({
   name: "explorePlayList",
   props: {
     id: { type: Number, required: true },
@@ -36,7 +36,11 @@ export default {
       topList: null,
     });
 
-    getPlaylistTracks({ id: props.id, limit: 5 }).then((res) => {
+    getPlaylistTracks({
+      id: props.id,
+      limit: 5,
+      offset: 0,
+    }).then((res) => {
       data.topList = res.songs;
     });
 
@@ -58,7 +62,7 @@ export default {
     return { ...toRefs(data), setBackGround, goToPlaylist };
   },
   components: { TrackListItem },
-};
+});
 </script>
 <style lang="scss" scoped>
 .top-list {

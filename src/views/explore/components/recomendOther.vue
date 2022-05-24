@@ -67,7 +67,7 @@ export default {
     const videoItem = ref(null);
 
     // 设置歌曲列表显示列数
-    const setSongRows = (height) => {
+    const setSongRows = (height = 70) => {
       if (window.innerWidth < 1250) {
         data.songRows = 2;
         data.songItemHeight = "64px";

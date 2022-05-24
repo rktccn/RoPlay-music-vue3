@@ -27,7 +27,9 @@ export default {
     const data = reactive({
       playlist: null,
     });
-    topPlaylist({ limit: 20 }).then((res) => {
+    topPlaylist({
+      limit: 20,
+    }).then((res) => {
       data.playlist = res.playlists;
     });
 

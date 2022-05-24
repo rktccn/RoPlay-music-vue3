@@ -36,7 +36,7 @@
   </section>
 </template>
 <script>
-import { userLikedSongsIDs, userPlayHistory } from "../../../apis/user";
+import { userPlayHistory } from "../../../apis/user";
 import { getTrackDetail } from "../../../apis/track";
 import { reactive, toRefs } from "vue";
 

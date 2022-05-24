@@ -11,10 +11,11 @@
     ></TrackListItem>
   </div>
 </template>
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import TrackListItem from "./trackListItem.vue";
 
-export default {
+export default defineComponent({
   name: "trackList",
   props: {
     tracks: { type: Array, required: true }, // 传入歌曲列表
@@ -26,6 +27,6 @@ export default {
   components: {
     TrackListItem,
   },
-};
+});
 </script>
 <style lang="scss" scoped></style>
