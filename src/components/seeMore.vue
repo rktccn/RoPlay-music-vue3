@@ -4,7 +4,4 @@
 <script>
 export default {};
 </script>
-<style lang="scss">
-.see-more {
-}
-</style>
+<style lang="scss"></style>

@@ -7,8 +7,9 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   name: "artistFormat",
   props: {
     artistList: { type: Object, require: true },
@@ -16,7 +17,7 @@ export default {
     discribeInfo: { type: String, default: null },
   },
   setup(props) {
-    const setStyle = () => {
+    const setStyle = (): Object => {
       let styles = {
         fontSize: props.fontSize,
       };
@@ -25,7 +26,7 @@ export default {
 
     return { setStyle };
   },
-};
+});
 </script>
 
 <style lang="less" scoped>

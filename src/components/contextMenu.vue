@@ -26,10 +26,17 @@
     </div>
   </div>
 </template>
-<script>
-import { onMounted, onUnmounted, reactive, ref, toRefs } from "vue";
+<script lang="ts">
+import {
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  toRefs,
+  defineComponent,
+} from "vue";
 
-export default {
+export default defineComponent({
   name: "ContextMenu",
   props: {
     onClose: { type: Function, required: true },
@@ -83,7 +90,7 @@ export default {
     };
 
     // 点击外部事件关闭
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
       if (!contextMenu.value.contains(e.target)) {
         document.removeEventListener("mousedown", handleClick);
         props.onClose();
@@ -110,7 +117,7 @@ export default {
       removeSong,
     };
   },
-};
+});
 </script>
 <style lang="scss" scoped>
 .context-menu {

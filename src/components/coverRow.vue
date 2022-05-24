@@ -6,8 +6,9 @@
     <slot></slot>
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   props: {
     type: {
       // videos / mvs / other
@@ -16,7 +17,7 @@ export default {
     },
   },
   name: "CoverRow",
-};
+});
 </script>
 <style lang="scss" scoped>
 .cover-row {

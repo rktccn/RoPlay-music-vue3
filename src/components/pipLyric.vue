@@ -15,9 +15,9 @@
     </div>
   </div>
 </template>
-<script>
-import { onMounted, ref, watch } from "vue";
-export default {
+<script lang="ts">
+import { onMounted, ref, watch, defineComponent } from "vue";
+export default defineComponent({
   name: "PIPlyric",
   props: {
     currentLyric: { type: String, required: true },
@@ -31,7 +31,7 @@ export default {
     const video = ref(null);
 
     // 文本宽度超出canvas宽度时，截取文本
-    const setLyrics = (str, ctx) => {
+    const setLyrics = (str: string, ctx) => {
       const maxWidth = ctx.canvas.width - 60;
       let tempLine = "";
       const lines = [];
@@ -59,7 +59,7 @@ export default {
     };
 
     // 绘制歌词
-    const drawLyrics = (str, ctx, top) => {
+    const drawLyrics = (str: string, ctx, top: number) => {
       for (let i = 0; i < str.length; i++) {
         if (top >= 250) return;
         const line = str[i];
@@ -85,17 +85,17 @@ export default {
 
       // 当前歌词
       ctx.fillStyle = "white";
-      let lines = setLyrics(props.currentLyric, ctx);
+      let lines: string = `${setLyrics(props.currentLyric, ctx)}`;
       top = drawLyrics(lines, ctx, top) + 30;
 
       // 下一句歌词
       ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      lines = setLyrics(props.nextLyric, ctx);
+      lines = `${setLyrics(props.nextLyric, ctx)}`;
       drawLyrics(lines, ctx, top);
     }
 
     // 录制视频
-    function record(canvas, time, onstop) {
+    function record(canvas, time: number, onstop) {
       const stream = canvas.captureStream();
       const recorder = new MediaRecorder(stream, {
         videoBitsPerSecond: 2500000,
@@ -157,7 +157,7 @@ export default {
 
     return { lyric, video };
   },
-};
+});
 </script>
 <style lang="scss" scoped>
 .pip-lyric {

@@ -100,8 +100,8 @@
     </div>
   </div>
 </template>
-<script>
-import { computed, onMounted, reactive, ref, toRefs, watch } from "vue";
+<script lang="ts">
+import { computed, reactive, ref, toRefs, watch, defineComponent } from "vue";
 import { timeFormat } from "../utils/common";
 import { usePlayer } from "../store/player";
 
@@ -109,7 +109,7 @@ import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "../store";
-export default {
+export default defineComponent({
   name: "audioControl",
   setup() {
     const data = reactive({
@@ -147,7 +147,7 @@ export default {
     });
 
     // 音量图标随音量变化
-    const setVolumeIcon = () => {
+    const setVolumeIcon = (): String => {
       if (volume.value === 0) {
         return "volume_off";
       } else if (volume.value > 0.7) {
@@ -160,7 +160,7 @@ export default {
     };
 
     // 点击外部关闭音量条
-    const handleClick = (e) => {
+    const handleClick = (e: { target: any }) => {
       if (!volumeBar.value.contains(e.target)) {
         data.showVolume = false;
       }
@@ -175,7 +175,7 @@ export default {
     };
 
     // 设置移动端进度条
-    const setProgressStyle = () => {
+    const setProgressStyle = (): object => {
       let rate = player.progress / player.currentTrack?.dt;
       if (rate < 0) {
         rate = 0;
@@ -219,7 +219,7 @@ export default {
     };
   },
   components: { ArtistFormat, VueSlider },
-};
+});
 </script>
 <style lang="scss" scoped>
 .audioControl {

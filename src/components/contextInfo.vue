@@ -34,14 +34,14 @@
     </div>
   </div>
 </template>
-<script>
-import { reactive, toRefs } from "vue";
+<script lang="ts">
+import { reactive, toRefs, defineComponent } from "vue";
 import { dateFormat } from "../utils/common";
 
 import createTextModal from "../components/textModal.js";
 import ArtistFormat from "./artistFormat.vue";
 import { usePlayer } from "../store/player";
-export default {
+export default defineComponent({
   name: "contextInfo",
   props: {
     item: { type: Object, required: true },
@@ -88,7 +88,7 @@ export default {
       data.playSong = player.playSongByArtist;
     };
 
-    const getImgUrl = () => {
+    const getImgUrl = (): string => {
       let url =
         props.item?.coverImgUrl ||
         props.item?.picUrl ||
@@ -127,7 +127,7 @@ export default {
   components: {
     ArtistFormat,
   },
-};
+});
 </script>
 <style lang="scss" scoped>
 .context-info {

@@ -539,7 +539,7 @@ export default {
         top: 10%;
         left: 8%;
         transform: scale(0.9);
-        filter: blur(20px);
+        filter: blur(20px) brightness(0.6);
         opacity: 0.68;
         border-radius: 15px;
         z-index: 0;

@@ -2,7 +2,7 @@
   <div
     class="card"
     :class="[
-      { video: (type === 'video') | (type === 'mv') },
+      { video: type === 'video' || type === 'mv' },
       { 'hover-show-dec': !showDec },
     ]"
     @mouseenter="isDecShow = true"
@@ -13,11 +13,11 @@
       <div class="cover">
         <div
           class="cover-inner"
-          :class="{ video: (type === 'video') | (type === 'mv') }"
+          :class="{ video: type === 'video' || type === 'mv' }"
         >
           <div
             class="placeholder"
-            :class="{ video: (type === 'video') | (type === 'mv') }"
+            :class="{ video: type === 'video' || type === 'mv' }"
             :style="setStyle()"
           ></div>
           <div
@@ -25,7 +25,7 @@
             class="avator"
           />
           <div class="mask" :style="setStyle()" @click.self="goTo">
-            <span class="material-icons-round" @click.self="playSong(id)">
+            <span class="material-icons-round" @click.self="playSong()">
               play_arrow
             </span>
           </div>
@@ -49,15 +49,15 @@
     </div>
   </div>
 </template>
-<script>
-import { reactive, toRefs } from "vue";
+<script lang="ts">
+import { reactive, toRefs, defineComponent } from "vue";
 import { dateFormat } from "../utils/common.js";
 import { useRouter } from "vue-router";
 import { usePlayer } from "../store/player.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
-export default {
+export default defineComponent({
   name: "PlaylistCard",
   props: {
     type: { type: String, required: true },
@@ -206,7 +206,7 @@ export default {
     return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };
   },
   components: { ArtistFormat },
-};
+});
 </script>
 <style lang="scss" scoped>
 .card {

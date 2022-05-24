@@ -225,6 +225,13 @@ const routes = [
       requireLogin: true,
     },
   },
+
+  // 设置
+  {
+    path: "/setting",
+    name: "Setting",
+    component: () => import("../views/setting.vue"),
+  },
 ];
 
 const router = createRouter({

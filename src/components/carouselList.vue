@@ -25,10 +25,17 @@
     </div>
   </section>
 </template>
-<script>
-import { reactive, ref, toRefs, onMounted, onBeforeUnmount } from "vue";
+<script lang="ts">
+import {
+  reactive,
+  ref,
+  toRefs,
+  onMounted,
+  onBeforeUnmount,
+  defineComponent,
+} from "vue";
 
-export default {
+export default defineComponent({
   name: "carouselList",
   props: {
     length: {
@@ -50,7 +57,7 @@ export default {
     });
 
     // 计算页面容量
-    const calcPageSize = (carouselWidth) => {
+    const calcPageSize = (carouselWidth: number) => {
       data.itemLength = Math.ceil(props.length / props.rows);
 
       let itemwidth = carousel.value.children[0].offsetWidth;
@@ -63,7 +70,7 @@ export default {
       data.pageSize = pageSize;
     };
 
-    const changePage = (direction) => {
+    const changePage = (direction: string) => {
       let slider = carousel.value;
 
       if (direction === "next") {
@@ -106,12 +113,12 @@ export default {
 
     onBeforeUnmount(() => {
       carousel.value.removeEventListener("scroll", setActive);
-      ro.disconnect(carousel.value);
+      ro.disconnect();
     });
 
     return { carousel, ...toRefs(data), changePage, setRow };
   },
-};
+});
 </script>
 <style lang="scss" scoped>
 .container {

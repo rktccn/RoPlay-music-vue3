@@ -67,7 +67,9 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import { onBeforeUnmount, onMounted, reactive, ref, toRefs } from "vue";
 import { timeFormat } from "../utils/common.js";
 import { usePlayer } from "../store/player.js";
@@ -76,7 +78,7 @@ import { getMP3, likeATrack } from "../apis/track.js";
 import ArtistFormat from "./artistFormat.vue";
 import createContextMenu from "./contextMenu.js";
 
-export default {
+export default defineComponent({
   name: "trackListItem",
   props: {
     item: { type: Object, required: true },
@@ -105,7 +107,7 @@ export default {
 
     const refItem = ref(null);
 
-    const calcWidth = (width) => {
+    const calcWidth = (width: Number) => {
       // let width = refItem.value.offsetWidth;
 
       if (width >= 800) {
@@ -119,7 +121,7 @@ export default {
       }
     };
 
-    const setStyle = () => {
+    const setStyle = (): object => {
       let styles = {
         height: props.height,
         // width: props.width,
@@ -141,7 +143,7 @@ export default {
     const getDuration = () => {
       const dt = track?.duration ?? track?.dt ?? "null";
 
-      data.duration = timeFormat(dt);
+      data.duration = +timeFormat(dt);
     };
 
     const getDescribe = () => {
@@ -188,7 +190,7 @@ export default {
     });
 
     // 打开右键菜单
-    const showContextMenu = (e) => {
+    const showContextMenu = (e: any) => {
       createContextMenu(e, data.id);
     };
 
@@ -206,12 +208,12 @@ export default {
     };
 
     onMounted(() => {
-      calcWidth();
+      calcWidth(window.innerWidth);
       ro.observe(refItem.value);
     });
 
     onBeforeUnmount(() => {
-      ro.disconnect(refItem.value);
+      ro.disconnect();
     });
 
     return {
@@ -227,7 +229,7 @@ export default {
   components: {
     ArtistFormat,
   },
-};
+});
 </script>
 <style lang="scss" scoped>
 .track-list-item {

@@ -21,9 +21,9 @@
     </div>
   </div>
 </template>
-<script>
-import { onMounted, ref } from "vue";
-export default {
+<script lang="ts">
+import { onMounted, ref, defineComponent } from "vue";
+export default defineComponent({
   name: "TextModal",
   props: {
     title: { type: String, required: true },
@@ -49,7 +49,7 @@ export default {
 
     return { show, closeMessage };
   },
-};
+});
 </script>
 <style lang="scss" scoped>
 .overlay {

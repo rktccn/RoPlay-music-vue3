@@ -16,7 +16,7 @@
             {{ videoInfo.name }}
           </div>
           <em>-</em>
-          <div class="artist text-style-info">
+          <div class="artist-list text-style-info">
             <ArtistFormat
               :artistList="videoInfo.artists"
               fontSize="16px"
@@ -157,8 +157,14 @@ export default {
       overflow: hidden;
     }
 
-    .artist {
-      max-width: 50%;
+    .title {
+      max-width: 45%;
+      @include text-overflow(1);
+    }
+
+    .artist-list {
+      max-width: 45%;
+      @include text-overflow(1);
     }
 
     em {
@@ -168,6 +174,9 @@ export default {
     .describe {
       @include text-overflow(2);
       cursor: pointer;
+      &:hover {
+        text-decoration-line: underline;
+      }
     }
   }
 
@@ -239,11 +248,11 @@ export default {
 @keyframes drop-right {
   0% {
     opacity: 0;
-    transform: translateX(-100%);
+    transform: scale(0.5);
   }
   100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: scale(1);
   }
 }
 </style>
