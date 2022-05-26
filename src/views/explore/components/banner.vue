@@ -52,7 +52,12 @@ export default {
             class="banner-item"
             :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
           >
-            <img :src="`${item.imageUrl}?param=756y280`" alt="" />
+            <el-image
+              lazy
+              class="pic"
+              :src="`${item.imageUrl}?param=756y280`"
+              alt=""
+            />
             <!-- <div
               :style="`background-image: url(${item.imageUrl}?param=756y280) `"
             ></div> -->
@@ -100,7 +105,7 @@ export default {
         background-repeat: no-repeat;
         background-size: cover;
 
-        img {
+        .pic {
           position: absolute;
           left: 50%;
           top: 50%;
@@ -125,7 +130,7 @@ export default {
           height: 100%;
           width: 100%;
 
-          img {
+          .pic {
             height: auto;
             width: 100%;
           }

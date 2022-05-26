@@ -7,7 +7,12 @@
       v-loading="item === null"
       :type="'playlist'"
     ></ContextInfo>
-    <TrackList class="playlist-list" :tracks="tracks" v-if="tracks">
+    <TrackList
+      class="playlist-list"
+      :tracks="tracks"
+      scrollerSelector=".el-main"
+      v-if="tracks"
+    >
     </TrackList>
   </div>
   <p class="load-info font-size-12" @click="dododo">
@@ -22,6 +27,7 @@ import { getPlaylistDetail, getPlaylistTracks } from "../apis/playlist";
 import { reactive, toRefs, ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessageBox } from "element-plus";
+import { isScrollBottom } from "../utils/common";
 export default {
   name: "playlist",
   props: {},
@@ -44,12 +50,10 @@ export default {
 
     const loadMore = async () => {
       if (loading || data.tracks === null) return;
-      if (
-        trackList.value.getBoundingClientRect().bottom <=
-        document.body.clientHeight
-      ) {
+      if (isScrollBottom()) {
         loading = true;
         data.offset++;
+
         await getPlaylistTracks({ id, offset: ++offset }).then((res) => {
           if (offset >= data.maxPage) {
             data.tracks.push(...res.songs.splice(-overTracks));

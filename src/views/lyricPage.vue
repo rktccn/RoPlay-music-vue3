@@ -28,7 +28,8 @@
               }"
             >
               <div></div>
-              <!-- <img
+              <!-- <el-image lazy
+              class="pic"
                 :src="`${
                   player?.currentTrack?.al?.picUrl ||
                   'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'

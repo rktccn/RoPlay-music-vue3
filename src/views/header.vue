@@ -84,7 +84,12 @@ watch(
         account_circle</router-link
       >
       <span class="avator" @click="goTo('PersonalPage')">
-        <img :src="`${store.userInfo.avatarUrl}?param=128y128`" alt="" />
+        <el-image
+          lazy
+          class="pic"
+          :src="`${store.userInfo.avatarUrl}?param=128y128`"
+          alt=""
+        />
       </span>
     </div>
   </div>
@@ -178,7 +183,7 @@ watch(
       height: 100%;
       line-height: 0;
 
-      img {
+      .pic {
         height: 80%;
         border-radius: 50%;
       }

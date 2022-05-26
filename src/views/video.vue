@@ -35,7 +35,7 @@
           :key="index"
           @click.self="goTo(mv.id)"
         >
-          <img :src="mv.cover" alt="" />
+          <el-image class="pic" lazy :src="mv.cover" alt="" />
           <div class="info" @click.self="goTo(mv.id)">
             <div class="name text-style-title" @click.self="goTo(mv.id)">
               {{ mv.name }}
@@ -183,6 +183,11 @@ export default {
   .right {
     @include calc-width(2.4);
     user-select: none;
+
+    .video-list {
+      display: flex;
+      flex-direction: column;
+    }
     .item {
       position: relative;
       width: 100%;
@@ -217,7 +222,7 @@ export default {
         }
       }
 
-      img {
+      .pic {
         width: 100%;
       }
 
@@ -239,6 +244,52 @@ export default {
         .artist {
           animation: drop-right $transition-time-default * 1.5;
           @include text-overflow(1);
+        }
+      }
+    }
+  }
+}
+
+@media screen and(max-width:$lg) {
+  .video {
+    flex-direction: column;
+    .left {
+      @include calc-width(10);
+    }
+
+    .right {
+      margin-top: 36px;
+      @include calc-width(10);
+
+      .video-list {
+        flex-direction: row;
+        .item {
+          &:nth-child(2) {
+            margin: 0 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and(max-width:$sm) {
+  .video {
+    flex-direction: column;
+    .left {
+      @include calc-width(5);
+    }
+
+    .right {
+      margin-top: 64px;
+      @include calc-width(5);
+
+      .video-list {
+        flex-direction: row;
+        .item {
+          &:nth-child(2) {
+            margin-right: 16px;
+          }
         }
       }
     }

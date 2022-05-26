@@ -35,7 +35,7 @@ const list = reactive([
       {
         itemName: "推荐",
         path: "/feed",
-        icon: "personalized_recommendations",
+        icon: "stream",
         needLog: true,
       },
       { itemName: "探索", path: "/", icon: "music_note", needLog: false },

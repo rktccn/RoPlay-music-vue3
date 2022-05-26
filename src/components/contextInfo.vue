@@ -1,7 +1,7 @@
 <template lang="">
   <div class="context-info">
     <div class="avatar">
-      <img :src="getImgUrl()" alt="alt" />
+      <el-image class="pic" lazy :src="getImgUrl()" alt="alt" />
     </div>
     <div class="gap"></div>
     <div class="info">
@@ -141,7 +141,7 @@ export default defineComponent({
     align-items: center;
     line-height: 0;
 
-    img {
+    .pic {
       position: relative;
       top: 50%;
       transform: translateY(-50%);
@@ -267,7 +267,7 @@ export default defineComponent({
     .avatar {
       @include calc-width(5);
 
-      img {
+      .pic {
         transform: translateY(0%);
       }
     }

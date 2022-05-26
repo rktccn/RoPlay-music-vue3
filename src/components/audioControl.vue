@@ -2,7 +2,8 @@
   <div class="audioControl material-theme">
     <div class="main">
       <div class="left">
-        <img
+        <el-image
+          lazy
           :src="`${
             currentTrack?.al?.picUrl ??
             'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'

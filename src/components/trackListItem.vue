@@ -8,9 +8,10 @@
     @click.right="showContextMenu"
   >
     <div class="inner">
-      <img
+      <el-image
+        lazy
         class="cover"
-        :src="`${imgUrl}?param=224y224`"
+        :src="`${imgUrl}?param=64y64`"
         alt=""
         v-if="imgUrl && showImg && type !== 'album'"
         :class="itemWidth > 2 ? ' hide-in-sm' : ''"
@@ -86,7 +87,7 @@ export default defineComponent({
     height: { type: String, default: "64px" },
     showImg: { type: Boolean, default: true },
     canHover: { type: Boolean, default: true }, // 是否显示hover样式
-    index: { type: Number },
+    index: { type: Number }, // 数字替代缩略图
   },
   setup(props) {
     const data = reactive({
@@ -103,6 +104,7 @@ export default defineComponent({
     });
 
     const track = props.item;
+
     const player = usePlayer();
 
     const refItem = ref(null);
@@ -124,7 +126,6 @@ export default defineComponent({
     const setStyle = (): object => {
       let styles = {
         height: props.height,
-        // width: props.width,
       };
       return styles;
     };

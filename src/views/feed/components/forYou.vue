@@ -5,7 +5,9 @@
       <!-- 私人fm -->
       <li class="block personal_fm">
         <div class="cover">
-          <img
+          <el-image
+            lazy
+            class="pic"
             :src="`${
               player.personalFMCurrent?.album?.picUrl || ''
             }?param=240y240`"
@@ -55,7 +57,12 @@
       <!-- 日推 -->
       <li class="daily-songs" v-if="dailySongs[0]">
         <div class="cover">
-          <img :src="`${dailySongs[0].al.picUrl}?param=480y480`" alt="" />
+          <el-image
+            lazy
+            class="pic"
+            :src="`${dailySongs[0].al.picUrl}?param=480y480`"
+            alt=""
+          />
           <div class="sign primary">
             <span>{{ getDate() }}</span>
           </div>
@@ -188,7 +195,7 @@ export default {
     margin-left: 5%;
     border-radius: $border-radius-default;
     overflow: hidden;
-    img {
+    .pic {
       border-radius: $border-radius-default;
       width: 100%;
     }
@@ -241,7 +248,7 @@ export default {
       background: linear-gradient(-45deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
     }
 
-    img {
+    .pic {
       width: 100%;
       transition: all $transition-time-default;
     }
@@ -285,7 +292,7 @@ export default {
     }
 
     &:hover {
-      img {
+      .pic {
         transform: scale(1.1);
       }
       .mask {

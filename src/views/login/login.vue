@@ -7,7 +7,7 @@
       </div>
       <span class="material-icons-round gap"> close </span>
       <div class="neteast">
-        <img src="../../images/netease_music_icon.png" alt="" />
+        <el-image lazy class="pic" src="../../images/netease_music_icon.png" alt="" />
       </div>
     </div>
 
@@ -68,7 +68,7 @@
       <!-- 二维码登陆 -->
       <div class="qrcode" v-if="logMode === 'qr'">
         <div class="qrcode-container block" v-loading="qr.pic === null">
-          <img :src="qr.pic" alt="" />
+          <el-image lazy class="pic" :src="qr.pic" alt="" />
           <!-- 提示浮层 -->
           <div
             class="qrcode-tip"
@@ -119,7 +119,7 @@
             :class="{ primary: search.selectUserIndex === index }"
           >
             <div class="avatar">
-              <img :src="`${user.avatarUrl}?param=48y48`" alt="" />
+              <el-image lazy class="pic" :src="`${user.avatarUrl}?param=48y48`" alt="" />
             </div>
             <span class="name text-truncate">{{ user.nickname }}</span>
             <span class="material-icons-round icon">
@@ -642,7 +642,7 @@ export default {
   .neteast {
     @include calc-width(1);
 
-    img {
+    .pic {
       width: 100%;
     }
   }
@@ -804,7 +804,7 @@ export default {
     justify-content: center;
     margin: 0 auto;
 
-    img {
+    .pic {
       width: 100%;
     }
 
@@ -869,7 +869,7 @@ export default {
         height: 48px;
         border-radius: $border-radius-default;
         overflow: hidden;
-        img {
+        .pic {
           width: 100%;
         }
       }
