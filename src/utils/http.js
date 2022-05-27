@@ -13,10 +13,12 @@ service.interceptors.request.use(function (config) {
   if (config.method === "post") {
     config.data = {
       ...config.data,
+      realIP: "211.161.244.70",
     };
   } else if (config.method === "get") {
     config.params = {
       ...config.params,
+      realIP: "211.161.244.70",
     };
   }
 
