@@ -314,6 +314,7 @@ export default defineComponent({
 
 .more {
   display: flex;
+  align-items: center;
   position: relative;
   user-select: none;
 
@@ -322,10 +323,10 @@ export default defineComponent({
   }
 
   .like {
+    line-height: 0;
     &.normal {
       position: absolute;
       right: 0;
-      top: 0;
     }
 
     .fill {

@@ -208,5 +208,9 @@ export default defineComponent({
     contain: layout;
     will-change: transform;
   }
+
+  &__scroll-runway {
+    transition: transform $transition-time-default;
+  }
 }
 </style>
