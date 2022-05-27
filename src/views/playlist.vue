@@ -37,14 +37,10 @@ export default {
     const id = route.params.id;
     const trackList = ref(null);
     let loading = false; // 滚动加载
-    let overTracks = []; // 多出部分的歌曲
-    let offset = 0;
-
     const data = reactive({
       item: null,
       tracks: null,
       trackCount: null,
-      maxPage: 0, //最大页数
       hasMore: true,
     });
 
@@ -54,18 +50,21 @@ export default {
         loading = true;
         data.offset++;
 
-        await getPlaylistTracks({ id, offset: ++offset }).then((res) => {
-          if (offset >= data.maxPage) {
-            data.tracks.push(...res.songs.splice(-overTracks));
-            data.hasMore = false;
-            document
-              .getElementsByClassName("el-main")[0]
-              .removeEventListener("scroll", loadMore);
-            return;
+        await getPlaylistTracks({ id, offset: data.tracks.length }).then(
+          (res) => {
+            data.tracks.push(...res.songs);
+            if (res.songs.length < 20) {
+              console.log("没有更多了");
+
+              data.hasMore = false;
+              document
+                .getElementsByClassName("el-main")[0]
+                .removeEventListener("scroll", loadMore);
+              return;
+            }
+            loading = false;
           }
-          data.tracks.push(...res.songs);
-          loading = false;
-        });
+        );
       }
     };
 
@@ -106,8 +105,6 @@ export default {
 
       await getPlaylistTracks({ id }).then((res) => {
         data.tracks = res.songs;
-        data.maxPage = Math.ceil(data.trackCount / 20) - 1;
-        overTracks = data.trackCount % 20; // 多余歌曲
 
         if (data.maxPage === 0) {
           loading = false;
