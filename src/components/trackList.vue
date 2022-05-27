@@ -26,7 +26,14 @@
 <script lang="ts">
 // https://lkangd.com/post/virtual-infinite-scroll/#dongtaigaodudexuniliebiao
 
-import { defineComponent, reactive, toRefs, ref, onMounted, watch } from "vue";
+import {
+  defineComponent,
+  reactive,
+  toRefs,
+  onUnmounted,
+  onMounted,
+  watch,
+} from "vue";
 import TrackListItem from "./trackListItem.vue";
 
 const FIXED_HEIGHT = 64;
@@ -172,6 +179,10 @@ export default defineComponent({
       },
       { immediate: true }
     );
+
+    onUnmounted(() => {
+      SCROLL_ELEMENT.removeEventListener("scroll", handleScroll);
+    });
 
     return { ...toRefs(data) };
   },

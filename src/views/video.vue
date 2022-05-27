@@ -7,7 +7,7 @@
           class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered"
           controls
         >
-          <source src="videoUrl" v-if="videoUrl" type="video/mp4" />
+          <source v-if="videoUrl !== ''" type="video/mp4" />
         </video>
       </div>
       <div class="video-info" v-if="videoInfo">
@@ -68,7 +68,7 @@ export default {
   setup() {
     const data = reactive({
       videoInfo: null,
-      videoUrl: null,
+      videoUrl: "",
       simiMv: null,
     });
     let vPlayer;

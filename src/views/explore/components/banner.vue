@@ -52,12 +52,7 @@ export default {
             class="banner-item"
             :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
           >
-            <el-image
-              lazy
-              class="pic"
-              :src="`${item.imageUrl}?param=756y280`"
-              alt=""
-            />
+            <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt="" />
             <!-- <div
               :style="`background-image: url(${item.imageUrl}?param=756y280) `"
             ></div> -->
