@@ -99,7 +99,6 @@ export function subscribePlaylist(params) {
   return req
     .get("/playlist/subscribe", {
       params,
-      cookie: useStore().userCookie || "",
     })
     .then((res) => {
       return res;
@@ -118,7 +117,6 @@ export function deletePlaylist(id) {
     method: "post",
     params: {
       id,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -142,7 +140,6 @@ export function createPlaylist(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -166,7 +163,6 @@ export function addOrRemoveTrackFromPlaylist(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -192,7 +188,6 @@ export function getPlaylistTracks(params) {
     params: {
       ...params,
       timestamp: new Date().getTime(),
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;

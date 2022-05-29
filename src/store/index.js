@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
-import { getUserPlaylist, userLikedSongsIDs } from "../apis/user";
+import {
+  getUserPlaylist,
+  userLikedSongsIDs,
+  getAnonymityCookie,
+} from "../apis/user";
 import { usePlayer } from "./player";
 
 export const useStore = defineStore("main", {
@@ -13,7 +17,9 @@ export const useStore = defineStore("main", {
       userInfo: {}, // 用户信息
       userPlaylist: null, // 用户歌单
       likedSongIDs: null, // 喜欢的歌曲id
-      userCookie: "",
+      userCookie: null,
+      // 默认cookie
+      defaultCookie: "",
     };
   },
   getters: {
@@ -26,6 +32,11 @@ export const useStore = defineStore("main", {
   },
   actions: {
     init() {
+      // 获取匿名cookie
+      getAnonymityCookie().then((res) => {
+        this.defaultCookie = res.cookie;
+      });
+
       const player = usePlayer();
       // 初始化用户信息
       if (this.isLoggedIn === -1) return;

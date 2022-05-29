@@ -201,9 +201,7 @@
             class="lyric-item"
             @click="clickLyric(index)"
           >
-            <span>
-              {{ lyric.content }}
-            </span>
+            {{ lyric.content }}
           </li>
         </ul>
         <span class="list right-side" v-if="!lyricList"
@@ -587,6 +585,8 @@ export default {
     font-weight: bold;
     opacity: 0.48;
     cursor: pointer;
+
+    word-wrap: break-word;
 
     &:hover {
       backdrop-filter: brightness(1.2);

@@ -8,14 +8,15 @@
     @click.right="showContextMenu"
   >
     <div class="inner">
-      <el-image
-        lazy
-        class="cover"
-        :src="`${imgUrl}?param=64y64`"
-        alt=""
-        v-if="imgUrl && showImg && type !== 'album'"
-        :class="itemWidth > 2 ? ' hide-in-sm' : ''"
-      />
+      <div class="inner__cover" v-if="imgUrl && showImg && type !== 'album'">
+        <el-image
+          lazy
+          class="inner__cover__img"
+          :src="`${imgUrl}?param=64y64`"
+          alt=""
+          :class="itemWidth > 2 ? ' hide-in-sm' : ''"
+        />
+      </div>
       <span class="index font-size-16" v-if="type === 'album'">{{
         index
       }}</span>
@@ -259,6 +260,17 @@ export default defineComponent({
     height: 100%;
     min-height: 48px;
 
+    &__cover {
+      height: 100%;
+      width: 48px;
+
+      &__img {
+        line-height: 0;
+        border-radius: $border-radius-default;
+        height: 100%;
+      }
+    }
+
     > * {
       margin-right: 16px;
     }
@@ -274,11 +286,6 @@ export default defineComponent({
       display: block;
     }
   }
-}
-.cover {
-  line-height: 0;
-  border-radius: $border-radius-default;
-  height: 100%;
 }
 
 .index {

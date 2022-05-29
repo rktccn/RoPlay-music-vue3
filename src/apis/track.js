@@ -17,7 +17,6 @@ export function getMP3(id, br = 320000) {
       params: {
         id,
         br,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -90,7 +89,6 @@ export function likeATrack(params) {
     .get("/like", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -114,7 +112,7 @@ export function scrobble(params) {
     .post("/scrobble", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
+
         timestamp: new Date().getTime(),
       },
     })

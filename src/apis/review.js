@@ -103,7 +103,6 @@ export function likeComment(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -131,7 +130,6 @@ export function writeComment(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -159,7 +157,6 @@ export function deleteComment(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -183,7 +180,6 @@ export function likeResource(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;

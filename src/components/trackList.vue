@@ -99,7 +99,7 @@ export default defineComponent({
     // 「锚点元素」更新方法
     const updateAnchorItem = (_scrollTop: number) => {
       const index = Math.floor(_scrollTop / FIXED_HEIGHT);
-      const offset = SCROLL_ELEMENT.scrollTop - index * FIXED_HEIGHT;
+      const offset = _scrollTop - index * FIXED_HEIGHT;
       data.anchorItem = { index, offset };
     };
 
@@ -117,6 +117,7 @@ export default defineComponent({
 
       // 更新「锚点元素」偏移量
       data.anchorItem.offset += delta;
+
       const isPositive = delta >= 0;
       // 判断滚动方向
       if (isPositive) {

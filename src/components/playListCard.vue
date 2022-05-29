@@ -25,7 +25,7 @@
             class="avator"
           />
           <div class="mask" :style="setStyle()" @click.self="goTo">
-            <span class="material-icons-round" @click.self="playSong()">
+            <span class="material-icons-round icon" @click.self="playSong()">
               play_arrow
             </span>
           </div>
@@ -273,7 +273,7 @@ export default defineComponent({
     transition: all $transition-time-default;
     border-radius: $border-radius-default;
 
-    span {
+    .icon {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -312,7 +312,7 @@ export default defineComponent({
     .mask {
       background-color: rgba(0, 0, 0, 0.2);
 
-      span {
+      .icon {
         opacity: 1;
       }
     }

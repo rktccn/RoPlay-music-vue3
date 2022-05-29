@@ -36,7 +36,9 @@ export function search(params) {
 
   return req
     .get("/cloudsearch", {
-      params,
+      params: {
+        ...params,
+      },
     })
     .then((res) => {
       return res;
@@ -61,7 +63,6 @@ export function fmTrash(id) {
     url: "/fm_trash",
     method: "post",
     params: {
-      cookie: useStore().userCookie || "",
       id,
     },
   }).then((res) => {

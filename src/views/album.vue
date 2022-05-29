@@ -7,7 +7,13 @@
       v-loading="item === null"
       :type="'album'"
     ></ContextInfo>
-    <TrackList class="album-list" :tracks="tracks" v-if="tracks" type="album">
+    <TrackList
+      class="album-list"
+      :tracks="tracks"
+      v-if="tracks"
+      type="album"
+      scrollerSelector=".el-main"
+    >
     </TrackList>
     <span class="company font-size-12" v-if="item?.company">{{
       item.company

@@ -16,7 +16,6 @@ export function getCloud(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -35,7 +34,6 @@ export function getCloudDetail(id) {
     method: "post",
     params: {
       id,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -54,7 +52,6 @@ export function deleteCloudMusic(id) {
     method: "post",
     params: {
       id,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -72,7 +69,6 @@ export function uploadCloudMusic(file) {
     method: "post",
     params: {
       file,
-      cookie: useStore().userCookie || "",
     },
     headers: {
       "Content-Type": "multipart/form-data",
@@ -99,7 +95,6 @@ export function matchCloudMusic(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;

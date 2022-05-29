@@ -123,14 +123,24 @@ const routes = [
     redirect: "/",
   },
 
+  // 歌手
   {
     path: "/artist/:id",
     name: "artist",
     component: () => import("../views/artist.vue"),
     meta: {
+      hideHeader: false,
+    },
+  },
+  {
+    path: "/artist/:id/:type",
+    name: "ArtistType",
+    component: () => import("../views/artistType.vue"),
+    meta: {
       hideHeader: true, // 移动端隐藏头部
     },
   },
+
   {
     path: "/artist",
     redirect: "/",

@@ -1,7 +1,7 @@
 <template lang="">
-  <div v-if="resultList !== []">
+  <div v-if="resultList[0]">
     <div class="songs" v-if="type === 'songs'">
-      <TrackList :tracks="resultList"></TrackList>
+      <TrackList :tracks="resultList" scrollerSelector=".el-main"></TrackList>
     </div>
 
     <div :class="type" v-if="type !== 'songs'">

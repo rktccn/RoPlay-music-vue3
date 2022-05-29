@@ -6,7 +6,6 @@ export function personalFM() {
   return req
     .get("/personal_fm", {
       params: {
-        cookie: useStore().userCookie || "",
         timestamp: new Date().getTime(),
       },
     })
@@ -25,9 +24,7 @@ export function personalFM() {
 export function dailyRecommendTracks() {
   return req
     .get("/recommend/songs", {
-      params: {
-        cookie: useStore().userCookie || "",
-      },
+      params: {},
     })
     .then((res) => {
       return res;
@@ -45,7 +42,6 @@ export function dailyRecommendPlaylist(params) {
     .get("/recommend/resource", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -66,7 +62,6 @@ export function recommendPlaylist(params) {
     .get("/personalized", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -85,7 +80,6 @@ export function recommendNewSong(limit) {
     .get("/personalized/newsong", {
       params: {
         limit,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -104,7 +98,6 @@ export function recommendFM(limit) {
     .get("/personalized/djprogram", {
       params: {
         limit,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {

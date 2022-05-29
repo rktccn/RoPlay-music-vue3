@@ -12,7 +12,6 @@ export function userDetail(uid) {
     .get("/user/detial", {
       params: {
         uid,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -25,9 +24,7 @@ export function userDetail(uid) {
 export function userAccount() {
   return req
     .get("/user/account", {
-      params: {
-        cookie: useStore().userCookie || "",
-      },
+      params: {},
     })
     .then((res) => res);
 }
@@ -43,7 +40,6 @@ export function userLikedSongsIDs(uid) {
     .get("/likelist", {
       params: {
         uid,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -60,7 +56,6 @@ export function dailySignin(type = 0) {
     .get("/daily_signin", {
       params: {
         type,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -80,7 +75,6 @@ export function likedAlbums(params) {
     .get("/album/sublist", {
       params: {
         limit: params.limit,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -95,7 +89,6 @@ export function likedArtists(params) {
     .get("/artist/sublist", {
       params: {
         limit: params.limit,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -110,7 +103,6 @@ export function likedMVs(params) {
     .get("/mv/sublist", {
       params: {
         limit: params.limit,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -126,9 +118,7 @@ export function uploadSong(file) {
   return req({
     url: "/cloud",
     method: "post",
-    params: {
-      cookie: useStore().userCookie || "",
-    },
+    params: {},
     data: formData,
     headers: {
       "Content-Type": "multipart/form-data",
@@ -150,7 +140,6 @@ export function cloudDisk(params = {}) {
     .get("/user/cloud", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -162,7 +151,6 @@ export function cloudDisk(params = {}) {
 export function cloudDiskTrackDetail(id) {
   return req.get("/user/cloud/detial", {
     params: {
-      cookie: useStore().userCookie || "",
       id,
     },
   });
@@ -176,7 +164,6 @@ export function cloudDiskTrackDelete(id) {
   return req
     .get("/user/cloud/del", {
       params: {
-        cookie: useStore().userCookie || "",
         id,
       },
     })
@@ -199,7 +186,6 @@ export function getUserPlaylist(params) {
     .get("/user/playlist", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -216,7 +202,6 @@ export function getUserDj(uid) {
     .get("/user/dj", {
       params: {
         uid,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -238,7 +223,6 @@ export function getUserFollows(params) {
     .get("/user/follows", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -260,7 +244,6 @@ export function getUserFans(params) {
     .get("/user/followeds", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => res);
@@ -280,5 +263,13 @@ export function userPlayHistory(params) {
     url: `/user/record`,
     method: "get",
     params,
+  });
+}
+
+// 获取匿名cookie
+export function getAnonymityCookie() {
+  return req({
+    url: `/register/anonimous`,
+    method: "get",
   });
 }

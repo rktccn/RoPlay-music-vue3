@@ -1,7 +1,7 @@
 import req from "../utils/http";
 import { useStore } from "../store/index";
 
-// 获取歌手单曲
+// 获取歌手热门单曲和信息
 // 说明 : 调用此接口 , 传入歌手 id, 可获得歌手部分信息和热门歌曲
 export function getArtist(id) {
   return req
@@ -13,6 +13,25 @@ export function getArtist(id) {
     .then((res) => {
       return res;
     });
+}
+
+/**
+ * 歌手全部歌曲
+ * 说明 : 调用此接口,可获取歌手全部歌曲
+ * - id: 歌手 id
+ * - order : hot ,time 按照热门或者时间排序
+ * - limit: 取出数量 , 默认为 50
+ * - offset: 偏移数量 , 用于分页 , 如 :( 页数 -1)*50, 其中 50 为 limit 的值 , 默认为 0
+ * @param {Object} params
+ * @param {number} params.id
+ * @param {number=} params.limit
+ * @param {number=} params.order
+ * @param {number=} params.offset
+ */
+export function getArtistSongs(params) {
+  return req.get("/artist/songs", { params }).then((res) => {
+    return res;
+  });
 }
 
 /**
@@ -83,7 +102,6 @@ export function followAArtist(params) {
     method: "post",
     params: {
       ...params,
-      cookie: useStore().userCookie || "",
     },
   }).then((res) => {
     return res;
@@ -184,7 +202,6 @@ export function getFollowedArtistNewMvs(params) {
     .get("/artist/new/mv", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
@@ -207,7 +224,6 @@ export function getFollowedArtistNewSongs(params) {
     .get("/artist/new/song", {
       params: {
         ...params,
-        cookie: useStore().userCookie || "",
       },
     })
     .then((res) => {
