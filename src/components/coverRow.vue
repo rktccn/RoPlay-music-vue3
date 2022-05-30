@@ -16,6 +16,7 @@ export default defineComponent({
       default: "other",
     },
   },
+
   name: "CoverRow",
 });
 </script>
@@ -40,7 +41,7 @@ export default defineComponent({
     grid-template-columns: repeat(2, 1fr);
   }
 
-  &.videos {
+  &.video {
     grid-template-columns: repeat(4, 1fr);
 
     @media (max-width: $lg) {

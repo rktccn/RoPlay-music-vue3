@@ -1,17 +1,16 @@
 <template lang="">
-  {{ resultList }}
   <div v-if="resultList[0]">
     <div class="songs" v-if="TYPE === 'songs'">
       <TrackList :tracks="resultList" scrollerSelector=".el-main"></TrackList>
     </div>
 
-    <div :class="type" v-if="TYPE !== 'songs'">
+    <div :class="TYPE" v-if="TYPE !== 'songs'">
       <CoverRow :type="TYPE">
         <li v-for="(item, index) in resultList" :key="index">
           <PlayListCard
             class="item"
             :item="item"
-            :type="type.slice(0, -1)"
+            :type="TYPE.slice(0, -1)"
           ></PlayListCard>
         </li>
       </CoverRow>
@@ -32,7 +31,7 @@ import CoverRow from "../components/coverRow.vue";
 import PlayListCard from "../components/playListCard.vue";
 
 let TYPE = "songs";
-let ARTIST_ID: number = 0;
+let ARTIST_ID = 0;
 export default defineComponent({
   name: "artistType",
   setup() {
@@ -54,33 +53,32 @@ export default defineComponent({
       loading = true;
       switch (TYPE) {
         case "songs":
-          getArtistSongs({ id: ARTIST_ID, ...params }).then((res) => {
-            data.resultList.concat(res.data.songs);
-            console.log(data.resultList);
+          getArtistSongs({ id: ARTIST_ID, ...params }).then((res: any) => {
+            data.resultList.push(...res.songs);
 
-            data.hasMore = res.data.more;
+            data.hasMore = res.more;
             loading = false;
           });
 
           break;
-        case "album":
-          getArtistAlbum({ id: ARTIST_ID, ...params }).then((res) => {
-            data.resultList.concat(res.data.hotAlbums);
-            data.hasMore = res.data.more;
+        case "albums":
+          getArtistAlbum({ id: ARTIST_ID, ...params }).then((res: any) => {
+            data.resultList.push(...res.hotAlbums);
+            data.hasMore = res.more;
             loading = false;
           });
           break;
-        case "mv":
-          getArtistMv({ id: ARTIST_ID, ...params }).then((res) => {
-            data.resultList.concat(res.data.mvs);
-            data.hasMore = res.data.more;
+        case "videos":
+          getArtistMv({ id: ARTIST_ID, ...params }).then((res: any) => {
+            data.resultList.push(...res.mvs);
+            data.hasMore = res.more;
             loading = false;
           });
           break;
         default:
-          getArtistSongs({ id: ARTIST_ID, ...params }).then((res) => {
-            data.resultList.concat(res.data.songs);
-            data.hasMore = res.data.more;
+          getArtistSongs({ id: ARTIST_ID, ...params }).then((res: any) => {
+            data.resultList.push(...res.songs);
+            data.hasMore = res.more;
             loading = false;
           });
           break;
@@ -116,8 +114,8 @@ export default defineComponent({
     });
 
     getResult({
-      limit: 50,
       offset: data.resultList.length,
+      limit: 50,
     });
     return { ...toRefs(data), TYPE };
   },

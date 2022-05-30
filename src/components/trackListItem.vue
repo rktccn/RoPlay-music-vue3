@@ -139,7 +139,7 @@ export default defineComponent({
       data.imgUrl =
         track?.al?.picUrl ??
         track?.album?.picUrl ??
-        "https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg";
+        `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
     };
 
     const getDuration = () => {

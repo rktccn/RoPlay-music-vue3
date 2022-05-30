@@ -10,7 +10,15 @@
     <!-- 新专和热歌 -->
     <div class="album-songs">
       <div class="new-album section" v-if="albums">
-        <div class="text-style-title">最新发布</div>
+        <div class="top-title">
+          <div class="text-style-title">最新发布</div>
+          <router-link
+            class="text-style-info more"
+            :to="{ name: 'ArtistType', params: { id, type: 'albums' } }"
+            >查看更多</router-link
+          >
+        </div>
+
         <div class="inner">
           <PlaylistCard :item="albums[0]" type="album"></PlaylistCard>
           <PlaylistCard :item="albums[1]" type="album"></PlaylistCard>
@@ -18,7 +26,14 @@
       </div>
 
       <div class="top-song section" v-if="hotSongs">
-        <div class="text-style-title">热门歌曲</div>
+        <div class="top-title">
+          <div class="text-style-title">热门歌曲</div>
+          <router-link
+            class="text-style-info more"
+            :to="{ name: 'ArtistType', params: { id, type: 'songs' } }"
+            >查看更多</router-link
+          >
+        </div>
         <div class="inner">
           <CarouselList :length="hotSongs.length" :rows="4">
             <li v-for="(song, index) in hotSongs" :key="index">
@@ -35,7 +50,15 @@
 
     <!-- 视频 -->
     <div class="mvs block section" v-if="mvs.length !== 0">
-      <div class="text-style-title">视频</div>
+      <div class="top-title">
+        <div class="text-style-title">视频</div>
+        <router-link
+          class="text-style-info more"
+          :to="{ name: 'ArtistType', params: { id, type: 'videos' } }"
+          >查看更多</router-link
+        >
+      </div>
+
       <CarouselList :length="mvs.length" :rows="mvs.length >= 6 ? 2 : 1">
         <li v-for="(mv, index) in mvs" :key="index">
           <PlaylistCard
@@ -128,6 +151,16 @@ export default {
 </script>
 
 <style lang="scss">
+.top-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  .more {
+    margin-right: 16px;
+  }
+}
+
 .album-songs {
   display: flex;
   justify-content: space-between;
