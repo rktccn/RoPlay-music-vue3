@@ -36,7 +36,7 @@ export const useStore = defineStore("main", {
       if (this.defaultCookie === "") {
         getAnonymityCookie().then((res) => {
           this.defaultCookie = res.cookie;
-          location.reload();
+          // location.reload();
         });
       }
 
