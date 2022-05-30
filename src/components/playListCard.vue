@@ -25,7 +25,7 @@
             class="avator"
           />
           <div class="mask" :style="setStyle()" @click.self="goTo">
-            <span class="material-icons-round icon" @click.self="playSong()">
+            <span class="material-icons-round icon" @click.self="playSong(id)">
               play_arrow
             </span>
           </div>
@@ -95,7 +95,7 @@ export default defineComponent({
       title: null,
       info: null,
       id: null,
-      playSong: () => {},
+      playSong: (id: number) => {},
 
       isDecShow: null,
     });
