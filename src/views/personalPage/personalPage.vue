@@ -45,6 +45,7 @@
       class="track-list"
       :tracks="likedSongList"
       v-loading="likedSongList.length === 0 && hasMoreSongs"
+      scrollerSelector=".el-main"
     ></TrackList>
     <span v-if="likedSongList.length === 0 && !hasMoreSongs">没有歌曲</span>
   </div>
@@ -108,6 +109,7 @@ export default {
         .join(",");
       getTrackDetail(arr).then((res) => {
         data.likedSongList.push(...res.songs);
+        console.log(data.likedSongList);
         loading = false;
         if (res.songs.length < 50) {
           data.hasMoreSongs = false;

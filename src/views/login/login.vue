@@ -7,7 +7,7 @@
       </div>
       <span class="material-icons-round gap"> close </span>
       <div class="neteast">
-        <el-image lazy class="pic" src="../../images/netease_music_icon.png" alt="" />
+        <img class="pic" src="../../images/netease_music_icon.png" alt="" />
       </div>
     </div>
 
@@ -119,7 +119,12 @@
             :class="{ primary: search.selectUserIndex === index }"
           >
             <div class="avatar">
-              <el-image lazy class="pic" :src="`${user.avatarUrl}?param=48y48`" alt="" />
+              <el-image
+                lazy
+                class="pic"
+                :src="`${user.avatarUrl}?param=48y48`"
+                alt=""
+              />
             </div>
             <span class="name text-truncate">{{ user.nickname }}</span>
             <span class="material-icons-round icon">

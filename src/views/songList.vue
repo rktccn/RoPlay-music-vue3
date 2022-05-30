@@ -36,7 +36,12 @@
       </button>
     </div>
     <div v-loading="!songs[0] && hasMore" class="list">
-      <TrackList :tracks="songs" v-if="songs[0]" :type="songType"></TrackList>
+      <TrackList
+        :tracks="songs"
+        v-if="songs[0]"
+        :type="songType"
+        scrollerSelector=".el-main"
+      ></TrackList>
       <span v-if="!songs[0] && !hasMore">暂无歌曲</span>
     </div>
     <p class="load-info font-size-12">

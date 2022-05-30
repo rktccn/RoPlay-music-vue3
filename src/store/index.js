@@ -33,9 +33,12 @@ export const useStore = defineStore("main", {
   actions: {
     init() {
       // 获取匿名cookie
-      getAnonymityCookie().then((res) => {
-        this.defaultCookie = res.cookie;
-      });
+      if (this.defaultCookie === "") {
+        getAnonymityCookie().then((res) => {
+          this.defaultCookie = res.cookie;
+          location.reload();
+        });
+      }
 
       const player = usePlayer();
       // 初始化用户信息
@@ -70,6 +73,7 @@ export const useStore = defineStore("main", {
     setMusicId(param) {
       this.musicId = param;
     },
+
     setOverlay(param) {
       if (param !== null) {
         this.showOverlay = param;
@@ -91,6 +95,15 @@ export const useStore = defineStore("main", {
       } else {
       }
     },
+
+    // 退出登陆
+    logout() {
+      this.isLoggedIn = -1;
+      this.userInfo = {};
+      this.userPlaylist = null;
+      this.likedSongIDs = null;
+      this.userCookie = null;
+    },
   },
   // 开启数据缓存
   persist: {
@@ -100,6 +113,11 @@ export const useStore = defineStore("main", {
         key: "user",
         storage: localStorage,
         paths: ["isLoggedIn", "userInfo", "userCookie"],
+      },
+      {
+        key: "anonymityUser",
+        storage: sessionStorage,
+        paths: ["defaultCookie"],
       },
     ],
   },

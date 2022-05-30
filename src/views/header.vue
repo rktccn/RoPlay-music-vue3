@@ -77,20 +77,24 @@ watch(
     </div>
     <div class="right">
       <router-link
-        to="/login"
+        :to="{ name: 'Setting' }"
         class="material-icons-round font-size-36"
         v-if="store.isLoggedIn === -1"
       >
         account_circle</router-link
       >
-      <span class="avator" @click="goTo('PersonalPage')">
+      <router-link
+        class="avator"
+        :to="{ name: 'Setting' }"
+        v-if="store.userInfo.avatarUrl"
+      >
         <el-image
           lazy
           class="pic"
           :src="`${store.userInfo.avatarUrl}?param=128y128`"
           alt=""
         />
-      </span>
+      </router-link>
     </div>
   </div>
 </template>
