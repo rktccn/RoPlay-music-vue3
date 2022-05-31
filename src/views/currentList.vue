@@ -8,6 +8,7 @@
       v-if="player.currentTrack !== {} && !player.isPersonalFM"
       :canHover="false"
       :key="currentIndex + tracks.length"
+      scrollerSelector=".el-main"
     ></TrackList>
   </div>
 
@@ -17,6 +18,7 @@
       :tracks="tracks"
       v-if="tracks.length !== 0"
       :key="tracks.length"
+      scrollerSelector=".el-main"
     ></TrackList>
     <p v-if="!tracks.length">暂无歌曲</p>
     <p class="load-info font-size-12" @click="dododo" v-if="tracks.length">

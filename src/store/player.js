@@ -16,6 +16,11 @@ export const usePlayer = defineStore("player", {
       progress: 0, // 当前播放进度
       volume: 0.5, // 音量 0-1
 
+      // 播放模式
+      playMode: 0, // 0: 循环 1: 单曲 2: 随机
+      randomList: [], // 随机播放列表
+      randomIndex: 0, // 随机播放索引
+
       // 歌曲信息
       currentTrack: null,
       trackList: [386538, 528272281],
@@ -44,6 +49,20 @@ export const usePlayer = defineStore("player", {
 
     getVolume() {
       return this.volume;
+    },
+
+    // 获取播放模式
+    getPlayMode() {
+      switch (this.playMode) {
+        case 0:
+          return "loop";
+        case 1:
+          return "loop_one";
+        case 2:
+          return "random";
+        default:
+          return "loop";
+      }
     },
   },
 
@@ -84,18 +103,53 @@ export const usePlayer = defineStore("player", {
     playPrev() {
       if (this.isPersonalFM) return;
 
-      if (!this.trackList || this.trackList.length === 0) return;
-      this.currentIndex === 0
-        ? (this.currentIndex = this.trackList.length - 1)
-        : this.currentIndex--;
+      if (this.playMode === 2) {
+        if (!this.randomList || this.randomList.length === 0) return;
+        this.randomIndex === 0
+          ? (this.randomIndex = this.randomList.length - 1)
+          : this.randomIndex--;
 
-      this.replaceCurrentTrack(this.trackList[this.currentIndex]);
+        this.replaceCurrentTrack(this.randomList[this.randomIndex]);
+
+        return;
+      } else if (this.playMode === 1) {
+        this.howler.seek(0);
+        this.songPlay();
+        return;
+      } else {
+        if (!this.trackList || this.trackList.length === 0) return;
+        this.currentIndex === 0
+          ? (this.currentIndex = this.trackList.length - 1)
+          : this.currentIndex--;
+
+        this.replaceCurrentTrack(this.randomList[this.randomIndex]);
+      }
     },
 
     // 下一首
     playNext() {
+      if (this.playMode === 2) {
+        if (!this.randomList || this.randomList.length === 0) return;
+        this.randomIndex === this.randomList.length - 1
+          ? (this.randomIndex = 0)
+          : this.randomIndex++;
+
+        this.replaceCurrentTrack(
+          this.randomList[this.randomIndex],
+          true,
+          -1,
+          false
+        );
+        return;
+      } else if (this.playMode === 1) {
+        this.howler.seek(0);
+        this.songPlay();
+        return;
+      }
+
       if (this.isPersonalFM) {
         this.playNextPersonalFM();
+        return;
       } else {
         if (!this.trackList || this.trackList.length === 0) return;
         this.currentIndex === this.trackList.length - 1
@@ -141,7 +195,6 @@ export const usePlayer = defineStore("player", {
       isPersonalFM = false
     ) {
       this.isPersonalFM = isPersonalFM;
-
       getTrackDetail(id).then((res) => {
         getMP3(id).then((res2) => {
           if (res2.data[0].url) {
@@ -150,8 +203,14 @@ export const usePlayer = defineStore("player", {
               if (index === -1) {
                 this.trackList.push(id);
                 this.currentIndex = this.trackList.length - 1;
+                if (this.playMode === 2) {
+                  this.setRandomList();
+                }
               } else {
                 this.currentIndex = index;
+                if (this.playMode === 2) {
+                  this.randomIndex = this.randomList.indexOf(id);
+                }
               }
             }
             this.currentTrack = res.songs[0];
@@ -317,6 +376,30 @@ export const usePlayer = defineStore("player", {
       if (this.personalFMNext.length === 0) {
         this.getPersonalFM();
       }
+    },
+
+    // 更换播放模式
+    changePlayMode() {
+      this.playMode = (this.playMode + 1) % 3;
+      if (this.playMode === 2) {
+        this.setRandomList();
+      } else if (this.playMode === 0) {
+        this.currentIndex = this.trackList.indexOf(this.currentTrack.id);
+      }
+    },
+
+    // 随机列表
+    setRandomList() {
+      console.log("123123123");
+      this.randomIndex = 0;
+      this.randomList = [];
+      this.randomList.push(...this.trackList);
+      this.randomList = this.randomList.sort(() => {
+        return 0.5 - Math.random();
+      });
+      this.randomList = Array.from(
+        new Set([this.currentTrack.id, ...this.randomList])
+      );
     },
   },
   // 开启数据缓存

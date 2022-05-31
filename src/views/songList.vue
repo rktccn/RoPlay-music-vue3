@@ -1,20 +1,20 @@
 <template lang="">
   <div>
     <div class="title">
-      <span class="material-symbols-rounded icon" v-if="type === 'SongsRecord'">
+      <span class="material-icons-round icon" v-if="type === 'SongsRecord'">
         equalizer
       </span>
-      <span class="material-symbols-rounded icon" v-if="type === 'DailySongs'">
+      <span class="material-icons-round icon" v-if="type === 'DailySongs'">
         calendar_today
         <div class="date">{{ getDate() }}</div></span
       >
       <span
-        class="material-symbols-rounded fill icon favourite"
+        class="material-icons-round icon favourite"
         v-if="type === 'FavouriteSongs'"
       >
         favorite
       </span>
-      <span class="material-symbols-rounded icon" v-if="type === 'Cloud'">
+      <span class="material-icons-round icon" v-if="type === 'Cloud'">
         cloud
       </span>
 
@@ -22,7 +22,7 @@
     </div>
     <div class="control">
       <button class="play primary" @click="play" v-if="type !== 'Cloud'">
-        <span class="material-symbols-rounded fill">play_arrow</span>
+        <span class="material-icons-round">play_arrow</span>
         播放
       </button>
 

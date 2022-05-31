@@ -53,11 +53,11 @@
         </div>
         <div class="like" :class="{ normal: itemWidth <= 2 }">
           <span
-            class="material-symbols-rounded"
+            class="material-icons-round"
             :class="{ fill: isLiked }"
             @click="toggleLike"
           >
-            favorite
+            favorite_border
           </span>
         </div>
       </div>

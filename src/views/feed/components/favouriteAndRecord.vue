@@ -12,7 +12,7 @@
       </ul>
       <div class="text-style-title title" @click.self="goTo('FavouriteSongs')">
         我喜欢
-        <span class="material-symbols-rounded fill icon" @click="play">
+        <span class="material-icons-round icon" @click="play">
           play_arrow
         </span>
       </div>

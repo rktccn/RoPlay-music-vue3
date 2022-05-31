@@ -12,7 +12,7 @@
             class="close material-icons-round font-size-48"
             @click="store.showLyric = false"
           >
-            expand_more
+            close_fullscreen
           </div>
           <div class="inner" id="lyricPageInner">
             <!-- 歌曲封面 -->
@@ -475,7 +475,6 @@ export default {
   z-index: 30;
 
   transition: all $transition-time-default ease;
-
   &::before {
     content: "";
     position: absolute;

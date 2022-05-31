@@ -15,6 +15,7 @@
     "js-cookie": "^3.0.1",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "material-icons": "^1.11.0",
     "needle": "^3.1.0",
     "pinia": "^2.0.13",
     "pinia-plugin-persist": "^1.0.0",

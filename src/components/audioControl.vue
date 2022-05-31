@@ -17,7 +17,10 @@
           <ArtistFormat :artistList="currentTrack.ar"></ArtistFormat>
         </div>
         <ul class="left-control">
-          <li class="like material-icons-round font-size-20">
+          <li
+            class="like material-icons-round font-size-20"
+            :class="{ fill: isLiked }"
+          >
             favorite_border
           </li>
           <li class="add-to-playlist material-icons-round font-size-20">
@@ -33,7 +36,12 @@
         </ul>
       </div>
       <ul class="control">
-        <li class="play-mode material-icons-round font-size-20">repeat</li>
+        <li
+          class="play-mode material-icons-round font-size-20"
+          @click="player.changePlayMode()"
+        >
+          {{ playMode }}
+        </li>
         <li
           class="play-prev material-icons-round font-size-32"
           @click="player.playPrev()"
@@ -194,6 +202,18 @@ export default defineComponent({
       return style;
     };
 
+    // 播放模式
+    const playMode = computed(() => {
+      const MODE = player.getPlayMode;
+      if (MODE === "loop") {
+        return "repeat";
+      } else if (MODE === "random") {
+        return "shuffle";
+      } else {
+        return "repeat_one";
+      }
+    });
+
     watch(
       () => data.showVolume,
       (val) => {
@@ -217,6 +237,7 @@ export default defineComponent({
       setVolumeIcon,
       goCurrentList,
       setProgressStyle,
+      playMode,
     };
   },
   components: { ArtistFormat, VueSlider },

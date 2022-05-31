@@ -83,10 +83,7 @@ const list = reactive([
               @click="store.setOverlay(false)"
             >
               <router-link :to="value.path" class="item-link">
-                <span
-                  class="material-symbols-rounded fill"
-                  v-if="value.icon !== ''"
-                >
+                <span class="material-icons-round" v-if="value.icon !== ''">
                   {{ value.icon }}
                 </span>
                 <div class="text-truncate">
