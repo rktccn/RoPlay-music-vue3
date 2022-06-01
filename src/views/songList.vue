@@ -117,6 +117,8 @@ export default {
     // 获取听歌排行
     const getRecordSongList = (type = 1) => {
       let key;
+      data.songs = [];
+      data.hasMore = true;
       type === 1 ? (key = "weekData") : (key = "allData");
       userPlayHistory({ uid: store.userInfo.userId, type }).then((res) => {
         data.songs = res[key].map((item) => {

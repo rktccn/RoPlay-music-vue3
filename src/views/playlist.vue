@@ -54,8 +54,6 @@ export default {
           (res) => {
             data.tracks.push(...res.songs);
             if (res.songs.length < 20) {
-              console.log("没有更多了");
-
               data.hasMore = false;
               document
                 .getElementsByClassName("el-main")[0]

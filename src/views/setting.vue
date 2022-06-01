@@ -28,8 +28,6 @@ export default defineComponent({
     const data = reactive({
       isLoggedIn: store.isLoggedIn !== -1,
     });
-    console.log(data.isLoggedIn);
-    console.log(store.isLoggedIn);
 
     const handleLog = () => {
       if (data.isLoggedIn) {
