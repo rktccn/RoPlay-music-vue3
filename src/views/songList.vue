@@ -260,8 +260,6 @@ export default {
     padding-left: 12px;
     border-radius: $border-radius-default;
   }
-  .record-type {
-  }
 }
 
 .list {

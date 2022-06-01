@@ -36,6 +36,14 @@ const goTo = (name) => {
   router.push({ name });
 };
 
+const goBack = () => {
+  router.go(-1);
+};
+
+const goForward = () => {
+  router.go(1);
+};
+
 watch(
   () => route.params.keyword,
   () => {
@@ -47,10 +55,12 @@ watch(
 <template lang="">
   <div class="header">
     <div class="button">
-      <span class="material-icons-round font-size-48 navigate"
+      <span class="material-icons-round font-size-48 navigate" @click="goBack"
         >navigate_before</span
       >
-      <span class="material-icons-round font-size-48 navigate"
+      <span
+        class="material-icons-round font-size-48 navigate"
+        @click="goForward"
         >navigate_next</span
       >
       <span

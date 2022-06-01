@@ -47,9 +47,6 @@
             <span class="material-icons-round dislike icon font-size-26"
               >delete_outline</span
             >
-            <span class="material-icons-outlined review icon font-size-24"
-              >chat</span
-            >
           </div>
         </div>
       </li>

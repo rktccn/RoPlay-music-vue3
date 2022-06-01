@@ -10,25 +10,15 @@
     :style="setWidth()"
   >
     <div class="card-inner">
-      <div class="cover">
+      <div class="cover" :class="{ video: type === 'video' || type === 'mv' }">
         <div
-          class="cover-inner"
-          :class="{ video: type === 'video' || type === 'mv' }"
-        >
-          <div
-            class="placeholder"
-            :class="{ video: type === 'video' || type === 'mv' }"
-            :style="setStyle()"
-          ></div>
-          <div
-            :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
-            class="avator"
-          />
-          <div class="mask" :style="setStyle()" @click.self="goTo">
-            <span class="material-icons-round icon" @click.self="playSong(id)">
-              play_arrow
-            </span>
-          </div>
+          :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
+          class="avator"
+        />
+        <div class="mask" :style="setStyle()" @click.self="goTo">
+          <span class="material-icons-round icon" @click.self="playSong(id)">
+            play_arrow
+          </span>
         </div>
       </div>
       <div
@@ -183,7 +173,7 @@ export default defineComponent({
 
     const setStyle = () => {
       let style = {
-        borderRadius: null,
+        borderRadius: "",
       };
 
       props.type === "artist" ? (style.borderRadius = "50%") : ""; // 显示音乐人时修改为圆形
@@ -229,20 +219,12 @@ export default defineComponent({
 
   transform: translateY(0px);
 }
-.cover-inner {
+.cover {
   position: relative;
-
+  aspect-ratio: 1/1;
   cursor: pointer;
-
-  .placeholder {
-    width: 100%;
-    padding-top: 100%;
-    // background-color: pink;
-    border-radius: $border-radius-default;
-
-    &.video {
-      padding-top: 56.25%;
-    }
+  &.video {
+    aspect-ratio: 16/9;
   }
 
   .avator {
