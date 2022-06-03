@@ -115,16 +115,19 @@ export default {
     });
 
     const loadMore = () => {
+
       if (isScrollBottom()) {
         loading = true;
         topPlaylist({
           offset: data.playlists.length,
-          limit: 20,
+          limit: 50,
           cat: data.tab,
         }).then((res) => {
           data.playlists = data.playlists.concat(res.playlists); // 拼接数组
           loading = false;
-          if (res.playlists.length < 20) {
+
+          if (res.playlists.length < 50) {
+
             data.hasMore = false;
             document
                 .getElementsByClassName("el-main")[0]

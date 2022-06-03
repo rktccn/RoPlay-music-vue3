@@ -17,11 +17,11 @@
       <div class="area">
         <!-- 切换歌手地区控件 -->
         <div
-          v-for="(area, index) in areaList"
-          :key="index"
-          @click="chageArea(area.code)"
-          :class="{ primary: area.code === curArea }"
-          class="tab-item text-style-title"
+            v-for="(area, index) in areaList"
+            :key="index"
+            @click="chageArea(area.code)"
+            :class="{ primary: area.code === curArea }"
+            class="tab-item text-style-title"
         >
           {{ area.name }}
         </div>
@@ -111,26 +111,28 @@ export default {
       loading = false;
     };
 
-    let params = { type: 3, area: 7, limit: 50, offset: 0, initial: -1 };
+    let params = {type: 3, area: 7, limit: 50, offset: 0, initial: -1};
     getData(params);
 
     // 滚动到底部加载
     const loadMore = () => {
+
       if (isScrollBottom()) {
+
         loading = true;
         getArtistList({
           offset: data.artistList.length,
-          limit: 20,
+          limit: 50,
           type: data.curType,
           area: data.curArea,
         }).then((res) => {
           data.artistList = data.artistList.concat(res.artists); // 拼接数组
           loading = false;
-          if (res.artists.length < 20) {
+          if (res.artists.length < 50) {
             data.hasMore = false;
             document
-              .getElementsByClassName("el-main")[0]
-              .removeEventListener("scroll", loadMore);
+                .getElementsByClassName("el-main")[0]
+                .removeEventListener("scroll", loadMore);
           }
         });
       }
@@ -170,17 +172,17 @@ export default {
 
     onMounted(() => {
       document
-        .getElementsByClassName("el-main")[0]
-        .addEventListener("scroll", loadMore);
+          .getElementsByClassName("el-main")[0]
+          .addEventListener("scroll", loadMore);
     });
 
     onUnmounted(() => {
       document
-        .getElementsByClassName("el-main")[0]
-        .removeEventListener("scroll", loadMore);
+          .getElementsByClassName("el-main")[0]
+          .removeEventListener("scroll", loadMore);
     });
 
-    return { ...toRefs(data), chageType, chageArea };
+    return {...toRefs(data), chageType, chageArea};
   },
   components: {
     PlayListCard,
