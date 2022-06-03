@@ -1,20 +1,20 @@
-<template lang="">
+<template>
   <div class="context-info">
     <div class="avatar">
-      <el-image class="pic" lazy :src="getImgUrl()" alt="alt" />
+      <el-image :src="getImgUrl()" alt="alt" class="pic" lazy/>
     </div>
     <div class="gap"></div>
     <div class="info">
       <span class="type font-size-12">{{ tag }}</span>
-      <h2 class="title font-size-26">{{ item?.name || item.nickname }}</h2>
+      <h2 class="title font-size-26">{{ item?.name || item?.nickname }}</h2>
       <p class="sub-title" v-if="type === 'album'">
         <span class="date">{{ publishTime }}</span>
         <em>·</em>
         <span class="artist"
-          ><ArtistFormat
+        ><ArtistFormat
             :artistList="item.artists"
             :fontSize="'16px'"
-          ></ArtistFormat
+        ></ArtistFormat
         ></span>
       </p>
       <div class="describe" @click="showDescribe" v-if="description">
@@ -35,65 +35,69 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, defineComponent } from "vue";
-import { dateFormat } from "../utils/common";
+import {defineComponent, reactive, toRefs} from "vue";
+import {dateFormat} from "../utils/common";
 
-import createTextModal from "../components/textModal.js";
+import createTextModal from "./textModal.ts";
 import ArtistFormat from "./artistFormat.vue";
-import { usePlayer } from "../store/player";
+import {usePlayer} from "../store/player";
+
+
 export default defineComponent({
   name: "contextInfo",
   props: {
-    item: { type: Object, required: true },
-    type: { type: String, required: true }, // playlist/album
+    item: {type: Object, required: true},
+    type: {type: String, required: true}, // playlist/album
   },
-  setup(props) {
+  setup(props: any) {
     const data = reactive({
       imgUrl: null,
       publishTime: null,
-      tag: null,
-      description: null,
+      tag: "",
+      description: "",
       id: null,
-      playSong: () => {},
+      playSong: () => {
+      },
     });
     let typeList = ["playlist", "album", "artist", "user"];
+    const ITEM: any = props.item
 
     const player = usePlayer();
 
     const initUser = () => {
       data.tag = "用户";
-      data.description = props.item.description || "暂无简介";
-      data.id = props.item.userId;
+      data.description = ITEM.description || "暂无简介";
+      data.id = ITEM.userId;
     };
 
     const initPlaylist = () => {
       data.tag = "歌单";
-      data.description = props.item.description;
-      data.id = props.item.id;
+      data.description = ITEM.description;
+      data.id = ITEM.id;
       data.playSong = player.playSongByPlaylist;
     };
 
     const initAlbum = () => {
-      data.publishTime = dateFormat(props.item.publishTime);
+      data.publishTime = dateFormat(ITEM.publishTime);
       data.tag = "专辑";
-      data.description = props.item.description;
-      data.id = props.item.id;
+      data.description = ITEM.description;
+      data.id = ITEM.id;
       data.playSong = player.playSongByAlbum;
     };
 
     const initArtist = () => {
       data.tag = "歌手";
-      data.description = props.item.briefDesc;
-      data.id = props.item.id;
+      data.description = ITEM.briefDesc;
+      data.id = ITEM.id;
       data.playSong = player.playSongByArtist;
     };
 
     const getImgUrl = (): string => {
       let url =
-        props.item?.coverImgUrl ||
-        props.item?.picUrl ||
-        props.item?.img1v1Url ||
-        props.item?.avatarUrl;
+          ITEM?.coverImgUrl ||
+          ITEM?.picUrl ||
+          ITEM?.img1v1Url ||
+          ITEM?.avatarUrl;
       return `${url}?param=960y960`;
     };
 
@@ -122,7 +126,7 @@ export default defineComponent({
       createTextModal(`${data.tag}介绍`, data.description);
     };
 
-    return { ...toRefs(data), player, getImgUrl, showDescribe };
+    return {...toRefs(data), player, getImgUrl, showDescribe};
   },
   components: {
     ArtistFormat,
@@ -158,7 +162,7 @@ export default defineComponent({
 
   .info {
     --gap: 12px;
-    @media screen and(max-width:$md) {
+    @media screen and(max-width: $md) {
       --gap: 8px;
     }
 
@@ -168,6 +172,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     padding: calc(var(--gap) * 3) 0;
+
     .type {
       width: auto;
       color: var(--text-color-secondary);
@@ -188,7 +193,7 @@ export default defineComponent({
       }
 
       em {
-        margin: 0px 2px;
+        margin: 0 2px;
       }
 
       .artist {
@@ -210,9 +215,11 @@ export default defineComponent({
         cursor: pointer;
       }
     }
+
     .gap {
       flex: 1;
     }
+
     .control {
       display: flex;
       padding-top: calc(var(--gap) * 2);
@@ -242,7 +249,7 @@ export default defineComponent({
   }
 }
 
-@media screen and(max-width:$lg) {
+@media screen and(max-width: $lg) {
   .context-info {
     .avatar {
       @include calc-width(3.5);
@@ -251,6 +258,7 @@ export default defineComponent({
     .gap {
       @include calc-width(0.5);
     }
+
     .info {
       @include calc-width(6);
 
@@ -261,9 +269,10 @@ export default defineComponent({
   }
 }
 
-@media screen and(max-width:$sm) {
+@media screen and(max-width: $sm) {
   .context-info {
     flex-direction: column;
+
     .avatar {
       @include calc-width(5);
 
@@ -273,7 +282,7 @@ export default defineComponent({
     }
 
     .info {
-      padding-top: 0px;
+      padding-top: 0;
       width: 100%;
 
       .type {
@@ -287,9 +296,6 @@ export default defineComponent({
         background-color: var(--primary-container-color);
       }
 
-      // .title {
-      //   // transform: translateY(-100%);
-      // }
 
       .describe {
         display: none;

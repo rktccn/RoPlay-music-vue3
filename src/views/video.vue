@@ -1,13 +1,13 @@
-<template lang="">
+<template>
   <div class="video">
     <div class="left">
       <div class="video-player">
         <video
-          id="video"
-          class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered"
-          controls
+            id="video"
+            class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered"
+            controls
         >
-          <source v-if="videoUrl !== ''" type="video/mp4" />
+          <source v-if="videoUrl !== ''" type="video/mp4"/>
         </video>
       </div>
       <div class="video-info" v-if="videoInfo">
@@ -53,12 +53,12 @@
   </div>
 </template>
 <script>
-import { onUnmounted, reactive, toRefs } from "vue-demi";
-import { getMVDetail, getMVUrl, getSimiMv } from "../apis/mv";
+import {onUnmounted, reactive, toRefs} from "vue-demi";
+import {getMVDetail, getMVUrl, getSimiMv} from "../apis/mv";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
-import { usePlayer } from "../store/player";
-import { useRoute, useRouter } from "vue-router";
+import {usePlayer} from "../store/player";
+import {useRoute, useRouter} from "vue-router";
 
 import ArtistFormat from "../components/artistFormat.vue";
 import createTextModal from "../components/textModal";

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="top-list">
     <div class="title" v-if="topList" :style="setBackGround()">
       <span class="name font-size-32">{{ name }}</span>
@@ -17,17 +17,17 @@
 <script lang="ts">
 import TrackListItem from "../../../components/trackListItem.vue";
 
-import { getPlaylistTracks } from "../../../apis/playlist";
-import { reactive, toRefs, defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import {getPlaylistTracks} from "../../../apis/playlist";
+import {defineComponent, reactive, toRefs} from "vue";
+import {useRouter} from "vue-router";
 
 // 飙升 19723756   新歌 3779629  热歌 3778678
 
 export default defineComponent({
   name: "explorePlayList",
   props: {
-    id: { type: Number, required: true },
-    name: { type: String, required: true },
+    id: {type: Number, required: true},
+    name: {type: String, required: true},
   },
   setup(props) {
     const router = useRouter();
@@ -45,13 +45,11 @@ export default defineComponent({
     });
 
     const setBackGround = () => {
-      let styles = {
+      return {
         backgroundImage: `url(${data.topList[0].al.picUrl}?imageView&param=120y120&blur=40x20)`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
-
-      return styles;
     };
 
     // 点击前往歌单页面

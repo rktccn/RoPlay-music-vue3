@@ -1,20 +1,17 @@
 <template>
   <section>
     <div class="container">
-      <!-- {{ active }}
-      {{ pageSize }}
-      {{ itemLength }} -->
       <span
-        class="material-icons-round font-size-24 btn-prev"
-        @click="changePage('prev')"
-        v-show="active !== 0"
+          v-show="active !== 0"
+          class="material-icons-round font-size-24 btn-prev"
+          @click="changePage('prev')"
       >
         chevron_left
       </span>
       <span
-        class="material-icons-round font-size-24 btn-next"
-        @click="changePage('next')"
-        v-show="itemLength >= pageSize && !(itemLength <= active + pageSize)"
+          v-show="itemLength >= pageSize && !(itemLength <= active + pageSize)"
+          class="material-icons-round font-size-24 btn-next"
+          @click="changePage('next')"
       >
         chevron_right
       </span>
@@ -26,14 +23,7 @@
   </section>
 </template>
 <script lang="ts">
-import {
-  reactive,
-  ref,
-  toRefs,
-  onMounted,
-  onBeforeUnmount,
-  defineComponent,
-} from "vue";
+import {defineComponent, onBeforeUnmount, onMounted, reactive, ref, toRefs,} from "vue";
 
 export default defineComponent({
   name: "carouselList",
@@ -51,7 +41,7 @@ export default defineComponent({
     const carousel = ref(null);
 
     const data = reactive({
-      pageSize: null,
+      pageSize: 0,
       active: 0,
       itemLength: 1,
     });
@@ -75,10 +65,10 @@ export default defineComponent({
 
       if (direction === "next") {
         slider.scrollLeft +=
-          data.pageSize * carousel.value.children[0].offsetWidth;
+            data.pageSize * carousel.value.children[0].offsetWidth;
       } else if (direction === "prev") {
         slider.scrollLeft -=
-          data.pageSize * carousel.value.children[0].offsetWidth;
+            data.pageSize * carousel.value.children[0].offsetWidth;
       }
     };
 
@@ -86,15 +76,13 @@ export default defineComponent({
     const setActive = () => {
       let slider = carousel.value;
       // 左侧已显示内容数量
-      carousel.value.children[0];
-      let active = Math.ceil(
-        slider.scrollLeft / carousel.value.children[0].offsetWidth
+      data.active = Math.ceil(
+          slider.scrollLeft / carousel.value.children[0].offsetWidth
       );
-      data.active = active;
     };
 
     const setRow = () => {
-      let styles = { gridTemplateRows: null };
+      let styles = {gridTemplateRows: ""};
       styles.gridTemplateRows = `repeat(${props.rows}, 1fr)`;
       return styles;
     };
@@ -116,7 +104,7 @@ export default defineComponent({
       ro.disconnect();
     });
 
-    return { carousel, ...toRefs(data), changePage, setRow };
+    return {carousel, ...toRefs(data), changePage, setRow};
   },
 });
 </script>
@@ -135,7 +123,7 @@ export default defineComponent({
     background-color: var(--background-color-primary);
     border-radius: 50px;
     box-shadow: 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%),
-      0 2px 4px -1px rgb(0 0 0 / 40%);
+    0 2px 4px -1px rgb(0 0 0 / 40%);
     z-index: 10;
     cursor: pointer;
     user-select: none;
@@ -145,7 +133,7 @@ export default defineComponent({
   .btn-next {
     @include button-style();
 
-    @media screen and(max-width:$sm) {
+    @media screen and(max-width: $sm) {
       display: none;
     }
   }
@@ -160,6 +148,7 @@ export default defineComponent({
     transform: translate(50%, -80%);
   }
 }
+
 .carousel {
   display: grid;
   scroll-snap-type: x mandatory;
@@ -170,7 +159,7 @@ export default defineComponent({
 
   grid-auto-flow: column;
 
-  @media screen and(max-width:$sm) {
+  @media screen and(max-width: $sm) {
   }
 }
 </style>

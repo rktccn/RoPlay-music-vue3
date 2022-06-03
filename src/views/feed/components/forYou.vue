@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <section class="for-you">
     <div class="text-style-title">For You</div>
     <ul class="item-list">
@@ -6,9 +6,9 @@
       <li class="block personal_fm">
         <div class="cover">
           <el-image
-            lazy
-            class="pic"
-            :src="`${
+              lazy
+              class="pic"
+              :src="`${
               player.personalFMCurrent?.album?.picUrl || ''
             }?param=240y240`"
             alt="歌曲封面"
@@ -95,17 +95,14 @@
   </section>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
-import { usePlayer } from "../../../store/player";
-import { storeToRefs } from "pinia";
-import {
-  dailyRecommendPlaylist,
-  dailyRecommendTracks,
-} from "../../../apis/personalized";
+import {reactive, toRefs} from "vue";
+import {usePlayer} from "../../../store/player";
+import {storeToRefs} from "pinia";
+import {dailyRecommendPlaylist, dailyRecommendTracks,} from "../../../apis/personalized";
 
 import PlayListCard from "../../../components/playListCard.vue";
 import ArtistFormat from "../../../components/artistFormat.vue";
-import { useRouter } from "vue-router";
+import {useRouter} from "vue-router";
 
 export default {
   name: "FeedForYou",
@@ -135,8 +132,7 @@ export default {
     // 获取当前日期
     const getDate = () => {
       const date = new Date();
-      const day = date.getDate();
-      return day;
+      return date.getDate();
     };
 
     // 播放歌曲,将id传入歌曲列表
@@ -256,7 +252,7 @@ export default {
       right: 0;
       width: 21%;
       height: 21%;
-      border-radius: 100% 0% 0 0%;
+      border-radius: 100% 0 0 0;
       font-weight: bolder;
       font-size: 38px;
       z-index: 1;

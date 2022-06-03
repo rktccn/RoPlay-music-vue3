@@ -1,12 +1,12 @@
-<template lang="">
+<template>
   <div>
     <ContextInfo :item="userInfo" type="user"></ContextInfo>
   </div>
   <ul class="tab-list">
     <li
-      class="tab text-style-title"
-      :class="{ select: selectedTab === 0 }"
-      @click="selectedTab = 0"
+        class="tab text-style-title"
+        :class="{ select: selectedTab === 0 }"
+        @click="selectedTab = 0"
     >
       我喜欢
     </li>
@@ -64,11 +64,11 @@
   </div>
 </template>
 <script>
-import { onMounted, reactive, toRefs, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useStore } from "../../store";
-import { getTrackDetail } from "../../apis/track";
-import { isScrollBottom } from "../../utils/common";
+import {onMounted, reactive, toRefs, watch} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {useStore} from "../../store";
+import {getTrackDetail} from "../../apis/track";
+import {isScrollBottom} from "../../utils/common";
 
 import ContextInfo from "../../components/contextInfo.vue";
 import TrackList from "../../components/trackList.vue";

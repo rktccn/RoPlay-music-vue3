@@ -1,10 +1,10 @@
-<template lang="">
+<template>
   <div class="artist-page">
     <ContextInfo
-      class="section"
-      :item="item.artist"
-      :type="'artist'"
-      v-if="item"
+        class="section"
+        :item="item.artist"
+        :type="'artist'"
+        v-if="item"
     ></ContextInfo>
 
     <!-- 新专和热歌 -->
@@ -89,19 +89,15 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
-import {
-  getArtist,
-  getArtistAlbum,
-  getArtistMv,
-  getSimilarArtists,
-} from "../apis/artist";
-import { useRoute } from "vue-router";
+import {reactive, toRefs} from "vue";
+import {getArtist, getArtistAlbum, getArtistMv, getSimilarArtists,} from "../apis/artist";
+import {useRoute} from "vue-router";
 
 import ContextInfo from "../components/contextInfo.vue";
 import PlaylistCard from "../components/playListCard.vue";
 import CarouselList from "../components/carouselList.vue";
 import TrackListItem from "../components/trackListItem.vue";
+
 export default {
   name: "Atrist",
   setup() {

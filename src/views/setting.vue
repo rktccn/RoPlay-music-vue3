@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <!-- 个人设置 -->
   <!-- 登陆/退出登陆 -->
   <div class="setting">
@@ -16,9 +16,9 @@
   <!-- 其他设置 -->
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "../store";
+import {defineComponent, reactive, toRefs} from "vue";
+import {useRouter} from "vue-router";
+import {useStore} from "../store";
 
 export default defineComponent({
   setup() {

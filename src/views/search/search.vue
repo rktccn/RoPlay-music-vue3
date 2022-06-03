@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div v-if="keyword" class="search">
     <!-- 艺人，专辑 -->
     <ArtistAndAlbum :w="keyword" :key="componentKey"></ArtistAndAlbum>
@@ -16,9 +16,9 @@
   </div>
 </template>
 <script>
-import { latestAlbum } from "../../apis/album";
-import { reactive, toRefs, watch } from "vue";
-import { useRoute } from "vue-router";
+import {latestAlbum} from "../../apis/album";
+import {reactive, toRefs, watch} from "vue";
+import {useRoute} from "vue-router";
 
 import ArtistAndAlbum from "./components/artistAndAlbum.vue";
 import SongResult from "./components/songResult.vue";
@@ -31,7 +31,7 @@ export default {
 
     const data = reactive({
       playlist: null,
-      keyword: null,
+      keyword: "",
       componentKey: 0,
     });
     latestAlbum().then((res) => {
@@ -41,14 +41,14 @@ export default {
     data.keyword = route.params.keyword;
 
     watch(
-      () => route.params.keyword,
-      (newValue, oldValue) => {
-        data.keyword = route.params.keyword;
-        data.componentKey += 1;
-      }
+        () => route.params.keyword,
+        () => {
+          data.keyword = route.params.keyword;
+          data.componentKey += 1;
+        }
     );
 
-    return { ...toRefs(data) };
+    return {...toRefs(data)};
   },
   components: {
     ArtistAndAlbum,

@@ -1,9 +1,10 @@
-<template lang="">
+<template>
   <div class="section" v-if="artistList.length !== 0">
     <div class="title">
       <h4 class="text-style-title">歌曲</h4>
       <router-link :to="`/search/${w}/songs`" class="text-style-info"
-        >查看全部</router-link
+      >查看全部
+      </router-link
       >
     </div>
     <div class="">
@@ -16,16 +17,16 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
-import { search } from "../../../apis/others";
-import { getTrackDetail } from "../../../apis/track";
+import {reactive, toRefs} from "vue";
+import {search} from "../../../apis/others";
+import {getTrackDetail} from "../../../apis/track";
 
 import TrackListItem from "../../../components/trackListItem.vue";
 
 export default {
   name: "searchSong",
   props: {
-    w: { type: String, required: true },
+    w: {type: String, required: true},
   },
   setup(props) {
     const data = reactive({

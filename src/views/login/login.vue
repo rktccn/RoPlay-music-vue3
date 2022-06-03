@@ -1,13 +1,13 @@
-<template lang="">
+<template>
   <div class="login">
     <div class="logo">
       <div class="name">
-        Ro<br />
+        Ro<br/>
         Play
       </div>
       <span class="material-icons-round gap"> close </span>
       <div class="neteast">
-        <img class="pic" src="../../images/netease_music_icon.png" alt="" />
+        <img class="pic" src="../../images/netease_music_icon.png" alt=""/>
       </div>
     </div>
 
@@ -185,21 +185,21 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, watch } from "vue";
+import {reactive, toRefs, watch} from "vue";
 import md5 from "crypto-js/md5";
 import {
-  loginQrCodeKey,
-  loginQrCodeCreate,
   loginQrCodeCheck,
+  loginQrCodeCreate,
+  loginQrCodeKey,
+  loginWithEmail,
   loginWithPhone,
   sendCaptcha,
   verifyCaptcha,
-  loginWithEmail,
 } from "../../apis/login";
-import { search } from "../../apis/others";
-import { userAccount } from "../../apis/user";
-import { useStore } from "../../store";
-import { useRouter, useRoute } from "vue-router";
+import {search} from "../../apis/others";
+import {userAccount} from "../../apis/user";
+import {useStore} from "../../store";
+import {useRoute, useRouter} from "vue-router";
 
 export default {
   name: "Login",
@@ -886,8 +886,9 @@ export default {
         margin-left: 16px;
       }
 
+
       .icon {
-        flex-basis: 1;
+        flex-basis: 0;
         font-weight: bolder;
       }
     }

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="context-menu" ref="contextMenu" id="contextMenu">
     <div class="inner block">
       <ul>
@@ -11,7 +11,7 @@
         </li>
         <li @click="removeSong">
           <span class="material-icons-round"
-            >{{ isInList ? "playlist_remove" : "playlist_play" }} </span
+          >{{ isInList ? "playlist_remove" : "playlist_play" }} </span
           >{{ isInList ? "从播放列表移除" : "添加到播放列表" }}
         </li>
       </ul>
@@ -27,50 +27,43 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-  toRefs,
-  defineComponent,
-} from "vue";
+import {defineComponent, onMounted, onUnmounted, reactive, ref, toRefs,} from "vue";
 
 export default defineComponent({
   name: "ContextMenu",
   props: {
-    onClose: { type: Function, required: true },
-    mousePosition: { type: Object, required: true },
-    id: { type: Number, required: true },
-    player: { type: Object, required: true },
+    onClose: {type: Function, required: true},
+    mousePosition: {type: Object, required: true},
+    id: {type: Number, required: true},
+    player: {type: Object, required: true},
   },
   setup(props) {
+    const player: any = props.player;
     const data = reactive({
       isInList: false, // 是否在播放列表中
     });
 
     const contextMenu = ref(null);
     let menuTop = null,
-      menuLeft = null;
+        menuLeft = null;
 
     // 播放音乐
     const playSong = () => {
-      props.player.replaceCurrentTrack(props.id);
+      player.replaceCurrentTrack(props.id);
       props.onClose();
     };
 
     // 通过id检查是否在播放列表中
     const checkIsInList = async () => {
-      const res = props.player.checkInTrackList(props.id);
-      data.isInList = res;
+      data.isInList = player.checkInTrackList(props.id);
     };
 
     // 移除/添加歌曲
     const removeSong = () => {
       if (data.isInList) {
-        props.player.removeTrack(props.id);
+        player.removeTrack(props.id);
       } else {
-        props.player.addTrack(props.id);
+        player.addTrack(props.id);
       }
       props.onClose();
     };
@@ -81,7 +74,7 @@ export default defineComponent({
       let left = props.mousePosition.clientX;
 
       let largestHeight =
-        window.innerHeight - contextMenu.value.offsetHeight - 5;
+          window.innerHeight - contextMenu.value.offsetHeight - 5;
       let largestWidth = window.innerWidth - contextMenu.value.offsetWidth - 25;
       if (top > largestHeight) top = largestHeight;
       if (left > largestWidth) left = largestWidth;

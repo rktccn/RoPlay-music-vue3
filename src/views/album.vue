@@ -1,14 +1,14 @@
-<template lang="">
+<template>
   <div class="album" ref="trackList">
     <ContextInfo
-      class="album-info"
-      :item="item"
-      v-if="item"
-      v-loading="item === null"
-      :type="'album'"
+        class="album-info"
+        :item="item"
+        v-if="item"
+        v-loading="item === null"
+        :type="'album'"
     ></ContextInfo>
     <TrackList
-      class="album-list"
+        class="album-list"
       :tracks="tracks"
       v-if="tracks"
       type="album"
@@ -22,19 +22,18 @@
 </template>
 <script>
 import ContextInfo from "../components/contextInfo.vue";
-import TrackList from "../components/trackListItem.vue";
+import TrackList from "../components/trackList.vue";
 
-import { getAlbum } from "../apis/album";
+import {getAlbum} from "../apis/album";
 
-import { reactive, toRefs, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { ElMessageBox } from "element-plus";
+import {reactive, ref, toRefs} from "vue";
+import {useRoute} from "vue-router";
+
 export default {
   name: "playlist",
   props: {},
   setup() {
     const route = useRoute();
-    const router = useRouter();
     const id = route.params.id;
     const trackList = ref(null);
 
@@ -71,7 +70,7 @@ export default {
   }
 
   @media screen and(max-width:$lg) {
-    margin: 0px;
+    margin: 0;
   }
 }
 

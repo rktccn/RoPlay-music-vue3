@@ -2,10 +2,10 @@
   <section>
     <h4 class="text-style-title">推荐歌单</h4>
     <CarouselList
-      v-if="playlist"
-      :length="playlist.length"
-      key="palylist"
-      class="playlist"
+        v-if="playlist"
+        :length="playlist.length"
+        key="playlist"
+        class="playlist"
     >
       <template v-for="(item, index) in playlist" :key="index">
         <div>
@@ -16,8 +16,8 @@
   </section>
 </template>
 <script>
-import { topPlaylist } from "../../../apis/playlist";
-import { reactive, toRefs } from "vue";
+import {topPlaylist} from "../../../apis/playlist";
+import {reactive, toRefs} from "vue";
 import PlayListCard from "../../../components/playListCard.vue";
 import CarouselList from "../../../components/carouselList.vue";
 

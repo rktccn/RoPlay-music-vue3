@@ -1,11 +1,11 @@
-<template lang="">
+<template>
   <div
-    class="track-list-item"
-    :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
-    ref="refItem"
-    :style="setStyle()"
-    @dblclick="player.replaceCurrentTrack(id)"
-    @click.right="showContextMenu"
+      class="track-list-item"
+      :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
+      ref="refItem"
+      :style="setStyle()"
+      @dblclick="player.replaceCurrentTrack(id)"
+      @click.right="showContextMenu"
   >
     <div class="inner">
       <div class="inner__cover" v-if="imgUrl && showImg && type !== 'album'">
@@ -70,22 +70,20 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
-
-import { onBeforeUnmount, onMounted, reactive, ref, toRefs } from "vue";
-import { timeFormat } from "../utils/common.js";
-import { usePlayer } from "../store/player.js";
-import { getMP3, likeATrack } from "../apis/track.js";
+import {defineComponent, onBeforeUnmount, onMounted, reactive, ref, toRefs} from "vue";
+import {timeFormat} from "../utils/common.js";
+import {usePlayer} from "../store/player.js";
+import {getMP3, likeATrack} from "../apis/track.js";
 
 import ArtistFormat from "./artistFormat.vue";
-import createContextMenu from "./contextMenu.js";
+import createContextMenu from "./contextMenu.ts";
 
 export default defineComponent({
   name: "trackListItem",
   props: {
-    item: { type: Object, required: true },
-    type: { type: String, default: "song" }, // 类型 song/album
-    height: { type: String, default: "64px" },
+    item: {type: Object, required: true},
+    type: {type: String, default: "song"}, // 类型 song/album
+    height: {type: String, default: "64px"},
     showImg: { type: Boolean, default: true },
     canHover: { type: Boolean, default: true }, // 是否显示hover样式
     index: { type: Number }, // 数字替代缩略图
@@ -111,7 +109,6 @@ export default defineComponent({
     const refItem = ref(null);
 
     const calcWidth = (width: Number) => {
-      // let width = refItem.value.offsetWidth;
 
       if (width >= 800) {
         data.itemWidth = 0;
@@ -125,10 +122,9 @@ export default defineComponent({
     };
 
     const setStyle = (): object => {
-      let styles = {
+      return {
         height: props.height,
       };
-      return styles;
     };
 
     const getArtists = () => {

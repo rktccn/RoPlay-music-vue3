@@ -1,11 +1,11 @@
-<template lang="">
+<template>
   <section>
     <div class="favourite container-primary">
       <ul class="song-list text-style-info" v-if="favouriteSongsName[0]">
         <li
-          class="song-name"
-          v-for="(name, index) in favouriteSongsName"
-          :key="index"
+            class="song-name"
+            v-for="(name, index) in favouriteSongsName"
+            :key="index"
         >
           {{ name }}
         </li>
@@ -36,14 +36,15 @@
   </section>
 </template>
 <script>
-import { userPlayHistory } from "../../../apis/user";
-import { getTrackDetail } from "../../../apis/track";
-import { reactive, toRefs } from "vue";
+import {userPlayHistory} from "../../../apis/user";
+import {getTrackDetail} from "../../../apis/track";
+import {reactive, toRefs} from "vue";
 
 import TrackList from "../../../components/trackList.vue";
-import { useStore } from "../../../store";
-import { useRouter } from "vue-router";
-import { usePlayer } from "../../../store/player";
+import {useStore} from "../../../store";
+import {useRouter} from "vue-router";
+import {usePlayer} from "../../../store/player";
+
 export default {
   name: "FeedFavouriteAndRecord",
   setup() {

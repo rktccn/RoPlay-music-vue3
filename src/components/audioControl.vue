@@ -1,16 +1,16 @@
-<template lang="">
-  <div class="audioControl material-theme">
+<template>
+  <div class="audioControl">
     <div class="main">
       <div class="left">
         <el-image
-          lazy
-          :src="`${
+            :src="`${
             currentTrack?.al?.picUrl ??
             'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
           }?param=48y48`"
-          alt=""
-          class="cover"
-          @click="store.showLyric = true"
+            alt=""
+            class="cover"
+            lazy
+            @click="store.showLyric = true"
         />
         <div class="music-info text-truncate" v-if="currentTrack">
           <div class="title text-truncate">{{ currentTrack.name }}</div>
@@ -18,8 +18,8 @@
         </div>
         <ul class="left-control">
           <li
-            class="like material-icons-round font-size-20"
-            :class="{ fill: isLiked }"
+              :class="{ fill: isLiked }"
+              class="like material-icons-round font-size-20"
           >
             favorite_border
           </li>
@@ -27,8 +27,8 @@
             playlist_add
           </li>
           <li
-            class="show-lyric-page material-icons-round font-size-20"
-            @click="store.showLyric = true"
+              class="show-lyric-page material-icons-round font-size-20"
+              @click="store.showLyric = true"
           >
             open_in_full
           </li>
@@ -37,45 +37,45 @@
       </div>
       <ul class="control">
         <li
-          class="play-mode material-icons-round font-size-20"
-          @click="player.changePlayMode()"
+            class="play-mode material-icons-round font-size-20"
+            @click="player.changePlayMode()"
         >
           {{ playMode }}
         </li>
         <li
-          class="play-prev material-icons-round font-size-32"
-          @click="player.playPrev()"
+            class="play-prev material-icons-round font-size-32"
+            @click="player.playPrev()"
         >
           skip_previous
         </li>
         <li
-          class="play-or-pause material-icons-round font-size-38"
-          @click="player.playOrPause()"
+            class="play-or-pause material-icons-round font-size-38"
+            @click="player.playOrPause()"
         >
           {{ player.isPlaying ? "pause" : "play_arrow" }}
         </li>
         <li
-          class="play-next material-icons-round font-size-32"
-          @click="player.playNext()"
+            class="play-next material-icons-round font-size-32"
+            @click="player.playNext()"
         >
           skip_next
         </li>
         <li class="volume" ref="volumeBar">
           <span
-            class="material-icons-round font-size-20"
-            @click="showVolume = !showVolume"
-            >{{ setVolumeIcon() }}</span
+              class="material-icons-round font-size-20"
+              @click="showVolume = !showVolume"
+          >{{ setVolumeIcon() }}</span
           >
           <div class="volume-bar" v-show="showVolume">
             <vue-slider
-              v-model="volume"
-              :min="0"
-              :max="1"
-              tooltip="none"
-              :interval="0.1"
-              dotSize="6"
-              :height="64"
-              direction="btt"
+                v-model="volume"
+                :height="64"
+                :interval="0.1"
+                :max="1"
+                :min="0"
+                direction="btt"
+                dotSize="6"
+                tooltip="none"
             ></vue-slider>
           </div>
         </li>
@@ -84,40 +84,39 @@
         <p class="font-size-12" v-if="currentTrack?.fee === 1">
           当前歌曲可试听30秒
         </p>
-        <span class="show-tracklist material-icons-round" @click="goCurrentList"
-          >queue_music</span
+        <span class="show-trackList material-icons-round" @click="goCurrentList"
+        >queue_music</span
         >
       </div>
     </div>
     <div class="progress">
       <em class="time-current font-size-12">{{ timeFormat(progress) }}</em>
       <vue-slider
-        class="progress-slider"
-        v-model="progress"
-        :min="0"
-        :max="currentTrack?.dt"
-        dotSize="6"
-        height="2px"
-        :dragOnClick="true"
-        :lazy="true"
-        tooltip="hover"
-        :tooltip-formatter="timeFormat"
+          v-model="progress"
+          :dragOnClick="true"
+          :lazy="true"
+          :max="currentTrack?.dt"
+          :min="0"
+          :tooltip-formatter="timeFormat"
+          class="progress-slider"
+          dotSize="6"
+          height="2px"
+          tooltip="hover"
       />
-      <em class="time-duration font-size-12">{{
-        player.getCurrentDuration
-      }}</em>
+      <em class="time-duration font-size-12">{{ player.getCurrentDuration }}</em>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { computed, reactive, ref, toRefs, watch, defineComponent } from "vue";
-import { timeFormat } from "../utils/common";
-import { usePlayer } from "../store/player";
+import {computed, defineComponent, reactive, ref, toRefs, watch} from "vue";
+import {timeFormat} from "../utils/common";
+import {usePlayer} from "../store/player";
 
 import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
-import { useRoute, useRouter } from "vue-router";
-import { useStore } from "../store";
+import {useRoute, useRouter} from "vue-router";
+import {useStore} from "../store";
+
 export default defineComponent({
   name: "audioControl",
   setup() {
@@ -194,11 +193,10 @@ export default defineComponent({
       rate = rate * 100;
 
       let style = {
-        background: null,
+        background: "",
       };
 
-      let color = `linear-gradient(90deg ,rgba(23, 125, 176) ${rate}%, #fff ${rate}%)`;
-      style.background = color;
+      style.background = `linear-gradient(90deg ,rgba(23, 125, 176) ${rate}%, #fff ${rate}%)`;
       return style;
     };
 
@@ -215,14 +213,14 @@ export default defineComponent({
     });
 
     watch(
-      () => data.showVolume,
-      (val) => {
-        if (val) {
-          document.addEventListener("mousedown", handleClick);
-        } else {
-          document.removeEventListener("mousedown", handleClick);
+        () => data.showVolume,
+        (val) => {
+          if (val) {
+            document.addEventListener("mousedown", handleClick);
+          } else {
+            document.removeEventListener("mousedown", handleClick);
+          }
         }
-      }
     );
 
     return {
@@ -240,7 +238,7 @@ export default defineComponent({
       playMode,
     };
   },
-  components: { ArtistFormat, VueSlider },
+  components: {ArtistFormat, VueSlider},
 });
 </script>
 <style lang="scss" scoped>
@@ -251,6 +249,7 @@ export default defineComponent({
   border-radius: $border-radius-default * 3;
   background-color: var(--background-color-primary);
   z-index: 10;
+
   .main {
     display: flex;
     justify-content: space-between;
@@ -299,9 +298,11 @@ export default defineComponent({
       li {
         margin: 0 4px;
       }
+
       .volume {
         position: relative;
         line-height: 0;
+
         .volume-bar {
           position: absolute;
           left: 50%;
@@ -313,6 +314,7 @@ export default defineComponent({
           @include shadow();
         }
       }
+
       .play-or-pause {
         padding: 6px;
         border-radius: 300px;
@@ -327,6 +329,7 @@ export default defineComponent({
       align-items: center;
       justify-content: flex-end;
       line-height: 0;
+
       > * {
         margin-left: 6px;
       }
@@ -339,6 +342,7 @@ export default defineComponent({
 
     display: flex;
     align-items: center;
+
     .progress-slider {
       flex: 1 1 0;
       margin: 0 24px;
@@ -356,6 +360,7 @@ export default defineComponent({
   .control {
     flex: 0 !important;
     margin-right: 8px;
+
     > * {
       display: none;
     }

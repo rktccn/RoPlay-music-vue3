@@ -1,14 +1,14 @@
-<template lang="">
+<template>
   <div class="playlist" ref="trackList">
     <ContextInfo
-      class="playlist-info"
-      :item="item"
-      v-if="item"
-      v-loading="item === null"
-      :type="'playlist'"
+        class="playlist-info"
+        :item="item"
+        v-if="item"
+        v-loading="item === null"
+        :type="'playlist'"
     ></ContextInfo>
     <TrackList
-      class="playlist-list"
+        class="playlist-list"
       :tracks="tracks"
       scrollerSelector=".el-main"
       v-if="tracks"
@@ -21,20 +21,21 @@
 </template>
 <script>
 import ContextInfo from "../components/contextInfo.vue";
-import TrackList from "../components/trackListItem.vue";
+import TrackList from "../components/trackList.vue";
 
-import { getPlaylistDetail, getPlaylistTracks } from "../apis/playlist";
-import { reactive, toRefs, ref, onMounted, onBeforeUnmount } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { ElMessageBox } from "element-plus";
-import { isScrollBottom } from "../utils/common";
+import {getPlaylistDetail, getPlaylistTracks} from "../apis/playlist";
+import {onBeforeUnmount, onMounted, reactive, ref, toRefs} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {ElMessageBox} from "element-plus";
+import {isScrollBottom} from "../utils/common";
+
 export default {
   name: "playlist",
   props: {},
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const id = route.params.id;
+    const id = +route.params.id;
     const trackList = ref(null);
     let loading = false; // 滚动加载
     const data = reactive({
@@ -76,7 +77,7 @@ export default {
             return;
           }
 
-          let msg = "";
+          let msg;
           if (res.code === 404) {
             msg = "歌单不存在";
           } else if (res.code === 20001) {
@@ -88,18 +89,18 @@ export default {
           ElMessageBox.alert(msg, "错误", {
             confirmButtonText: "返回主页",
             callback: () => {
-              router.push({ name: "home" });
+              router.push({name: "home"});
             },
           });
         })
-        .catch((err) => {
-          // ElMessageBox.alert("没有相关内容", "错误", {
-          //   confirmButtonText: "返回主页",
-          //   callback: () => {
-          //     router.push({ name: "home" });
-          //   },
-          // });
-        });
+          .catch(() => {
+            // ElMessageBox.alert("没有相关内容", "错误", {
+            //   confirmButtonText: "返回主页",
+            //   callback: () => {
+            //     router.push({ name: "home" });
+            //   },
+            // });
+          });
 
       await getPlaylistTracks({ id }).then((res) => {
         data.tracks = res.songs;
@@ -111,7 +112,6 @@ export default {
           document
             .getElementsByClassName("el-main")[0]
             .removeEventListener("scroll", loadMore);
-          return;
         }
       });
     };
@@ -137,7 +137,6 @@ export default {
   components: {
     ContextInfo,
     TrackList,
-    // TextModal
   },
 };
 </script>
@@ -151,7 +150,7 @@ export default {
   }
 
   @media screen and(max-width:$lg) {
-    margin: 0px;
+    margin: 0;
   }
 }
 

@@ -1,10 +1,11 @@
-<template lang="">
+<template>
   <section class="artist-album">
     <div class="artist section block" v-if="artist.length !== 0">
       <div class="title">
         <h4 class="text-style-title">音乐人</h4>
         <router-link :to="`/search/${w}/artists`" class="text-style-info"
-          >查看全部</router-link
+        >查看全部
+        </router-link
         >
       </div>
       <ul class="list">
@@ -41,15 +42,15 @@
   </section>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
-import { search } from "../../../apis/others";
+import {reactive, toRefs} from "vue";
+import {search} from "../../../apis/others";
 
 import PlaylistCard from "../../../components/playListCard.vue";
 
 export default {
   name: "searchArtistAndAlbum",
   props: {
-    w: { type: String, required: true },
+    w: {type: String, required: true},
   },
   setup(props) {
     const data = reactive({
@@ -66,8 +67,7 @@ export default {
       };
 
       search(params).then((res) => {
-        let result = res.result.artists;
-        data.artist = result;
+        data.artist = res.result.artists;
       });
     };
 
@@ -78,8 +78,7 @@ export default {
         type: 10,
       };
       search(params).then((res) => {
-        let result = res.result.albums;
-        data.album = result;
+        data.album = res.result.albums;
       });
     };
 

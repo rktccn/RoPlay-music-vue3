@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="modal">
     <transition name="fade" mode="out-in">
       <div class="overlay" v-if="show"></div>
@@ -8,7 +8,8 @@
       <transition name="drop-up" mode="out-in">
         <div class="block" v-if="show">
           <h2 class="header">
-            {{ title
+            {{
+              title
             }}<span class="material-icons-round" @click.self="closeMessage">
               close
             </span>
@@ -22,13 +23,17 @@
   </div>
 </template>
 <script lang="ts">
-import { onMounted, ref, defineComponent } from "vue";
+import {defineComponent, onMounted, ref} from "vue";
+
 export default defineComponent({
   name: "TextModal",
   props: {
-    title: { type: String, required: true },
-    message: { type: String, required: true },
-    onClose: { type: Function, default: () => {} },
+    title: {type: String, required: true},
+    message: {type: String, required: true},
+    onClose: {
+      type: Function, default: () => {
+      }
+    },
   },
 
   setup(props) {
@@ -76,15 +81,14 @@ export default defineComponent({
 .block {
   width: 45vw;
   max-width: 800px;
-  box-shadow: 0px 2px 20px -5px var(--main-color);
+  box-shadow: 0 2px 20px -5px var(--main-color);
   padding: 24px 0;
 
   .header {
     display: flex;
     justify-content: space-between;
-    padding-right: 8px;
     line-height: 1.4;
-    padding: 0px 34px;
+    padding: 0 34px;
   }
 
   .text {
@@ -93,7 +97,7 @@ export default defineComponent({
     max-height: 45vh;
     overflow: scroll;
     white-space: pre-line;
-    padding: 0px 34px;
+    padding: 0 34px;
   }
 }
 </style>

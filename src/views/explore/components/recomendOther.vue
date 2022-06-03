@@ -1,14 +1,14 @@
-<template lang="">
+<template>
   <section>
     <h4 class="text-style-title">视&nbsp;·&nbsp;听</h4>
     <div class="container">
       <div class="left-video">
         <div class="video-container" ref="videoItem">
           <CarouselList
-            :length="video.length"
-            v-if="video"
-            :rows="2"
-            key="video"
+              :length="video.length"
+              v-if="video"
+              :rows="2"
+              key="video"
           >
             <div class="video-list" v-for="(item, index) in video" :key="index">
               <PlayListCard :item="item" type="video"></PlayListCard>
@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref, toRefs } from "vue";
-import { ToplistOfMV } from "../../../apis/mv";
-import { recommendNewSong } from "../../../apis/personalized";
+import {onMounted, reactive, ref, toRefs} from "vue";
+import {ToplistOfMV} from "../../../apis/mv";
+import {recommendNewSong} from "../../../apis/personalized";
 
 import CarouselList from "../../../components/carouselList.vue";
 import TrackListItem from "../../../components/trackListItem.vue";

@@ -1,14 +1,14 @@
-<template lang="">
+<template>
   <div class="room-artist">
     <div class="tab">
       <div class="type">
         <!-- 切换歌手类型控件 -->
         <div
-          v-for="(type, index) in typeList"
-          :key="index"
-          @click="chageType(type.code)"
-          :class="{ primary: type.code === curType }"
-          class="tab-item text-style-title"
+            v-for="(type, index) in typeList"
+            :key="index"
+            @click="chageType(type.code)"
+            :class="{ primary: type.code === curType }"
+            class="tab-item text-style-title"
         >
           {{ type.name }}
         </div>
@@ -39,9 +39,9 @@
   </div>
 </template>
 <script>
-import { onMounted, onUnmounted, reactive, toRefs } from "vue";
-import { getArtistList } from "../../apis/artist";
-import { isScrollBottom } from "../../utils/common";
+import {onMounted, onUnmounted, reactive, toRefs} from "vue";
+import {getArtistList} from "../../apis/artist";
+import {isScrollBottom} from "../../utils/common";
 
 import PlayListCard from "../../components/playListCard.vue";
 import CoverRow from "../../components/coverRow.vue";

@@ -1,14 +1,13 @@
-<template lang="">
-  <div>
-    <div class="title">
+<template>
+  <div class="title">
       <span class="material-icons-round icon" v-if="type === 'SongsRecord'">
         equalizer
       </span>
-      <span class="material-icons-round icon" v-if="type === 'DailySongs'">
+    <span class="material-icons-round icon" v-if="type === 'DailySongs'">
         calendar_today
-        <div class="date">{{ getDate() }}</div></span
-      >
-      <span
+        <span class="date">{{ getDate() }}</span></span
+    >
+    <span
         class="material-icons-round icon favourite"
         v-if="type === 'FavouriteSongs'"
       >
@@ -47,18 +46,17 @@
     <p class="load-info font-size-12">
       {{ hasMore ? "正在加载" : "已加载全部" }}
     </p>
-  </div>
 </template>
 <script>
-import { onMounted, onUnmounted, reactive, toRefs } from "vue";
-import { dailyRecommendTracks } from "../apis/personalized";
-import { userPlayHistory } from "../apis/user";
-import { getCloud } from "../apis/cloud";
-import { getTrackDetail } from "../apis/track";
-import { usePlayer } from "../store/player";
-import { useRoute } from "vue-router";
-import { useStore } from "../store";
-import { isScrollBottom } from "../utils/common";
+import {onMounted, onUnmounted, reactive, toRefs} from "vue";
+import {dailyRecommendTracks} from "../apis/personalized";
+import {userPlayHistory} from "../apis/user";
+import {getCloud} from "../apis/cloud";
+import {getTrackDetail} from "../apis/track";
+import {usePlayer} from "../store/player";
+import {useRoute} from "vue-router";
+import {useStore} from "../store";
+import {isScrollBottom} from "../utils/common";
 
 import TrackList from "../components/trackList.vue";
 
@@ -156,8 +154,7 @@ export default {
     // 获取日期
     const getDate = () => {
       const date = new Date();
-      const day = date.getDate();
-      return day;
+      return date.getDate();
     };
 
     // 播放歌曲,将id传入歌曲列表

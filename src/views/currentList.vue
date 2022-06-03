@@ -1,14 +1,14 @@
 // 当前播放列表
-<template lang="">
+<template>
   <div class="play-now section">
     <h4 class="text-style-title" v-if="!player.isPersonalFM">当前播放</h4>
     <TrackList
-      class="play-now-track primary"
-      :tracks="[player.currentTrack]"
-      v-if="player.currentTrack !== {} && !player.isPersonalFM"
-      :canHover="false"
-      :key="currentIndex + tracks.length"
-      scrollerSelector=".el-main"
+        class="play-now-track primary"
+        :tracks="[player.currentTrack]"
+        v-if="player.currentTrack !== {} && !player.isPersonalFM"
+        :canHover="false"
+        :key="currentIndex + tracks.length"
+        scrollerSelector=".el-main"
     ></TrackList>
   </div>
 
@@ -29,11 +29,11 @@
 <script>
 import TrackList from "../components/trackList.vue";
 
-import { usePlayer } from "../store/player";
-import { reactive, toRefs, watch, onMounted, onUnmounted } from "vue";
-import { storeToRefs } from "pinia";
-import { getTrackDetail } from "../apis/track";
-import { isScrollBottom } from "../utils/common";
+import {usePlayer} from "../store/player";
+import {onMounted, onUnmounted, reactive, toRefs, watch} from "vue";
+import {storeToRefs} from "pinia";
+import {getTrackDetail} from "../apis/track";
+import {isScrollBottom} from "../utils/common";
 
 export default {
   name: "currentList",

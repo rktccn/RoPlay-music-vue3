@@ -2,15 +2,14 @@
 import "./styles/normalize.scss";
 
 // import player from "./utils/player";
-
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
 import AudioControl from "./components/audioControl.vue";
 import LyricPage from "./views/lyricPage.vue";
 
-import { useRoute } from "vue-router";
-import { useStore } from "./store/index";
-import { usePlayer } from "./store/player";
+import {useRoute} from "vue-router";
+import {useStore} from "./store/index";
+import {usePlayer} from "./store/player";
 
 const route = useRoute();
 const store = useStore();
@@ -20,18 +19,16 @@ player.init();
 store.init();
 
 const clientWidth = document.documentElement.clientWidth
-  ? document.documentElement.clientWidth
-  : document.body.clientWidth;
+    ? document.documentElement.clientWidth
+    : document.body.clientWidth;
 
 const isSm = (width) => {
-  width <= 768 ? true : false;
+  return width <= 768;
 };
 
 const showHeader = () => {
-  if (route.meta.hideHeader && isSm(clientWidth)) {
-    return false;
-  }
-  return true;
+  return !(route.meta.hideHeader && isSm(clientWidth));
+
 };
 </script>
 
@@ -49,15 +46,15 @@ const showHeader = () => {
           <router-view v-slot="{ Component }">
             <keep-alive>
               <component
-                :is="Component"
-                v-if="$route.meta.keepAlive"
-                :key="$route.path"
+                  :is="Component"
+                  v-if="$route.meta.keepAlive"
+                  :key="$route.path"
               />
             </keep-alive>
             <component
-              :is="Component"
-              v-if="!$route.meta.keepAlive"
-              :key="$route.path"
+                :is="Component"
+                v-if="!$route.meta.keepAlive"
+                :key="$route.path"
             />
           </router-view>
 
@@ -75,9 +72,9 @@ const showHeader = () => {
   <teleport to="body">
     <transition name="fade" mode="out-in">
       <div
-        class="overlay"
-        @click="store.setOverlay(false)"
-        v-if="store.getOverlay"
+          v-if="store.getOverlay"
+          class="overlay"
+          @click="store.setOverlay(false)"
       ></div>
     </transition>
   </teleport>

@@ -1,19 +1,19 @@
 <template>
   <div
-    class="card"
-    :class="[
+      :class="[
       { video: type === 'video' || type === 'mv' },
       { 'hover-show-dec': !showDec },
     ]"
-    @mouseenter="isDecShow = true"
-    @mouseleave="isDecShow = showDec"
-    :style="setWidth()"
+      :style="setWidth()"
+      class="card"
+      @mouseenter="isDecShow = true"
+      @mouseleave="isDecShow = showDec"
   >
     <div class="card-inner">
       <div class="cover" :class="{ video: type === 'video' || type === 'mv' }">
         <div
-          :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
-          class="avator"
+            :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
+            class="avator"
         />
         <div class="mask" :style="setStyle()" @click.self="goTo">
           <span class="material-icons-round icon" @click.self="playSong(id)">
@@ -22,15 +22,15 @@
         </div>
       </div>
       <div
-        class="dec"
-        :class="{ showDec: !showDec }"
-        :style="type === 'artist' ? { textAlign: 'center' } : ''"
-        v-show="showDec"
+          v-show="showDec"
+          :class="{ showDec: !showDec }"
+          :style="type === 'artist' ? { textAlign: 'center' } : ''"
+          class="dec"
       >
         <div class="tit text-truncate">{{ title }}</div>
         <ArtistFormat
-          v-if="showArtist && type !== 'playlist'"
-          :artistList="artists"
+            v-if="showArtist && type !== 'playlist'"
+            :artistList="artists"
         />
         <div class="info text-truncate font-size-12" v-show="showArtist">
           {{ setInfo() }}
@@ -40,32 +40,32 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, defineComponent } from "vue";
-import { dateFormat } from "../utils/common.js";
-import { useRouter } from "vue-router";
-import { usePlayer } from "../store/player.js";
+import {defineComponent, reactive, toRefs} from "vue";
+import {dateFormat} from "../utils/common.js";
+import {useRouter} from "vue-router";
+import {usePlayer} from "../store/player.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
 export default defineComponent({
   name: "PlaylistCard",
   props: {
-    type: { type: String, required: true },
+    type: {type: String, required: true},
     // id: { type: Number, required: true },
-    size: { type: String, default: null },
-    showDec: { type: Boolean, default: true }, // 控制歌单名和描述的显示
-    showTime: { type: Boolean, default: false },
-    showArtist: { type: Boolean, default: true }, // 控制歌手和描述的显示
-    item: { type: Object, required: true },
+    size: {type: String, default: null},
+    showDec: {type: Boolean, default: true}, // 控制歌单名和描述的显示
+    showTime: {type: Boolean, default: false},
+    showArtist: {type: Boolean, default: true}, // 控制歌手和描述的显示
+    item: {type: Object, required: true},
   },
   setup(props) {
     //检查传入的参数
     const type = ["playlist", "album", "artist", "video", "mv"];
 
     const checkProps = () => {
-      if (!type.includes(props.type)) {
+      if (type.indexOf(props.type) === -1) {
         console.error(
-          `type:${props.type} is not a valid type must be one of ${type} -- PlayListCard`
+            `type:${props.type} is not a valid type must be one of ${type} -- PlayListCard`
         );
       }
 
@@ -78,16 +78,17 @@ export default defineComponent({
 
     const router = useRouter();
     const data = reactive({
-      imgUrl: null,
-      publishTime: null,
-      updataTime: null,
+      imgUrl: "",
+      publishTime: "",
+      updataTime: "",
       artists: null,
-      title: null,
-      info: null,
-      id: null,
-      playSong: (id: number) => {},
+      title: "",
+      info: "",
+      id: 0,
+      playSong: (id: number) => {
+      },
 
-      isDecShow: null,
+      isDecShow: true,
     });
     const player = usePlayer();
 
@@ -99,7 +100,7 @@ export default defineComponent({
       const video = props.item;
 
       data.imgUrl = `${
-        video?.cover || video?.coverUrl || video?.imgurl
+          video?.cover || video?.coverUrl || video?.imgurl
       }?param=480y270`;
       data.publishTime = video?.publishTime;
       data.artists = video?.artists;
@@ -111,8 +112,7 @@ export default defineComponent({
     const setPlayList = () => {
       const playlist = props.item;
       data.imgUrl = `${playlist.coverImgUrl || playlist.picUrl}?param=480y480`;
-      let date = dateFormat(playlist.createTime, false);
-      data.publishTime = date;
+      data.publishTime = dateFormat(playlist.createTime, false);
       data.updataTime = dateFormat(playlist.updateTime, false);
       data.artists = playlist.creator;
       data.title = playlist.name;
@@ -125,8 +125,7 @@ export default defineComponent({
       const album = props.item;
 
       data.imgUrl = `${album.picUrl}?param=480y480`;
-      let date = dateFormat(album.publishTime, false);
-      data.publishTime = date;
+      data.publishTime = dateFormat(album.publishTime, false);
       data.artists = album.artists;
       data.title = album.name;
       data.id = album.id;
@@ -182,8 +181,8 @@ export default defineComponent({
 
     const setWidth = () => {
       let style = {
-        width: null,
-        maxWidth: null,
+        width: "",
+        maxWidth: "",
       };
       if (props.size) {
         style.width = props.size;
@@ -193,9 +192,9 @@ export default defineComponent({
       return style;
     };
 
-    return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };
+    return {...toRefs(data), setInfo, setStyle, setWidth, goTo};
   },
-  components: { ArtistFormat },
+  components: {ArtistFormat},
 });
 </script>
 <style lang="scss" scoped>
@@ -219,10 +218,12 @@ export default defineComponent({
 
   transform: translateY(0px);
 }
+
 .cover {
   position: relative;
   aspect-ratio: 1/1;
   cursor: pointer;
+
   &.video {
     aspect-ratio: 16/9;
   }
@@ -240,6 +241,7 @@ export default defineComponent({
     transition: all $transition-time-default;
 
     @include blurShadow;
+
     &::after {
       opacity: 0;
     }
@@ -280,6 +282,7 @@ export default defineComponent({
 
     background-color: rgba($color: black, $alpha: 0.7);
     color: #fff;
+
     span {
       color: #fff;
       margin-right: 2px;
@@ -291,6 +294,7 @@ export default defineComponent({
       background-size: 105% 105%;
       // transform: scale(105%);
     }
+
     .mask {
       background-color: rgba(0, 0, 0, 0.2);
 
@@ -309,7 +313,7 @@ export default defineComponent({
   margin-top: 3px;
 
   > * {
-    margin: 0px 0;
+    margin: 0;
   }
 
   &.showDec {
@@ -318,6 +322,7 @@ export default defineComponent({
     left: 0;
     width: 100%;
   }
+
   .info {
     color: var(--text-color-secondary);
   }
@@ -327,6 +332,7 @@ export default defineComponent({
   .card-inner {
     transition: transform $transition-time-default;
   }
+
   &:hover {
     .card-inner {
       transform: translateY(-40px);

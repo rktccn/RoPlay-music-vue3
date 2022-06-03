@@ -1,6 +1,6 @@
 <script>
-import { reactive, toRefs } from "vue";
-import { getBanner } from "../../../apis/others.js";
+import {reactive, toRefs} from "vue";
+import {getBanner} from "../../../apis/others.js";
 
 export default {
   name: "exploreBanner",
@@ -41,7 +41,7 @@ export default {
 };
 </script>
 
-<template lang="">
+<template>
   <!-- banner -->
   <!-- |--- 分类(歌手 排行 歌单 电台) -->
   <section class="section-focus">
@@ -49,8 +49,8 @@ export default {
       <el-carousel :height="bannerHeight" direction="vertical" :autoplay="true">
         <el-carousel-item v-for="(item, index) in bannerList" :key="index">
           <div
-            class="banner-item"
-            :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
+              class="banner-item"
+              :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
           >
             <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt="" />
             <!-- <div

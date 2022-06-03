@@ -1,16 +1,16 @@
-<template lang="">
+<template>
   <div>
     <div class="recommend">
       <h4 class="text-style-title">精挑细选</h4>
-      <div class="inner">
+      <ul class="inner">
         <li
-          v-for="(item, index) in recommendList"
-          :key="index"
-          class="track-item block"
+            v-for="(item, index) in recommendList"
+            :key="index"
+            class="track-item block"
         >
           <TopListCard :name="item.name" :id="item.id"></TopListCard>
         </li>
-      </div>
+      </ul>
     </div>
 
     <div class="all">
@@ -28,8 +28,8 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
-import { getTopList } from "../../apis/playlist.js";
+import {reactive, toRefs} from "vue";
+import {getTopList} from "../../apis/playlist.js";
 
 import PlayListCard from "../../components/playListCard.vue";
 import CoverRow from "../../components/coverRow.vue";

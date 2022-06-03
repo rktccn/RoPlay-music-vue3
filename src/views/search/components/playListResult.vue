@@ -1,9 +1,10 @@
-<template lang="">
+<template>
   <div class="section" v-if="playLists.length !== 0">
     <div class="title">
       <h4 class="text-style-title">歌单</h4>
       <router-link :to="`/search/${w}/playlists`" class="text-style-info"
-        >查看全部</router-link
+      >查看全部
+      </router-link
       >
     </div>
     <CarouselList :length="playLists.length">
@@ -14,8 +15,8 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs } from "vue";
-import { search } from "../../../apis/others";
+import {reactive, toRefs} from "vue";
+import {search} from "../../../apis/others";
 
 import PlaylistCard from "../../../components/playListCard.vue";
 import CarouselList from "../../../components/carouselList.vue";
@@ -23,7 +24,7 @@ import CarouselList from "../../../components/carouselList.vue";
 export default {
   name: "searchPlayList",
   props: {
-    w: { type: String, required: true },
+    w: {type: String, required: true},
   },
   setup(props) {
     const data = reactive({

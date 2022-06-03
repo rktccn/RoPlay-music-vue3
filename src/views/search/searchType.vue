@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div v-if="resultList[0]">
     <div class="songs" v-if="type === 'songs'">
       <TrackList :tracks="resultList" scrollerSelector=".el-main"></TrackList>
@@ -8,7 +8,7 @@
       <CoverRow :type="type">
         <li v-for="(item, index) in resultList" :key="index">
           <PlayListCard
-            class="item"
+              class="item"
             :item="item"
             :type="type.slice(0, -1)"
           ></PlayListCard>
@@ -21,10 +21,10 @@
   </p>
 </template>
 <script>
-import { onMounted, onUnmounted, reactive, toRefs } from "vue";
-import { useRoute } from "vue-router";
-import { search } from "../../apis/others";
-import { isScrollBottom } from "../../utils/common";
+import {onMounted, onUnmounted, reactive, toRefs} from "vue";
+import {useRoute} from "vue-router";
+import {search} from "../../apis/others";
+import {isScrollBottom} from "../../utils/common";
 
 import TrackList from "../../components/trackList.vue";
 import CoverRow from "../../components/coverRow.vue";

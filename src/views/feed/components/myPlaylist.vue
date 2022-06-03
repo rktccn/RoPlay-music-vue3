@@ -1,21 +1,21 @@
-<template lang="">
+<template>
   <section class="section">
     <div class="text-style-title">我的歌单</div>
   </section>
   <CoverRow v-if="list[0]">
     <PlayListCard
-      v-for="(playlist, index) in list"
-      :key="index"
-      type="playlist"
-      :item="playlist"
+        v-for="(playlist, index) in list"
+        :key="index"
+        type="playlist"
+        :item="playlist"
     ></PlayListCard>
   </CoverRow>
 </template>
 <script>
-import { onMounted, onUnmounted, reactive, toRefs } from "vue";
-import { getUserPlaylist } from "../../../apis/user";
-import { useStore } from "../../../store";
-import { isScrollBottom } from "../../../utils/common";
+import {onMounted, onUnmounted, reactive, toRefs} from "vue";
+import {getUserPlaylist} from "../../../apis/user";
+import {useStore} from "../../../store";
+import {isScrollBottom} from "../../../utils/common";
 
 import CoverRow from "../../../components/coverRow.vue";
 import PlayListCard from "../../../components/playListCard.vue";

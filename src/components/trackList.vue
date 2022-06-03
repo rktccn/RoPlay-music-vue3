@@ -1,39 +1,33 @@
-<template lang="">
+<template>
   <div
-    v-if="activeData !== []"
-    ref="scroller"
-    class="track-list"
-    id="trackList"
-    :style="`height:${scrollRunwayEnd}px`"
+      v-if="activeData !== []"
+      id="trackList"
+      ref="scroller"
+      :style="`height:${scrollRunwayEnd}px`"
+      class="track-list"
   >
-    <li
-      class="track-list__scroll-runway"
-      :style="`transform: translate(0, ${scrollRunwayEnd}px)`"
-    ></li>
+    <!-- 占位元素-->
+    <span
+        :style="`transform: translate(0, ${scrollRunwayEnd}px)`"
+        class="track-list__scroll-runway"
+    ></span>
     <TrackListItem
-      class="track-list__item"
-      v-for="(track, index) in activeData"
-      :key="track.INDEX"
-      :item="type === 'cloud' ? track.simpleSong : track"
-      :canHover="canHover"
-      :showImg="showImg"
-      :type="type"
-      :index="track.INDEX + 1"
-      :style="`top:  ${track.SCROLLY}px`"
+        v-for="(track) in activeData"
+        :key="track.INDEX"
+        :canHover="canHover"
+        :index="track.INDEX + 1"
+        :item="type === 'cloud' ? track.simpleSong : track"
+        :showImg="showImg"
+        :style="`top:  ${track.SCROLLY}px`"
+        :type="type"
+        class="track-list__item"
     ></TrackListItem>
   </div>
 </template>
 <script lang="ts">
 // https://lkangd.com/post/virtual-infinite-scroll/#dongtaigaodudexuniliebiao
 
-import {
-  defineComponent,
-  reactive,
-  toRefs,
-  onUnmounted,
-  onMounted,
-  watch,
-} from "vue";
+import {defineComponent, onMounted, onUnmounted, reactive, toRefs, watch,} from "vue";
 import TrackListItem from "./trackListItem.vue";
 
 const FIXED_HEIGHT = 64;
@@ -44,11 +38,11 @@ let VISIBLE_TRACKS = 10;
 export default defineComponent({
   name: "trackList",
   props: {
-    tracks: { type: Array, required: true }, // 传入歌曲列表
-    canHover: { type: Boolean, default: true }, // 是否显示hover样式
-    showImg: { type: Boolean, default: true }, // 是否显示封面
-    type: { type: String, default: "song" }, // 类型 song / album(隐藏封面和歌曲信息)/ cloud
-    scrollerSelector: { type: String, default: "#trackList" }, // 滚动元素选择器
+    tracks: {type: Array, required: true}, // 传入歌曲列表
+    canHover: {type: Boolean, default: true}, // 是否显示hover样式
+    showImg: {type: Boolean, default: true}, // 是否显示封面
+    type: {type: String, default: "song"}, // 类型 song / album(隐藏封面和歌曲信息)/ cloud
+    scrollerSelector: {type: String, default: "#trackList"}, // 滚动元素选择器
   },
   setup(props) {
     let scroller = null;
@@ -61,7 +55,7 @@ export default defineComponent({
       firstAttachedItem: 0, // 「头挂载元素」
       lastAttachedItem: 0, // 「尾挂载元素」
 
-      anchorItem: { index: 0, offset: 0 }, // 当前激活元素
+      anchorItem: {index: 0, offset: 0}, // 当前激活元素
       lastScrollTop: 0, // 上一次滚动高度
     });
 
@@ -71,19 +65,18 @@ export default defineComponent({
     };
 
     const getActiveData = () => {
-      const { firstAttachedItem, lastAttachedItem } = data;
+      const {firstAttachedItem, lastAttachedItem} = data;
       const start =
-        firstAttachedItem - BUFFER_SIZE < 0
-          ? 0
-          : firstAttachedItem - BUFFER_SIZE;
+          firstAttachedItem - BUFFER_SIZE < 0
+              ? 0
+              : firstAttachedItem - BUFFER_SIZE;
 
       const end =
-        lastAttachedItem + BUFFER_SIZE > data.listData.length
-          ? data.listData.length
-          : lastAttachedItem + BUFFER_SIZE;
+          lastAttachedItem + BUFFER_SIZE > data.listData.length
+              ? data.listData.length
+              : lastAttachedItem + BUFFER_SIZE;
 
-      const activeData = data.listData.slice(start, end);
-      return activeData;
+      return data.listData.slice(start, end);
     };
 
     const initListData = () => {
@@ -100,7 +93,7 @@ export default defineComponent({
     const updateAnchorItem = (_scrollTop: number) => {
       const index = Math.floor(_scrollTop / FIXED_HEIGHT);
       const offset = _scrollTop - index * FIXED_HEIGHT;
-      data.anchorItem = { index, offset };
+      data.anchorItem = {index, offset};
     };
 
     const handleScroll = () => {
@@ -128,14 +121,14 @@ export default defineComponent({
         // 2.计算「头挂载元素」
         if (data.anchorItem.index - data.firstAttachedItem >= BUFFER_SIZE) {
           data.firstAttachedItem = Math.min(
-            data.listData.length - VISIBLE_TRACKS,
-            data.anchorItem.index - BUFFER_SIZE
+              data.listData.length - VISIBLE_TRACKS,
+              data.anchorItem.index - BUFFER_SIZE
           );
         }
       } else {
         if (_scrollTop <= 0) {
           // 特殊情况：处理滚动到顶部，更新「锚点元素」为初始值
-          data.anchorItem = { index: 0, offset: 0 };
+          data.anchorItem = {index: 0, offset: 0};
         } else if (data.anchorItem.offset < 0) {
           // 1.当「锚点元素」偏移量小于零时，说明视图滚动条向上，并超过一个元素，需要更新「锚点元素」
           updateAnchorItem(_scrollTop);
@@ -143,20 +136,20 @@ export default defineComponent({
         // 2.计算「头挂载元素」
         if (data.anchorItem.index - data.firstAttachedItem < BUFFER_SIZE) {
           data.firstAttachedItem = Math.max(
-            0,
-            data.anchorItem.index - BUFFER_SIZE
+              0,
+              data.anchorItem.index - BUFFER_SIZE
           );
         }
       }
       // 3.更新「尾挂载元素」
       data.lastAttachedItem = Math.min(
-        data.firstAttachedItem + VISIBLE_TRACKS + BUFFER_SIZE * 2,
-        data.listData.length
+          data.firstAttachedItem + VISIBLE_TRACKS + BUFFER_SIZE * 2,
+          data.listData.length
       );
       // 4.更新「可视元素」
       data.activeData = data.listData.slice(
-        data.firstAttachedItem,
-        data.lastAttachedItem
+          data.firstAttachedItem,
+          data.lastAttachedItem
       );
     };
 
@@ -174,18 +167,18 @@ export default defineComponent({
     });
 
     watch(
-      () => props.tracks.length,
-      () => {
-        fetchData();
-      },
-      { immediate: true }
+        () => props.tracks.length,
+        () => {
+          fetchData();
+        },
+        {immediate: true}
     );
 
     onUnmounted(() => {
       SCROLL_ELEMENT.removeEventListener("scroll", handleScroll);
     });
 
-    return { ...toRefs(data) };
+    return {...toRefs(data)};
   },
   components: {
     TrackListItem,
