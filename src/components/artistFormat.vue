@@ -8,20 +8,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent} from "vue";
+
 export default defineComponent({
   name: "artistFormat",
   props: {
     artistList: { type: Object, require: true },
     fontSize: { type: String, default: "12px" },
-    discribeInfo: { type: String, default: null },
   },
   setup(props) {
     const setStyle = (): Object => {
-      let styles = {
+      return {
         fontSize: props.fontSize,
       };
-      return styles;
     };
 
     return { setStyle };
@@ -46,7 +45,7 @@ export default defineComponent({
     }
   }
   em {
-    margin: 0px 2px;
+    margin: 0 2px;
   }
 }
 </style>
