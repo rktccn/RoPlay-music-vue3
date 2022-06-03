@@ -107,13 +107,13 @@ vue3 + vite + Pinia
 │  │  ├── currentList.vue   当前播放列表
 │  │  ├── /explore/     (探索页)
 │  │  │  ├── /components/   (组件文件夹)
-│  │  │  │  ├── banner.vue    轮播图
-│  │  │  │  ├── latestAlbum.vue  最新专辑
-│  │  │  │  ├── playListTrack.vue   歌单歌曲
-│  │  │  │  ├── recomendFM.vue  推荐FM
-│  │  │  │  ├── recomendOther.vue   推荐其他
+│  │  │  │  ├── banner.vue              轮播图
+│  │  │  │  ├── latestAlbum.vue         最新专辑
+│  │  │  │  ├── playListTrack.vue       歌单歌曲
+│  │  │  │  ├── recomendFM.vue          推荐FM
+│  │  │  │  ├── recomendOther.vue       推荐其他
 │  │  │  │  └── recomendPlaylist.vue    推荐歌单
-│  │  │  └── explore.vue    探索页
+│  │  │  └── explore.vue                探索页
 │  │  ├── /feed/    (动态页)
 │  │  │  ├── /components/   (组件文件夹)
 │  │  │  │  ├── favouriteAndRecord.vue  收藏和记录
@@ -142,7 +142,7 @@ vue3 + vite + Pinia
 │  │  │  │  ├── playListResult.vue  歌单搜索结果
 │  │  │  │  ├── songResult.vue      歌曲搜索结果
 │  │  │  │  └── videoResult.vue     视频搜索结果
-│  │  │  ├── search.vue  搜索页
+│  │  │  ├── search.vue     搜索页
 │  │  │  └── searchType.vue 搜索类型
 │  │  ├── setting.vue   设置页
 │  │  ├── songList.vue  歌曲列表页(云盘/日推/听歌排行/收藏)
