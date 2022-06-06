@@ -3,7 +3,7 @@
 // createTextModal(title,message)
 
 import textModal from "./textModal.vue";
-import {createApp} from "vue";
+import { createApp } from "vue";
 
 const createTextModal = (title, message) => {
   // 创建一个挂载容器

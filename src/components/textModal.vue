@@ -8,17 +8,13 @@
       <transition name="drop-up" mode="out-in">
         <div class="block" v-if="show">
           <h2 class="header">
-            {{
-              title
-            }}
+            {{ title }}
             <svg-icon
-                :name="`round-close`"
-                :size="24"
-                color="#454f63"
-                @click.self="closeMessage"
+              :name="`round-close`"
+              :size="24"
+              color="#454f63"
+              @click.self="closeMessage"
             />
-
-
           </h2>
           <p class="text">
             {{ message }}
@@ -29,16 +25,16 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, onMounted, ref} from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 
 export default defineComponent({
   name: "TextModal",
   props: {
-    title: {type: String, required: true},
-    message: {type: String, required: true},
+    title: { type: String, required: true },
+    message: { type: String, required: true },
     onClose: {
-      type: Function, default: () => {
-      }
+      type: Function,
+      default: () => {},
     },
   },
 

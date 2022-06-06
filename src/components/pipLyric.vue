@@ -5,10 +5,10 @@
     <div style="border: 1px dashed #ccc">
       <h2>视频</h2>
       <video
-          id="video"
-          width="300"
-          height="300"
-          controls
+        id="video"
+        width="300"
+        height="300"
+        controls
         autoplay
         ref="video"
       ></video>
@@ -16,16 +16,16 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, onMounted, ref, watch} from "vue";
+import { defineComponent, onMounted, ref, watch } from "vue";
 
 export default defineComponent({
   name: "PIPlyric",
   props: {
-    currentLyric: {type: String, required: true},
-    nextLyric: {type: String, required: true},
-    color: {type: Object, required: true},
+    currentLyric: { type: String, required: true },
+    nextLyric: { type: String, required: true },
+    color: { type: Object, required: true },
     // 开启画中画
-    isPIP: {type: Boolean, required: true},
+    isPIP: { type: Boolean, required: true },
   },
   setup(props) {
     const lyric = ref(null);

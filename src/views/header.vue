@@ -55,23 +55,32 @@ watch(
 <template lang="">
   <div class="header">
     <div class="button">
-      <span class="material-icons-round font-size-48 navigate" @click="goBack"
-        >navigate_before</span
-      >
-      <span
-        class="material-icons-round font-size-48 navigate"
+      <svg-icon
+        class="navigate"
+        name="round-navigate_before"
+        :size="48"
+        color="#454f63"
+        @click="goBack"
+      />
+
+      <svg-icon
+        class="navigate"
+        name="round-navigate_next"
+        :size="48"
+        color="#454f63"
         @click="goForward"
-        >navigate_next</span
-      >
-      <span
-        class="material-icons-round font-size-40 menu"
+      />
+      <svg-icon
+        class="menu"
+        name="round-menu"
+        :size="40"
+        color="#454f63"
         @click="store.setOverlay(true)"
-        >menu</span
-      >
+      />
     </div>
     <div class="search" :class="{ active: searchFocus }">
       <div class="icon" @click="doSearch()">
-        <span class="material-icons-round font-size-24">search</span>
+        <svg-icon name="round-search" :size="24" color="#454f63" />
       </div>
       <div class="search-box">
         <input
@@ -86,13 +95,9 @@ watch(
       </div>
     </div>
     <div class="right">
-      <router-link
-        :to="{ name: 'Setting' }"
-        class="material-icons-round font-size-36"
-        v-if="store.isLoggedIn === -1"
-      >
-        account_circle</router-link
-      >
+      <router-link :to="{ name: 'Setting' }" v-if="store.isLoggedIn === -1">
+        <svg-icon name="round-account_circle" :size="36" color="#454f63" />
+      </router-link>
       <router-link
         class="avator"
         :to="{ name: 'Setting' }"

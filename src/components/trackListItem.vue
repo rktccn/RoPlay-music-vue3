@@ -1,31 +1,31 @@
 <template>
   <div
-      class="track-list-item"
-      :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
-      ref="refItem"
-      :style="setStyle()"
-      @dblclick="player.replaceCurrentTrack(id)"
-      @click.right="showContextMenu"
+    class="track-list-item"
+    :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
+    ref="refItem"
+    :style="setStyle()"
+    @dblclick="player.replaceCurrentTrack(id)"
+    @click.right="showContextMenu"
   >
     <div class="inner">
       <div class="inner__cover" v-if="imgUrl && showImg && type !== 'album'">
         <el-image
-            lazy
-            class="inner__cover__img"
-            :src="`${imgUrl}?param=64y64`"
-            alt=""
-            :class="itemWidth > 2 ? ' hide-in-sm' : ''"
+          lazy
+          class="inner__cover__img"
+          :src="`${imgUrl}?param=64y64`"
+          alt=""
+          :class="itemWidth > 2 ? ' hide-in-sm' : ''"
         />
       </div>
       <span class="index font-size-16" v-if="type === 'album'">{{
-          index
-        }}</span>
+        index
+      }}</span>
       <div class="title">
         <div class="container">
           <div v-if="artists" class="text-truncate">{{ title }}</div>
           <ArtistFormat
-              :artistList="artists"
-              v-show="itemWidth >= 2"
+            :artistList="artists"
+            v-show="itemWidth >= 2"
           ></ArtistFormat>
         </div>
       </div>
@@ -38,13 +38,12 @@
       <!-- 专辑 -->
       <div class="describe" v-show="itemWidth === 0 && type !== 'album'">
         <router-link
-            :to="`/album/${describe.id}`"
-            v-if="describe"
-            class="text-truncate"
+          :to="`/album/${describe.id}`"
+          v-if="describe"
+          class="text-truncate"
         >
           {{ describe.name }}
-        </router-link
-        >
+        </router-link>
       </div>
       <div class="more">
         <div class="duration" v-if="duration">
@@ -54,23 +53,21 @@
         </div>
         <div class="like" :class="{ normal: itemWidth <= 2 }">
           <svg-icon
-              :class="{ fill: isLiked }"
-              :name="`round-favorite_border`"
-              :size="24"
-              color="#454f63"
-              @click="toggleLike"
+            :class="{ fill: isLiked }"
+            :name="`round-favorite_border`"
+            :size="24"
+            color="#454f63"
+            @click="toggleLike"
           />
-
         </div>
       </div>
       <svg-icon
-          class="play"
-          :name="`round-play_arrow`"
-          :size="24"
-          color="#454f63"
-          @click="player.replaceCurrentTrack(id)"/>
-
-
+        class="play"
+        :name="`round-play_arrow`"
+        :size="24"
+        color="#454f63"
+        @click="player.replaceCurrentTrack(id)"
+      />
     </div>
   </div>
 </template>
@@ -83,9 +80,9 @@ import {
   ref,
   toRefs,
 } from "vue";
-import {timeFormat} from "../utils/common.js";
-import {usePlayer} from "../store/player.js";
-import {getMP3, likeATrack} from "../apis/track.js";
+import { timeFormat } from "../utils/common.js";
+import { usePlayer } from "../store/player.js";
+import { getMP3, likeATrack } from "../apis/track.js";
 
 import ArtistFormat from "./artistFormat.vue";
 import createContextMenu from "./contextMenu";
@@ -93,12 +90,12 @@ import createContextMenu from "./contextMenu";
 export default defineComponent({
   name: "trackListItem",
   props: {
-    item: {type: Object, required: true},
-    type: {type: String, default: "song"}, // 类型 song/album
-    height: {type: String, default: "64px"},
-    showImg: {type: Boolean, default: true},
-    canHover: {type: Boolean, default: true}, // 是否显示hover样式
-    index: {type: Number}, // 数字替代缩略图
+    item: { type: Object, required: true },
+    type: { type: String, default: "song" }, // 类型 song/album
+    height: { type: String, default: "64px" },
+    showImg: { type: Boolean, default: true },
+    canHover: { type: Boolean, default: true }, // 是否显示hover样式
+    index: { type: Number }, // 数字替代缩略图
   },
   setup(props) {
     const data = reactive({
@@ -144,9 +141,9 @@ export default defineComponent({
 
     const getImgUrl = () => {
       data.imgUrl =
-          track?.al?.picUrl ??
-          track?.album?.picUrl ??
-          `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
+        track?.al?.picUrl ??
+        track?.album?.picUrl ??
+        `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
     };
 
     const getDuration = () => {
@@ -206,11 +203,11 @@ export default defineComponent({
     // 切换收藏
     const toggleLike = async () => {
       if (data.isLiked) {
-        await likeATrack({id: data.id, like: false});
+        await likeATrack({ id: data.id, like: false });
         data.isLiked = false;
         player.likedSongIDs.splice(player.likedSongIDs.indexOf(data.id), 1);
       } else {
-        await likeATrack({id: data.id, like: true});
+        await likeATrack({ id: data.id, like: true });
         data.isLiked = true;
         player.likedSongIDs.push(data.id);
       }

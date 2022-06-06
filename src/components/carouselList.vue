@@ -1,27 +1,15 @@
 <template>
   <section>
     <div class="container">
-      <span
-          v-show="active !== 0"
-          class="btn-prev"
-          @click="changePage('prev')"
-      >
-        <svg-icon
-            :name="`round-chevron_left`"
-            :size="24"
-            color="#454f63"/>
-
+      <span v-show="active !== 0" class="btn-prev" @click="changePage('prev')">
+        <svg-icon :name="`round-chevron_left`" :size="24" color="#454f63" />
       </span>
       <span
-          v-show="itemLength >= pageSize && !(itemLength <= active + pageSize)"
-          class=" btn-next"
-          @click="changePage('next')"
+        v-show="itemLength >= pageSize && !(itemLength <= active + pageSize)"
+        class="btn-next"
+        @click="changePage('next')"
       >
-                <svg-icon
-                    :name="`round-chevron_right`"
-                    :size="24"
-                    color="#454f63"/>
-
+        <svg-icon :name="`round-chevron_right`" :size="24" color="#454f63" />
       </span>
 
       <div class="carousel" ref="carousel" :style="setRow()">
@@ -31,7 +19,14 @@
   </section>
 </template>
 <script lang="ts">
-import {defineComponent, onBeforeUnmount, onMounted, reactive, ref, toRefs,} from "vue";
+import {
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+} from "vue";
 
 export default defineComponent({
   name: "carouselList",
@@ -73,10 +68,10 @@ export default defineComponent({
 
       if (direction === "next") {
         slider.scrollLeft +=
-            data.pageSize * carousel.value.children[0].offsetWidth;
+          data.pageSize * carousel.value.children[0].offsetWidth;
       } else if (direction === "prev") {
         slider.scrollLeft -=
-            data.pageSize * carousel.value.children[0].offsetWidth;
+          data.pageSize * carousel.value.children[0].offsetWidth;
       }
     };
 
@@ -85,12 +80,12 @@ export default defineComponent({
       let slider = carousel.value;
       // 左侧已显示内容数量
       data.active = Math.ceil(
-          slider.scrollLeft / carousel.value.children[0].offsetWidth
+        slider.scrollLeft / carousel.value.children[0].offsetWidth
       );
     };
 
     const setRow = () => {
-      let styles = {gridTemplateRows: ""};
+      let styles = { gridTemplateRows: "" };
       styles.gridTemplateRows = `repeat(${props.rows}, 1fr)`;
       return styles;
     };
@@ -112,7 +107,7 @@ export default defineComponent({
       ro.disconnect();
     });
 
-    return {carousel, ...toRefs(data), changePage, setRow};
+    return { carousel, ...toRefs(data), changePage, setRow };
   },
 });
 </script>
@@ -131,7 +126,7 @@ export default defineComponent({
     background-color: var(--background-color-primary);
     border-radius: 50px;
     box-shadow: 0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%),
-    0 2px 4px -1px rgb(0 0 0 / 40%);
+      0 2px 4px -1px rgb(0 0 0 / 40%);
     z-index: 10;
     cursor: pointer;
     user-select: none;

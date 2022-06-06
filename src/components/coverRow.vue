@@ -1,13 +1,13 @@
 <template>
   <div
-      class="cover-row"
-      :class="{ video: (type === 'videos') | (type === 'mvs') }"
+    class="cover-row"
+    :class="{ video: (type === 'videos') | (type === 'mvs') }"
   >
     <slot></slot>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

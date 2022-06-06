@@ -3,27 +3,20 @@
     <div class="inner block">
       <ul>
         <li @click="playSong">
-          <svg-icon
-              :name="`round-play_arrow`"
-              :size="24"
-              color="#454f63"/>
-
+          <svg-icon :name="`round-play_arrow`" :size="24" color="#454f63" />
 
           播放
         </li>
         <li>
-          <svg-icon
-              :name="`round-redo`"
-              :size="20"
-              color="#454f63"/>
+          <svg-icon :name="`round-redo`" :size="20" color="#454f63" />
           下一首播放
         </li>
         <li @click="removeSong">
           <svg-icon
-              :name="`round-${ isInList ? 'playlist_remove' : 'playlist_play' }`"
-              :size="24"
-              color="#454f63"/>
-
+            :name="`round-${isInList ? 'playlist_remove' : 'playlist_play'}`"
+            :size="24"
+            color="#454f63"
+          />
 
           {{ isInList ? "从播放列表移除" : "添加到播放列表" }}
         </li>
@@ -32,16 +25,14 @@
       <ul>
         <li>
           <svg-icon
-              :name="`round-favorite_border`"
-              :size="20"
-              color="#454f63"/>
+            :name="`round-favorite_border`"
+            :size="20"
+            color="#454f63"
+          />
           收藏
         </li>
         <li>
-          <svg-icon
-              :name="`round-playlist_add`"
-              :size="24"
-              color="#454f63"/>
+          <svg-icon :name="`round-playlist_add`" :size="24" color="#454f63" />
 
           添加到
         </li>
@@ -50,15 +41,22 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, onMounted, onUnmounted, reactive, ref, toRefs,} from "vue";
+import {
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  toRefs,
+} from "vue";
 
 export default defineComponent({
   name: "ContextMenu",
   props: {
-    onClose: {type: Function, required: true},
-    mousePosition: {type: Object, required: true},
-    id: {type: Number, required: true},
-    player: {type: Object, required: true},
+    onClose: { type: Function, required: true },
+    mousePosition: { type: Object, required: true },
+    id: { type: Number, required: true },
+    player: { type: Object, required: true },
   },
   setup(props) {
     const player: any = props.player;
@@ -68,7 +66,7 @@ export default defineComponent({
 
     const contextMenu = ref(null);
     let menuTop = null,
-        menuLeft = null;
+      menuLeft = null;
 
     // 播放音乐
     const playSong = () => {
@@ -97,7 +95,7 @@ export default defineComponent({
       let left = props.mousePosition.clientX;
 
       let largestHeight =
-          window.innerHeight - contextMenu.value.offsetHeight - 5;
+        window.innerHeight - contextMenu.value.offsetHeight - 5;
       let largestWidth = window.innerWidth - contextMenu.value.offsetWidth - 25;
       if (top > largestHeight) top = largestHeight;
       if (left > largestWidth) left = largestWidth;

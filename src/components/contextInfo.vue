@@ -1,7 +1,7 @@
 <template>
   <div class="context-info">
     <div class="avatar">
-      <el-image :src="getImgUrl()" alt="alt" class="pic" lazy/>
+      <el-image :src="getImgUrl()" alt="alt" class="pic" lazy />
     </div>
     <div class="gap"></div>
     <div class="info">
@@ -11,10 +11,10 @@
         <span class="date">{{ publishTime }}</span>
         <em>·</em>
         <span class="artist"
-        ><ArtistFormat
+          ><ArtistFormat
             :artistList="item.artists"
             :fontSize="'16px'"
-        ></ArtistFormat
+          ></ArtistFormat
         ></span>
       </p>
       <div class="describe" @click="showDescribe" v-if="description">
@@ -23,43 +23,36 @@
       <div class="gap"></div>
       <div class="control" v-if="type !== 'user'">
         <button class="play primary" @click="playSong(id)">
-          <svg-icon
-              :name="`round-play_arrow`"
-              :size="24"
-              color="#fff"/>
+          <svg-icon :name="`round-play_arrow`" :size="24" color="#fff" />
           播放
         </button>
-        <button class="like ">
+        <button class="like">
           <svg-icon
-              :name="`round-favorite_border`"
-              :size="20"
-              color="#454f63"/>
-
+            :name="`round-favorite_border`"
+            :size="20"
+            color="#454f63"
+          />
         </button>
-        <button class="more ">
-          <svg-icon
-              :name="`round-more_horiz`"
-              :size="20"
-              color="#454f63"/>
+        <button class="more">
+          <svg-icon :name="`round-more_horiz`" :size="20" color="#454f63" />
         </button>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, reactive, toRefs} from "vue";
-import {dateFormat} from "../utils/common";
+import { defineComponent, reactive, toRefs } from "vue";
+import { dateFormat } from "../utils/common";
 
 import createTextModal from "./textModal.ts";
 import ArtistFormat from "./artistFormat.vue";
-import {usePlayer} from "../store/player";
-
+import { usePlayer } from "../store/player";
 
 export default defineComponent({
   name: "contextInfo",
   props: {
-    item: {type: Object, required: true},
-    type: {type: String, required: true}, // playlist/album
+    item: { type: Object, required: true },
+    type: { type: String, required: true }, // playlist/album
   },
   setup(props: any) {
     const data = reactive({
@@ -68,11 +61,10 @@ export default defineComponent({
       tag: "",
       description: "",
       id: null,
-      playSong: () => {
-      },
+      playSong: () => {},
     });
     let typeList = ["playlist", "album", "artist", "user"];
-    const ITEM: any = props.item
+    const ITEM: any = props.item;
 
     const player = usePlayer();
 
@@ -106,10 +98,7 @@ export default defineComponent({
 
     const getImgUrl = (): string => {
       let url =
-          ITEM?.coverImgUrl ||
-          ITEM?.picUrl ||
-          ITEM?.img1v1Url ||
-          ITEM?.avatarUrl;
+        ITEM?.coverImgUrl || ITEM?.picUrl || ITEM?.img1v1Url || ITEM?.avatarUrl;
       return `${url}?param=960y960`;
     };
 
@@ -138,7 +127,7 @@ export default defineComponent({
       createTextModal(`${data.tag}介绍`, data.description);
     };
 
-    return {...toRefs(data), player, getImgUrl, showDescribe};
+    return { ...toRefs(data), player, getImgUrl, showDescribe };
   },
   components: {
     ArtistFormat,
@@ -307,7 +296,6 @@ export default defineComponent({
         color: var(--text-color-primary-container);
         background-color: var(--primary-container-color);
       }
-
 
       .describe {
         display: none;

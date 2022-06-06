@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {reactive, watch} from "vue";
-import {useStore} from "../store";
+import { reactive, watch } from "vue";
+import { useStore } from "../store";
 
 const store = useStore();
 let playlistItem = reactive({
@@ -20,11 +20,11 @@ const getList = () => {
 };
 
 watch(
-    () => store.userPlaylist,
-    () => {
-      playlistItem.listItem = [];
-      getList();
-    }
+  () => store.userPlaylist,
+  () => {
+    playlistItem.listItem = [];
+    getList();
+  }
 );
 
 const list = reactive([
@@ -38,7 +38,7 @@ const list = reactive([
         icon: "stream",
         needLog: true,
       },
-      {itemName: "探索", path: "/", icon: "music_note", needLog: false},
+      { itemName: "探索", path: "/", icon: "music_note", needLog: false },
       // {
       //   itemName: "视频",
       //   path: "/video",
@@ -52,14 +52,14 @@ const list = reactive([
     listName: "我的音乐",
     needLog: false,
     listItem: [
-      {itemName: "收藏", path: "/like", icon: "favorite", needLog: true},
+      { itemName: "收藏", path: "/like", icon: "favorite", needLog: true },
       // {
       //   itemName: "最近播放",
       //   path: "/recent",
       //   icon: "home",
       //   needLog: false,
       // },
-      {itemName: "云盘", path: "/cloud", icon: "cloud", needLog: true},
+      { itemName: "云盘", path: "/cloud", icon: "cloud", needLog: true },
     ],
   },
 ]);
@@ -72,22 +72,21 @@ const list = reactive([
       <template v-for="(item, index) in list" :key="index">
         <ul v-if="item.needLog ? store.isLoggedIn === 1 : true">
           <li class="list-title white">
-            {{
-              item.listName
-            }}
+            {{ item.listName }}
           </li>
           <template v-for="(value, j) in item.listItem" :key="j">
             <li
-                v-if="value.needLog ? store.isLoggedIn === 1 : true"
-                class="list-item"
-                @click="store.setOverlay(false)"
+              v-if="value.needLog ? store.isLoggedIn === 1 : true"
+              class="list-item"
+              @click="store.setOverlay(false)"
             >
               <router-link :to="value.path" class="item-link">
                 <svg-icon
-                    v-if="value.icon !== ''"
-                    :name="`round-${ value.icon }`"
-                    :size="24"
-                    color="#454f63"/>
+                  v-if="value.icon !== ''"
+                  :name="`round-${value.icon}`"
+                  :size="24"
+                  color="#454f63"
+                />
                 <div class="text-truncate">
                   {{ value.itemName }}
                 </div>
@@ -98,15 +97,13 @@ const list = reactive([
       </template>
       <ul>
         <li class="list-title white">
-          {{
-            playlistItem.listName
-          }}
+          {{ playlistItem.listName }}
         </li>
         <li
-            v-for="(playlist, i) in playlistItem.listItem"
-            :key="i"
-            class="list-item"
-            @click="store.setOverlay(false)"
+          v-for="(playlist, i) in playlistItem.listItem"
+          :key="i"
+          class="list-item"
+          @click="store.setOverlay(false)"
         >
           <router-link :to="`/playlist/${playlist?.id}`" class="item-link">
             <div class="text-truncate">
