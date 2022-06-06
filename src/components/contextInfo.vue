@@ -44,7 +44,7 @@
 import { defineComponent, reactive, toRefs } from "vue";
 import { dateFormat } from "../utils/common";
 
-import createTextModal from "./textModal.ts";
+import createTextModal from "./textModal";
 import ArtistFormat from "./artistFormat.vue";
 import { usePlayer } from "../store/player";
 
