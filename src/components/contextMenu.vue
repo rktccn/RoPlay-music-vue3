@@ -3,25 +3,48 @@
     <div class="inner block">
       <ul>
         <li @click="playSong">
-          <span class="material-icons-round"> play_arrow </span>播放
+          <svg-icon
+              :name="`round-play_arrow`"
+              :size="24"
+              color="#454f63"/>
+
+
+          播放
         </li>
         <li>
-          <span class="material-icons-round font-size-20"> redo </span
-          >下一首播放
+          <svg-icon
+              :name="`round-redo`"
+              :size="20"
+              color="#454f63"/>
+          下一首播放
         </li>
         <li @click="removeSong">
-          <span class="material-icons-round"
-          >{{ isInList ? "playlist_remove" : "playlist_play" }} </span
-          >{{ isInList ? "从播放列表移除" : "添加到播放列表" }}
+          <svg-icon
+              :name="`round-${ isInList ? 'playlist_remove' : 'playlist_play' }`"
+              :size="24"
+              color="#454f63"/>
+
+
+          {{ isInList ? "从播放列表移除" : "添加到播放列表" }}
         </li>
       </ul>
       <span class="gap"></span>
       <ul>
         <li>
-          <span class="material-icons-round font-size-20"> favorite_border</span
-          >收藏
+          <svg-icon
+              :name="`round-favorite_border`"
+              :size="20"
+              color="#454f63"/>
+          收藏
         </li>
-        <li><span class="material-icons-round"> playlist_add </span>添加到</li>
+        <li>
+          <svg-icon
+              :name="`round-playlist_add`"
+              :size="24"
+              color="#454f63"/>
+
+          添加到
+        </li>
       </ul>
     </div>
   </div>

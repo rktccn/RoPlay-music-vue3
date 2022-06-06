@@ -1,6 +1,7 @@
 <script setup>
 import "./styles/normalize.scss";
 
+
 // import player from "./utils/player";
 import SideNav from "./components/sideNav.vue";
 import HeaderVue from "./views/header.vue";
@@ -81,6 +82,8 @@ const showHeader = () => {
 </template>
 
 <style lang="scss" scoped>
+
+
 @mixin display-center {
   padding: 0;
   width: var(--view-size);

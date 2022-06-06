@@ -10,9 +10,15 @@
           <h2 class="header">
             {{
               title
-            }}<span class="material-icons-round" @click.self="closeMessage">
-              close
-            </span>
+            }}
+            <svg-icon
+                :name="`round-close`"
+                :size="24"
+                color="#454f63"
+                @click.self="closeMessage"
+            />
+
+
           </h2>
           <p class="text">
             {{ message }}

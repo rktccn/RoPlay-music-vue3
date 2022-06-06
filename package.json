@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-design-icons/svg": "^0.11.1",
     "axios": "^0.25.0",
     "crypto-js": "^4.1.1",
     "element-plus": "^2.2.2",
@@ -26,6 +27,7 @@
     "scss-loader": "0.0.1",
     "tinycolor2": "^1.4.2",
     "video.js": "^7.18.1",
+    "vite-plugin-svg-sprite": "^0.2.3",
     "vue": "^3.2.25",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.0.12",
@@ -33,6 +35,7 @@
     "yarn": "^1.22.18"
   },
   "devDependencies": {
+    "@types/node": "^17.0.40",
     "@vitejs/plugin-vue": "^2.0.0",
     "autoprefixer": "^10.4.2",
     "node-sass": "^7.0.1",
@@ -42,7 +45,8 @@
     "unplugin-auto-import": "^0.5.11",
     "unplugin-element-plus": "^0.3.1",
     "unplugin-vue-components": "^0.17.14",
-    "vite": "^2.9.1"
+    "vite": "^2.9.1",
+    "vite-plugin-svg-icons": "^2.0.1"
   },
   "repository": {
     "type": "git",

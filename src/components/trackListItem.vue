@@ -10,22 +10,22 @@
     <div class="inner">
       <div class="inner__cover" v-if="imgUrl && showImg && type !== 'album'">
         <el-image
-          lazy
-          class="inner__cover__img"
-          :src="`${imgUrl}?param=64y64`"
-          alt=""
-          :class="itemWidth > 2 ? ' hide-in-sm' : ''"
+            lazy
+            class="inner__cover__img"
+            :src="`${imgUrl}?param=64y64`"
+            alt=""
+            :class="itemWidth > 2 ? ' hide-in-sm' : ''"
         />
       </div>
       <span class="index font-size-16" v-if="type === 'album'">{{
-        index
-      }}</span>
+          index
+        }}</span>
       <div class="title">
         <div class="container">
           <div v-if="artists" class="text-truncate">{{ title }}</div>
           <ArtistFormat
-            :artistList="artists"
-            v-show="itemWidth >= 2"
+              :artistList="artists"
+              v-show="itemWidth >= 2"
           ></ArtistFormat>
         </div>
       </div>
@@ -38,11 +38,12 @@
       <!-- 专辑 -->
       <div class="describe" v-show="itemWidth === 0 && type !== 'album'">
         <router-link
-          :to="`/album/${describe.id}`"
-          v-if="describe"
-          class="text-truncate"
+            :to="`/album/${describe.id}`"
+            v-if="describe"
+            class="text-truncate"
         >
-          {{ describe.name }}</router-link
+          {{ describe.name }}
+        </router-link
         >
       </div>
       <div class="more">
@@ -52,31 +53,42 @@
           </span>
         </div>
         <div class="like" :class="{ normal: itemWidth <= 2 }">
-          <span
-            class="material-icons-round"
-            :class="{ fill: isLiked }"
-            @click="toggleLike"
-          >
-            favorite_border
-          </span>
+          <svg-icon
+              :class="{ fill: isLiked }"
+              :name="`round-favorite_border`"
+              :size="24"
+              color="#454f63"
+              @click="toggleLike"
+          />
+
         </div>
       </div>
-      <span
-        class="play material-icons-round"
-        @click="player.replaceCurrentTrack(id)"
-        >play_arrow</span
-      >
+      <svg-icon
+          class="play"
+          :name="`round-play_arrow`"
+          :size="24"
+          color="#454f63"
+          @click="player.replaceCurrentTrack(id)"/>
+
+
     </div>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, onBeforeUnmount, onMounted, reactive, ref, toRefs} from "vue";
+import {
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+} from "vue";
 import {timeFormat} from "../utils/common.js";
 import {usePlayer} from "../store/player.js";
 import {getMP3, likeATrack} from "../apis/track.js";
 
 import ArtistFormat from "./artistFormat.vue";
-import createContextMenu from "./contextMenu.ts";
+import createContextMenu from "./contextMenu";
 
 export default defineComponent({
   name: "trackListItem",
@@ -84,9 +96,9 @@ export default defineComponent({
     item: {type: Object, required: true},
     type: {type: String, default: "song"}, // 类型 song/album
     height: {type: String, default: "64px"},
-    showImg: { type: Boolean, default: true },
-    canHover: { type: Boolean, default: true }, // 是否显示hover样式
-    index: { type: Number }, // 数字替代缩略图
+    showImg: {type: Boolean, default: true},
+    canHover: {type: Boolean, default: true}, // 是否显示hover样式
+    index: {type: Number}, // 数字替代缩略图
   },
   setup(props) {
     const data = reactive({
@@ -109,7 +121,6 @@ export default defineComponent({
     const refItem = ref(null);
 
     const calcWidth = (width: Number) => {
-
       if (width >= 800) {
         data.itemWidth = 0;
       } else if (width >= 620) {
@@ -133,9 +144,9 @@ export default defineComponent({
 
     const getImgUrl = () => {
       data.imgUrl =
-        track?.al?.picUrl ??
-        track?.album?.picUrl ??
-        `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
+          track?.al?.picUrl ??
+          track?.album?.picUrl ??
+          `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
     };
 
     const getDuration = () => {
@@ -195,11 +206,11 @@ export default defineComponent({
     // 切换收藏
     const toggleLike = async () => {
       if (data.isLiked) {
-        await likeATrack({ id: data.id, like: false });
+        await likeATrack({id: data.id, like: false});
         data.isLiked = false;
         player.likedSongIDs.splice(player.likedSongIDs.indexOf(data.id), 1);
       } else {
-        await likeATrack({ id: data.id, like: true });
+        await likeATrack({id: data.id, like: true});
         data.isLiked = true;
         player.likedSongIDs.push(data.id);
       }
@@ -272,12 +283,15 @@ export default defineComponent({
     }
   }
 }
+
 .hover:hover {
   background-color: var(--background-color-primary);
+
   .more {
     .duration {
       opacity: 0;
     }
+
     .like {
       display: block;
     }
@@ -295,6 +309,7 @@ export default defineComponent({
 .title {
   flex: 4 1 0;
   overflow: hidden;
+
   .container {
     display: flex;
     flex-direction: column;
@@ -321,12 +336,13 @@ export default defineComponent({
   position: relative;
   user-select: none;
 
-  @media screen and(max-width:$sm) {
+  @media screen and(max-width: $sm) {
     display: none;
   }
 
   .like {
     line-height: 0;
+
     &.normal {
       position: absolute;
       right: 0;

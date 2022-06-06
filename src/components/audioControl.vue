@@ -17,54 +17,89 @@
           <ArtistFormat :artistList="currentTrack.ar"></ArtistFormat>
         </div>
         <ul class="left-control">
+
+
           <li
-              :class="{ fill: isLiked }"
-              class="like material-icons-round font-size-20"
           >
-            favorite_border
+            <svg-icon
+                class="like"
+                :class="{ fill: isLiked}"
+                name="round-favorite_border"
+                :size="20"
+                color="#454f63"/>
           </li>
-          <li class="add-to-playlist material-icons-round font-size-20">
-            playlist_add
+          <li class="add-to-playlist ">
+            <svg-icon
+                name="round-playlist_add"
+                :size="20"
+                color="#454f63"/>
+
           </li>
           <li
-              class="show-lyric-page material-icons-round font-size-20"
+              class="show-lyric-page"
               @click="store.showLyric = true"
           >
-            open_in_full
+            <svg-icon
+                name="round-open_in_full"
+                :size="20"
+                color="#454f63"/>
           </li>
-          <li class="more material-icons-round font-size-20">more_horiz</li>
+          <li class="more">
+            <svg-icon
+                :name="`round-more_horiz`"
+                :size="20"
+                color="#454f63"/>
+
+          </li>
         </ul>
       </div>
       <ul class="control">
         <li
-            class="play-mode material-icons-round font-size-20"
+            class="play-mode"
             @click="player.changePlayMode()"
         >
-          {{ playMode }}
+          <svg-icon
+              :name="`round-${playMode}`"
+              :size="20"
+              color="#454f63"/>
         </li>
         <li
-            class="play-prev material-icons-round font-size-32"
+            class="play-prev "
             @click="player.playPrev()"
         >
-          skip_previous
+          <svg-icon
+              :name="`round-skip_previous`"
+              :size="32"
+              color="#454f63"/>
+
         </li>
         <li
-            class="play-or-pause material-icons-round font-size-38"
+            class="play-or-pause"
             @click="player.playOrPause()"
         >
-          {{ player.isPlaying ? "pause" : "play_arrow" }}
+          <svg-icon
+              :name="`round-${ player.isPlaying ? 'pause': 'play_arrow' }`"
+              :size="38"
+              color="#fff"/>
         </li>
         <li
-            class="play-next material-icons-round font-size-32"
+            class="play-next"
             @click="player.playNext()"
         >
-          skip_next
+          <svg-icon
+              :name="`round-skip_next`"
+              :size="32"
+              color="#454f63"/>
         </li>
         <li class="volume" ref="volumeBar">
           <span
-              class="material-icons-round font-size-20"
               @click="showVolume = !showVolume"
-          >{{ setVolumeIcon() }}</span
+          >
+            <svg-icon
+                :name="`round-${ setVolumeIcon() }`"
+                :size="20"
+                color="#454f63"/>
+          </span
           >
           <div class="volume-bar" v-show="showVolume">
             <vue-slider
@@ -84,8 +119,13 @@
         <p class="font-size-12" v-if="currentTrack?.fee === 1">
           当前歌曲可试听30秒
         </p>
-        <span class="show-trackList material-icons-round" @click="goCurrentList"
-        >queue_music</span
+        <span class="show-trackList" @click="goCurrentList"
+        >
+          <svg-icon
+              :name="`round-queue_music`"
+              :size="24"
+              color="#454f63"/>
+        </span
         >
       </div>
     </div>
@@ -111,11 +151,12 @@
 import {computed, defineComponent, reactive, ref, toRefs, watch} from "vue";
 import {timeFormat} from "../utils/common";
 import {usePlayer} from "../store/player";
+import {useRoute, useRouter} from "vue-router";
+import {useStore} from "../store";
 
 import ArtistFormat from "./artistFormat.vue";
 import VueSlider from "vue-slider-component";
-import {useRoute, useRouter} from "vue-router";
-import {useStore} from "../store";
+
 
 export default defineComponent({
   name: "audioControl",
@@ -132,6 +173,7 @@ export default defineComponent({
       rate: 0, // 播放进度 0-100
       showVolume: false,
     });
+
 
     const player = usePlayer();
     const store = useStore();
@@ -238,7 +280,7 @@ export default defineComponent({
       playMode,
     };
   },
-  components: {ArtistFormat, VueSlider},
+  components: {ArtistFormat, VueSlider,},
 });
 </script>
 <style lang="scss" scoped>
@@ -283,6 +325,7 @@ export default defineComponent({
         li {
           margin: 0 4px;
           padding: 4px;
+          line-height: 0;
           border-radius: $border-radius-default;
           background-color: var(--background-color-secondary);
         }

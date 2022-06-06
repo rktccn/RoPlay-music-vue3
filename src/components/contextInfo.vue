@@ -23,13 +23,25 @@
       <div class="gap"></div>
       <div class="control" v-if="type !== 'user'">
         <button class="play primary" @click="playSong(id)">
-          <span class="material-icons-round">play_arrow</span>
+          <svg-icon
+              :name="`round-play_arrow`"
+              :size="24"
+              color="#fff"/>
           播放
         </button>
-        <button class="like material-icons-round font-size-20">
-          favorite_border
+        <button class="like ">
+          <svg-icon
+              :name="`round-favorite_border`"
+              :size="20"
+              color="#454f63"/>
+
         </button>
-        <button class="more material-icons-round">more_horiz</button>
+        <button class="more ">
+          <svg-icon
+              :name="`round-more_horiz`"
+              :size="20"
+              color="#454f63"/>
+        </button>
       </div>
     </div>
   </div>

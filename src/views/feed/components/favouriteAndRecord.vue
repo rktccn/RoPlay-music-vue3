@@ -12,9 +12,12 @@
       </ul>
       <div class="text-style-title title" @click.self="goTo('FavouriteSongs')">
         我喜欢
-        <span class="material-icons-round icon" @click="play">
-          play_arrow
-        </span>
+        <svg-icon
+            :name="`round-play_arrow`"
+            :size="24"
+            color="#454f63"
+            @click="play"
+        />
       </div>
     </div>
 

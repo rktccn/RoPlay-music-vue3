@@ -16,9 +16,15 @@
             class="avator"
         />
         <div class="mask" :style="setStyle()" @click.self="goTo">
-          <span class="material-icons-round icon" @click.self="playSong(id)">
-            play_arrow
-          </span>
+          <svg-icon
+              class="icon"
+              :name="`round-play_arrow`"
+              :size="64"
+              color="#fff"
+              @click.self="playSong(id)"
+          />
+
+
         </div>
       </div>
       <div

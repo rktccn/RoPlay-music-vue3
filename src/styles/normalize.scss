@@ -9,10 +9,10 @@
 * {
   border: none;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
-    "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+  "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
 
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 
   @media screen and (max-width: $sm) {
@@ -95,6 +95,7 @@ input::-moz-placeholder {
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
+
 input::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }

@@ -36,7 +36,7 @@ export default {
       data.bannerList = res.banners;
     });
 
-    return { ...toRefs(data) };
+    return {...toRefs(data)};
   },
 };
 </script>
@@ -52,7 +52,7 @@ export default {
               class="banner-item"
               :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
           >
-            <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt="" />
+            <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt=""/>
             <!-- <div
               :style="`background-image: url(${item.imageUrl}?param=756y280) `"
             ></div> -->
@@ -62,15 +62,18 @@ export default {
     </div>
     <div class="category">
       <div
-        class="category-inner"
-        v-for="(item, index) in category"
-        :key="index"
+          class="category-inner"
+          v-for="(item, index) in category"
+          :key="index"
       >
         <router-link :to="item.path">
           <span class="category-item">
-            <span class="category-icon material-icons-round font-size-48">
-              {{ item.iconName }}
-            </span>
+                      <svg-icon
+                          :name="`round-${ item.iconName }`"
+                          :size="48"
+                          color="#454f63"
+                      />
+
             <em>{{ item.name }}</em>
           </span>
         </router-link>
@@ -92,6 +95,7 @@ export default {
     flex: 1;
     border-radius: $border-radius-default;
     overflow: hidden;
+
     .el-carousel {
       .banner-item {
         position: relative;

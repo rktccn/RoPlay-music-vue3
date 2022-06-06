@@ -11,42 +11,51 @@
               :src="`${
               player.personalFMCurrent?.album?.picUrl || ''
             }?param=240y240`"
-            alt="歌曲封面"
+              alt="歌曲封面"
           />
         </div>
         <div class="info">
           <span
-            class="name font-size-24 text-truncate"
-            v-if="personalFMCurrent !== {}"
-            >{{ personalFMCurrent.name }}</span
+              class="name font-size-24 text-truncate"
+              v-if="personalFMCurrent !== {}"
+          >{{ personalFMCurrent.name }}</span
           >
           <span
-            class="artist text-style-info text-truncate"
-            v-if="personalFMCurrent !== {}"
-            ><ArtistFormat
+              class="artist text-style-info text-truncate"
+              v-if="personalFMCurrent !== {}"
+          ><ArtistFormat
               :artistList="personalFMCurrent.artists"
-            ></ArtistFormat
+          ></ArtistFormat
           ></span>
           <div class="control">
-            <span
-              class="material-icons-round play-pause icon font-size-32"
-              @click="player.playPersonalFM()"
-            >
-              {{
-                player.isPlaying && player.isPersonalFM ? "pause" : "play_arrow"
-              }}
-            </span>
-            <span
-              class="material-icons-round next icon font-size-32"
-              @click="player.playNextPersonalFM()"
-              >skip_next</span
-            >
-            <span class="material-icons-round like icon font-size-24"
-              >favorite_border</span
-            >
-            <span class="material-icons-round dislike icon font-size-26"
-              >delete_outline</span
-            >
+
+            <svg-icon
+                class="play-pause icon"
+                :name="`round-${  player.isPlaying && player.isPersonalFM ? 'pause' : 'play_arrow'}`"
+                :size="32"
+                color="#454f63"
+                @click="player.playPersonalFM()"
+            />
+            <svg-icon
+                class="next icon"
+                :name="`round-skip_next`"
+                :size="32"
+                color="#454f63"
+                @click="player.playNextPersonalFM()"/>
+            <svg-icon
+                class="like icon"
+                :name="`round-favorite_border`"
+                :size="24"
+                color="#454f63"
+            />
+
+            <svg-icon
+                class="dislike icon"
+                :name="`round-delete_outline`"
+                :size="26"
+                color="#454f63"
+            />
+
           </div>
         </div>
       </li>
@@ -55,17 +64,22 @@
       <li class="daily-songs" v-if="dailySongs[0]">
         <div class="cover">
           <el-image
-            lazy
-            class="pic"
-            :src="`${dailySongs[0].al.picUrl}?param=480y480`"
-            alt=""
+              lazy
+              class="pic"
+              :src="`${dailySongs[0].al.picUrl}?param=480y480`"
+              alt=""
           />
           <div class="sign primary">
             <span>{{ getDate() }}</span>
           </div>
           <div class="mask" @click.self="goToDailySongs">
-            <span class="material-icons-round" @click="playDailySongs">
-              play_arrow
+            <span>
+            <svg-icon
+                :name="`round-play_arrow`"
+                :size="64"
+                color="#fff"
+                @click="playDailySongs"
+            />
             </span>
           </div>
         </div>
@@ -75,20 +89,20 @@
       <!-- 推荐歌单 -->
       <li class="playlist">
         <PlayListCard
-          type="playlist"
-          size="100%"
-          :showArtist="false"
-          :item="dailyPlaylist[0]"
-          v-if="dailyPlaylist[0]"
+            type="playlist"
+            size="100%"
+            :showArtist="false"
+            :item="dailyPlaylist[0]"
+            v-if="dailyPlaylist[0]"
         ></PlayListCard>
       </li>
       <li class="playlist">
         <PlayListCard
-          type="playlist"
-          size="100%"
-          :showArtist="false"
-          :item="dailyPlaylist[1]"
-          v-if="dailyPlaylist[1]"
+            type="playlist"
+            size="100%"
+            :showArtist="false"
+            :item="dailyPlaylist[1]"
+            v-if="dailyPlaylist[1]"
         ></PlayListCard>
       </li>
     </ul>
@@ -113,7 +127,7 @@ export default {
       dailyPlaylist: [], // 日推歌单
     });
     const player = usePlayer();
-    const { personalFMCurrent } = storeToRefs(player);
+    const {personalFMCurrent} = storeToRefs(player);
     const router = useRouter();
 
     // 获取数据
@@ -175,12 +189,14 @@ export default {
     grid-column: span 2;
   }
 }
+
 .personal_fm {
   display: flex;
   align-items: center;
   grid-column: span 5;
   margin-top: 0.6vw;
   margin-bottom: 0.6vw;
+
   .cover {
     position: relative;
     width: 35%;
@@ -188,6 +204,7 @@ export default {
     margin-left: 5%;
     border-radius: $border-radius-default;
     overflow: hidden;
+
     .pic {
       border-radius: $border-radius-default;
       width: 100%;
@@ -223,6 +240,7 @@ export default {
   overflow: hidden;
   grid-column: span 2;
   cursor: pointer;
+
   .cover {
     position: relative;
     width: 100%;
@@ -277,7 +295,6 @@ export default {
       z-index: 1;
 
       span {
-        font-size: 5rem;
         color: #fff;
         opacity: 0;
         transition: all 0.3s;
@@ -288,6 +305,7 @@ export default {
       .pic {
         transform: scale(1.1);
       }
+
       .mask {
         background-color: rgba(0, 0, 0, 0.2);
 

@@ -83,9 +83,11 @@ const list = reactive([
                 @click="store.setOverlay(false)"
             >
               <router-link :to="value.path" class="item-link">
-                <span class="material-icons-round" v-if="value.icon !== ''">
-                  {{ value.icon }}
-                </span>
+                <svg-icon
+                    v-if="value.icon !== ''"
+                    :name="`round-${ value.icon }`"
+                    :size="24"
+                    color="#454f63"/>
                 <div class="text-truncate">
                   {{ value.itemName }}
                 </div>

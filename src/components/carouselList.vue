@@ -3,17 +3,25 @@
     <div class="container">
       <span
           v-show="active !== 0"
-          class="material-icons-round font-size-24 btn-prev"
+          class="btn-prev"
           @click="changePage('prev')"
       >
-        chevron_left
+        <svg-icon
+            :name="`round-chevron_left`"
+            :size="24"
+            color="#454f63"/>
+
       </span>
       <span
           v-show="itemLength >= pageSize && !(itemLength <= active + pageSize)"
-          class="material-icons-round font-size-24 btn-next"
+          class=" btn-next"
           @click="changePage('next')"
       >
-        chevron_right
+                <svg-icon
+                    :name="`round-chevron_right`"
+                    :size="24"
+                    color="#454f63"/>
+
       </span>
 
       <div class="carousel" ref="carousel" :style="setRow()">
