@@ -4,11 +4,11 @@
       <div class="type">
         <!-- 切换歌手类型控件 -->
         <div
-            v-for="(type, index) in typeList"
-            :key="index"
-            @click="chageType(type.code)"
-            :class="{ primary: type.code === curType }"
-            class="tab-item text-style-title"
+          v-for="(type, index) in typeList"
+          :key="index"
+          @click="chageType(type.code)"
+          :class="{ primary: type.code === curType }"
+          class="tab-item text-style-title"
         >
           {{ type.name }}
         </div>
@@ -17,11 +17,11 @@
       <div class="area">
         <!-- 切换歌手地区控件 -->
         <div
-            v-for="(area, index) in areaList"
-            :key="index"
-            @click="chageArea(area.code)"
-            :class="{ primary: area.code === curArea }"
-            class="tab-item text-style-title"
+          v-for="(area, index) in areaList"
+          :key="index"
+          @click="chageArea(area.code)"
+          :class="{ primary: area.code === curArea }"
+          class="tab-item text-style-title"
         >
           {{ area.name }}
         </div>
@@ -39,9 +39,9 @@
   </div>
 </template>
 <script>
-import {onMounted, onUnmounted, reactive, toRefs} from "vue";
-import {getArtistList} from "../../apis/artist";
-import {isScrollBottom} from "../../utils/common";
+import { onMounted, onUnmounted, reactive, toRefs } from "vue";
+import { getArtistList } from "../../apis/artist";
+import { isScrollBottom } from "../../utils/common";
 
 import PlayListCard from "../../components/playListCard.vue";
 import CoverRow from "../../components/coverRow.vue";
@@ -111,14 +111,12 @@ export default {
       loading = false;
     };
 
-    let params = {type: 3, area: 7, limit: 50, offset: 0, initial: -1};
+    let params = { type: 3, area: 7, limit: 50, offset: 0, initial: -1 };
     getData(params);
 
     // 滚动到底部加载
     const loadMore = () => {
-
       if (isScrollBottom()) {
-
         loading = true;
         getArtistList({
           offset: data.artistList.length,
@@ -131,8 +129,8 @@ export default {
           if (res.artists.length < 50) {
             data.hasMore = false;
             document
-                .getElementsByClassName("el-main")[0]
-                .removeEventListener("scroll", loadMore);
+              .getElementsByClassName("el-main")[0]
+              .removeEventListener("scroll", loadMore);
           }
         });
       }
@@ -172,17 +170,17 @@ export default {
 
     onMounted(() => {
       document
-          .getElementsByClassName("el-main")[0]
-          .addEventListener("scroll", loadMore);
+        .getElementsByClassName("el-main")[0]
+        .addEventListener("scroll", loadMore);
     });
 
     onUnmounted(() => {
       document
-          .getElementsByClassName("el-main")[0]
-          .removeEventListener("scroll", loadMore);
+        .getElementsByClassName("el-main")[0]
+        .removeEventListener("scroll", loadMore);
     });
 
-    return {...toRefs(data), chageType, chageArea};
+    return { ...toRefs(data), chageType, chageArea };
   },
   components: {
     PlayListCard,
@@ -215,7 +213,7 @@ export default {
     }
 
     &:hover {
-      background-color: var(--primary-container-color);
+      background-color: var(--background-color-primary-container);
     }
 
     &.primary {

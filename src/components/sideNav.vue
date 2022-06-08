@@ -85,7 +85,7 @@ const list = reactive([
                   v-if="value.icon !== ''"
                   :name="`round-${value.icon}`"
                   :size="24"
-                  color="#454f63"
+                  color="currentColor"
                 />
                 <div class="text-truncate">
                   {{ value.itemName }}

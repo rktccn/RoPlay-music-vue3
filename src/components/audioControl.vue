@@ -19,11 +19,10 @@
         <ul class="left-control">
           <li>
             <svg-icon
-              class="like"
               :class="{ fill: isLiked }"
-              name="round-favorite_border"
+              :name="`round-${isLiked ? 'favorite' : 'favorite_border'}`"
               :size="20"
-              color="#454f63"
+              color="currentColor"
             />
           </li>
           <li class="add-to-playlist">
@@ -284,6 +283,10 @@ export default defineComponent({
           line-height: 0;
           border-radius: $border-radius-default;
           background-color: var(--background-color-secondary);
+
+          .fill {
+            color: #ea4c89;
+          }
         }
       }
     }

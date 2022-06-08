@@ -1,31 +1,32 @@
 <template>
   <div class="lyric-page" :style="setColor()">
     <ScrollTab
-        :active="active"
-        :tabIndex="showLyric"
-        class="scroll"
-        @selectChange="toggleLyric"
+      :active="active"
+      :tabIndex="showLyric"
+      class="scroll"
+      @selectChange="toggleLyric"
     >
       <ScrollTabCol class="item" :loading="loadingIndex === 0" :active="active">
         <div class="left-side">
-          <div
-              class="close material-icons-round font-size-48"
-              @click="store.showLyric = false"
-          >
-            close_fullscreen
+          <div class="close" @click="store.showLyric = false">
+            <svg-icon
+              :name="`round-close_fullscreen`"
+              :size="48"
+              color="currentColor"
+            />
           </div>
           <div class="inner" id="lyricPageInner">
             <!-- 歌曲封面 -->
             <div
-                :style="{
+              :style="{
                 backgroundImage: `url(
                     ${
                       player?.currentTrack?.al?.picUrl ||
                       'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
                     }?param=1024y1024)`,
               }"
-                class="cover"
-                @click="toggleLyric"
+              class="cover"
+              @click="toggleLyric"
             >
               <div></div>
               <!-- <el-image lazy
@@ -42,73 +43,86 @@
             <teleport to="body" v-if="active">
               <transition name="fade" mode="out-in">
                 <div
-                    v-if="showLyric === 0"
-                    :style="{ color: color.fontColor }"
-                    class="detail"
+                  v-if="showLyric === 0"
+                  :style="{ color: color.fontColor }"
+                  class="detail"
                 >
                   <div class="control">
-                    <span
-                        class="prev material-icons-round font-size-32"
-                        @click="player.playPrev()"
-                    >skip_previous</span
-                    >
-                    <span
-                        class="next material-icons-round font-size-32"
-                        @click="player.playNext()"
-                    >
-                      skip_next</span
-                    >
-                    <span
-                        v-if="isPIP !== -1"
-                        class="material-icons-round font-size-24"
-                        @click="togglePIP"
-                    >
-                      picture_in_picture_alt
-                    </span>
+                    <svg-icon
+                      class="prev"
+                      :name="`round-skip_previous`"
+                      size="32"
+                      color="currentColor"
+                      @click="player.playPrev()"
+                    />
+
+                    <svg-icon
+                      class="next"
+                      :name="`round-skip_next`"
+                      size="32"
+                      color="currentColor"
+                      @click="player.playNext()"
+                    />
+
+                    <svg-icon
+                      v-if="isPIP !== -1"
+                      :name="`round-picture_in_picture_alt`"
+                      size="24"
+                      color="currentColor"
+                      @click="togglePIP"
+                    />
+
                     <span class="gap"></span>
-                    <span
-                        class="play material-icons-round font-size-48"
-                        @click="player.playOrPause()"
-                    >
-                      {{ player.isPlaying ? "pause" : "play_arrow" }}</span
-                    >
-                    <span class="like material-icons-round font-size-24"
-                    >favorite_border</span
-                    >
+                    <svg-icon
+                      v-if="isPIP !== -1"
+                      :name="`round-${
+                        player.isPlaying ? 'pause' : 'play_arrow'
+                      }`"
+                      size="48"
+                      color="currentColor"
+                      @click="player.playOrPause()"
+                    />
+
+                    <svg-icon
+                      class="like"
+                      :name="`round-favorite_border`"
+                      size="24"
+                      color="currentColor"
+                    />
                   </div>
                   <div class="info" v-if="player.currentTrack">
                     <span class="title text-truncate">{{
-                        player.currentTrack.name
-                      }}</span>
+                      player.currentTrack.name
+                    }}</span>
                     <em>-</em>
                     <span class="artists"
-                    ><ArtistFormat
+                      ><ArtistFormat
                         fontSize="16px"
                         :artistList="player.currentTrack.ar"
                         @click="store.showLyric = false"
-                    ></ArtistFormat
+                      ></ArtistFormat
                     ></span>
                   </div>
 
                   <div class="progress">
                     <span class="cur-time text-style-info">{{
-                        timeFormat(player.progress)
-                      }}</span>
+                      timeFormat(player.progress)
+                    }}</span>
                     <VueSlider
-                        v-model="progress"
-                        :dot-style="{
+                      v-model="progress"
+                      :dot-style="{
                         boxShadow: `0px 0px 0px 2px ${color.fontColor}`,
                       }"
-                        :dragOnClick="true"
-                        :lazy="true"
-                        :max="player?.currentTrack?.dt"
-                        :min="0"
-                        :process-style="{ backgroundColor: color.fontColor }"
-                        :tooltip-formatter="timeFormat"
-                        class="progress-slider"
-                        dotSize="6"
-                        height="2px"
-                        tooltip="hover"
+                      :dragOnClick="true"
+                      :lazy="true"
+                      :max="player?.currentTrack?.dt"
+                      :min="0"
+                      :process-style="{ backgroundColor: color.fontColor }"
+                      :tooltip-formatter="timeFormat"
+                      class="progress-slider"
+                      dotSize="6"
+                      height="2px"
+                      tooltip="hover"
                     ></VueSlider>
                     <span class="total-time text-style-info">
                       {{ player.getCurrentDuration }}
@@ -119,68 +133,79 @@
             </teleport>
             <div class="detail" :style="{ color: color.fontColor }" v-else>
               <div class="control">
-                <span
-                    class="prev material-icons-round font-size-32"
-                    @click="player.playPrev()"
-                >skip_previous</span
-                >
-                <span
-                    class="next material-icons-round font-size-32"
-                    @click="player.playNext()"
-                >
-                  skip_next</span
-                >
-                <span
-                    v-if="isPIP !== -1"
-                    class="material-icons-round font-size-24"
-                    @click="togglePIP"
-                >
-                  picture_in_picture_alt
-                </span>
+                <svg-icon
+                  class="prev"
+                  :name="`round-skip_previous`"
+                  size="32"
+                  color="currentColor"
+                  @click="player.playPrev()"
+                />
+
+                <svg-icon
+                  class="next"
+                  :name="`round-skip_next`"
+                  size="32"
+                  color="currentColor"
+                  @click="player.playNext()"
+                />
+
+                <svg-icon
+                  v-if="isPIP !== -1"
+                  :name="`round-picture_in_picture_alt`"
+                  size="24"
+                  color="currentColor"
+                  @click="togglePIP"
+                />
+
                 <span class="gap"></span>
-                <span
-                    class="play material-icons-round font-size-48"
-                    @click="player.playOrPause()"
-                >
-                  {{ player.isPlaying ? "pause" : "play_arrow" }}</span
-                >
-                <span class="like material-icons-round font-size-24"
-                >favorite_border</span
-                >
+                <svg-icon
+                  v-if="isPIP !== -1"
+                  :name="`round-${player.isPlaying ? 'pause' : 'play_arrow'}`"
+                  size="48"
+                  color="currentColor"
+                  @click="player.playOrPause()"
+                />
+
+                <svg-icon
+                  class="like"
+                  :name="`round-favorite_border`"
+                  size="24"
+                  color="currentColor"
+                />
               </div>
               <div class="info" v-if="player.currentTrack">
                 <span class="title text-truncate">{{
-                    player.currentTrack.name
-                  }}</span>
+                  player.currentTrack.name
+                }}</span>
                 <em>-</em>
                 <span class="artists"
-                ><ArtistFormat
+                  ><ArtistFormat
                     fontSize="16px"
                     :artistList="player.currentTrack.ar"
                     @click="store.showLyric = false"
-                ></ArtistFormat
+                  ></ArtistFormat
                 ></span>
               </div>
 
               <div class="progress">
                 <span class="cur-time text-style-info">{{
-                    timeFormat(player.progress)
-                  }}</span>
+                  timeFormat(player.progress)
+                }}</span>
                 <VueSlider
-                    v-model="progress"
-                    :dot-style="{
+                  v-model="progress"
+                  :dot-style="{
                     boxShadow: `0px 0px 0px 2px ${color.fontColor}`,
                   }"
-                    :dragOnClick="true"
-                    :lazy="true"
-                    :max="player?.currentTrack?.dt"
-                    :min="0"
-                    :process-style="{ backgroundColor: color.fontColor }"
-                    :tooltip-formatter="timeFormat"
-                    class="progress-slider"
-                    dotSize="6"
-                    height="2px"
-                    tooltip="hover"
+                  :dragOnClick="true"
+                  :lazy="true"
+                  :max="player?.currentTrack?.dt"
+                  :min="0"
+                  :process-style="{ backgroundColor: color.fontColor }"
+                  :tooltip-formatter="timeFormat"
+                  class="progress-slider"
+                  dotSize="6"
+                  height="2px"
+                  tooltip="hover"
                 ></VueSlider>
                 <span class="total-time text-style-info">
                   {{ player.getCurrentDuration }}
@@ -195,38 +220,46 @@
         <div></div>
         <ul class="list right-side" v-if="lyricList" ref="list">
           <li
-              v-for="(lyric, index) in lyricList"
-              :key="index"
-              :class="{ active: curIndex === index }"
-              class="lyric-item"
-              @click="clickLyric(index)"
+            v-for="(lyric, index) in lyricList"
+            :key="index"
+            :class="{ active: curIndex === index }"
+            class="lyric-item"
+            @click="clickLyric(index)"
           >
             {{ lyric.content }}
           </li>
         </ul>
         <span class="list right-side" v-if="!lyricList"
-        ><em class="lyric-item active">没有音乐</em>
+          ><em class="lyric-item active">没有音乐</em>
         </span></ScrollTabCol
       >
     </ScrollTab>
     <PipLyric
-        v-if="lyricList && isPIP !== -1"
-        :color="color || {}"
-        :currentLyric="lyricList[curIndex]?.content || ''"
-        :isPIP="isPIP === 1"
-        :nextLyric="lyricList[curIndex + 1]?.content || ''"
+      v-if="lyricList && isPIP !== -1"
+      :color="color || {}"
+      :currentLyric="lyricList[curIndex]?.content || ''"
+      :isPIP="isPIP === 1"
+      :nextLyric="lyricList[curIndex + 1]?.content || ''"
     ></PipLyric>
   </div>
 </template>
 <script>
-import {computed, nextTick, onMounted, reactive, ref, toRefs, watch,} from "vue";
-import {usePlayer} from "../store/player";
-import {getLyric} from "../apis/track";
-import {initLyric} from "../utils/lyric";
-import {timeFormat} from "../utils/common";
+import {
+  computed,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+} from "vue";
+import { usePlayer } from "../store/player";
+import { getLyric } from "../apis/track";
+import { initLyric } from "../utils/lyric";
+import { timeFormat } from "../utils/common";
 import analyze from "rgbaster";
 import tinyColor from "tinycolor2";
-import {useStore} from "../store";
+import { useStore } from "../store";
 
 import ArtistFormat from "../components/artistFormat.vue";
 import VueSlider from "vue-slider-component";
@@ -311,7 +344,7 @@ export default {
     const clickLyric = (index) => {
       data.curIndex = index;
       let time =
-          data.lyricList[index].time < 0 ? 0 : data.lyricList[index].time;
+        data.lyricList[index].time < 0 ? 0 : data.lyricList[index].time;
       player.setProgress(time);
     };
 
@@ -359,7 +392,6 @@ export default {
         data.isPIP = 0;
       } else {
         data.isPIP = 1;
-
       }
     };
 
@@ -377,42 +409,42 @@ export default {
 
     // 监听播放进度，设置歌词curIndex
     watch(
-        () => player.getProgress,
-        (progress, oldProgress) => {
-          if (!data.lyricList) return;
-          if (progress < oldProgress || progress - oldProgress > 699) {
-            // 当前时间小于上一次时间或者大于0.7秒
-            getIndex(progress);
-            return;
-          }
-          autoScroll(progress);
+      () => player.getProgress,
+      (progress, oldProgress) => {
+        if (!data.lyricList) return;
+        if (progress < oldProgress || progress - oldProgress > 699) {
+          // 当前时间小于上一次时间或者大于0.7秒
+          getIndex(progress);
+          return;
         }
+        autoScroll(progress);
+      }
     );
 
     // 监听歌曲改变,重新获取数据
     watch(
-        () => player.currentTrack,
-        (val) => {
-          data.curIndex = 0;
-          getData(val.id);
-          getColor();
-        }
+      () => player.currentTrack,
+      (val) => {
+        data.curIndex = 0;
+        getData(val.id);
+        getColor();
+      }
     );
 
     // 切换到歌词页面时自动滚动到当前歌词(移动端)
     watch(
-        () => data.showLyric,
-        () => {
-          setScroll();
-        }
+      () => data.showLyric,
+      () => {
+        setScroll();
+      }
     );
 
     // 监听歌词滚动,设置滚动样式
     watch(
-        () => data.curIndex,
-        () => {
-          setScroll();
-        }
+      () => data.curIndex,
+      () => {
+        setScroll();
+      }
     );
 
     onMounted(() => {
@@ -506,7 +538,8 @@ export default {
       cursor: pointer;
       z-index: 2;
       border-radius: $border-radius-default;
-      transition: all $transition-time-default cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: all $transition-time-default
+        cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
       &:hover {
         backdrop-filter: brightness(1.2);
@@ -574,7 +607,8 @@ export default {
     width: 80%;
     padding: 8px 12px;
     border-radius: $border-radius-default;
-    transition: all $transition-time-default cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all $transition-time-default
+      cubic-bezier(0.25, 0.46, 0.45, 0.94);
     font-weight: bold;
     opacity: 0.48;
     cursor: pointer;

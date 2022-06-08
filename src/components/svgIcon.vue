@@ -31,7 +31,7 @@ export default defineComponent({
     },
     color: {
       type: String,
-      default: "#333",
+      default: "#454f63",
     },
   },
   setup(props) {
@@ -45,5 +45,6 @@ export default defineComponent({
 .svg-icon {
   cursor: pointer;
   vertical-align: middle;
+  color: inherit;
 }
 </style>

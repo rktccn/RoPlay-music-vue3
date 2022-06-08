@@ -4,35 +4,36 @@
     <div class="tab">
       <ul class="tab-control">
         <li
-            v-for="(item, index) in tabList"
-            :key="index"
-            :class="{ primary: tab === item }"
-            class="tab-item text-style-title"
-            @click="changeTab(item)"
+          v-for="(item, index) in tabList"
+          :key="index"
+          :class="{ primary: tab === item }"
+          class="tab-item text-style-title"
+          @click="changeTab(item)"
         >
           {{ item }}
         </li>
 
         <li
-            v-if="!tabList.includes(tab)"
-            class="tab-item text-style-title primary"
-            @click="changeTab(item)"
+          v-if="!tabList.includes(tab)"
+          class="tab-item text-style-title primary"
+          @click="changeTab(item)"
         >
           {{ tab }}
         </li>
 
-        <li
-            class="tab-item text-style-title material-icons-round"
-            @click="showTab(true)"
-        >
-          more_horiz
+        <li class="tab-item text-style-title" @click="showTab(true)">
+          <svg-icon
+            class="icon"
+            :name="`round-more_horiz`"
+            color="currentColor"
+          />
         </li>
       </ul>
       <transition name="drop-up" type="out-in">
         <div class="all-tab" v-if="allTabList && showAllTab">
           <span
-              class="close font-size-48 material-icons-outlined"
-              @click="showTab()"
+            class="close font-size-48 material-icons-outlined"
+            @click="showTab()"
           >
             close
           </span>
@@ -42,10 +43,10 @@
             </li>
             <ul class="cat-list">
               <li
-                  v-for="(cat, j) in item.list"
-                  :key="j"
-                  class="cat"
-                  @click="
+                v-for="(cat, j) in item.list"
+                :key="j"
+                class="cat"
+                @click="
                   changeTab(cat);
                   showTab();
                 "
@@ -69,9 +70,9 @@
   </div>
 </template>
 <script>
-import {onMounted, onUnmounted, reactive, toRefs} from "vue";
-import {getPlaylistCatlist, topPlaylist} from "../../apis/playlist";
-import {isScrollBottom} from "../../utils/common";
+import { onMounted, onUnmounted, reactive, toRefs } from "vue";
+import { getPlaylistCatlist, topPlaylist } from "../../apis/playlist";
+import { isScrollBottom } from "../../utils/common";
 
 import PlaylistCard from "../../components/playListCard.vue";
 import CoverRow from "../../components/coverRow.vue";
@@ -110,12 +111,11 @@ export default {
     });
     let loading = false;
 
-    topPlaylist({limit: 50}).then((res) => {
+    topPlaylist({ limit: 50 }).then((res) => {
       data.playlists = res.playlists;
     });
 
     const loadMore = () => {
-
       if (isScrollBottom()) {
         loading = true;
         topPlaylist({
@@ -127,11 +127,10 @@ export default {
           loading = false;
 
           if (res.playlists.length < 50) {
-
             data.hasMore = false;
             document
-                .getElementsByClassName("el-main")[0]
-                .removeEventListener("scroll", loadMore);
+              .getElementsByClassName("el-main")[0]
+              .removeEventListener("scroll", loadMore);
           }
         });
       }
@@ -151,9 +150,9 @@ export default {
       data.hasMore = true;
       loading = false;
       document
-          .getElementsByClassName("el-main")[0]
-          .addEventListener("scroll", loadMore);
-      topPlaylist({limit: 50, cat: tab}).then((res) => {
+        .getElementsByClassName("el-main")[0]
+        .addEventListener("scroll", loadMore);
+      topPlaylist({ limit: 50, cat: tab }).then((res) => {
         data.playlists = res.playlists;
       });
     };
@@ -165,17 +164,17 @@ export default {
 
     onMounted(() => {
       document
-          .getElementsByClassName("el-main")[0]
-          .addEventListener("scroll", loadMore);
+        .getElementsByClassName("el-main")[0]
+        .addEventListener("scroll", loadMore);
     });
 
     onUnmounted(() => {
       document
-          .getElementsByClassName("el-main")[0]
-          .removeEventListener("scroll", loadMore);
+        .getElementsByClassName("el-main")[0]
+        .removeEventListener("scroll", loadMore);
     });
 
-    return {...toRefs(data), loading, changeTab, showTab};
+    return { ...toRefs(data), loading, changeTab, showTab };
   },
   components: {
     PlaylistCard,
@@ -210,7 +209,7 @@ export default {
       }
 
       &:hover {
-        background-color: var(--primary-container-color);
+        background-color: var(--background-color-primary-container);
       }
 
       &.primary {

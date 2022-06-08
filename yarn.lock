@@ -109,6 +109,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@material-design-icons/svg@^0.11.1":
+  "integrity" "sha512-x6cd/JnnRDj3EYv0mzG+cfGVLKKaaGXtQUsYBxvPSPjjV1N33ubSCIVPC61+IZiKA3X3VLULNCSWYPqNF+tdeg=="
+  "resolved" "https://registry.npmjs.org/@material-design-icons/svg/-/svg-0.11.1.tgz"
+  "version" "0.11.1"
+
 "@nodelib/fs.scandir@2.1.5":
   "integrity" "sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g=="
   "resolved" "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -2467,11 +2472,6 @@
   "version" "1.0.0"
   dependencies:
     "object-visit" "^1.0.0"
-
-"material-icons@^1.11.0":
-  "integrity" "sha512-t2PNjdF36nFzt82domIwhBm3JCfuEo2EMTiJzb5K1cUR3Sg1aEtcZrkecLHtB26eohtgqvndewL8Zy4cu9DIfg=="
-  "resolved" "https://registry.npmjs.org/material-icons/-/material-icons-1.11.0.tgz"
-  "version" "1.11.0"
 
 "mdn-data@2.0.14":
   "integrity" "sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow=="

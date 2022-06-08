@@ -2,19 +2,14 @@
   <div class="login">
     <div class="logo">
       <div class="name">
-        Ro<br/>
+        Ro<br />
         Play
       </div>
 
-      <svg-icon
-          class="gap"
-          :name="`round-close`"
-          :size="64"
-          color="#454f63"
-      />
+      <svg-icon class="gap" :name="`round-close`" :size="64" color="#454f63" />
 
       <div class="neteast">
-        <img class="pic" src="../../images/netease_music_icon.png" alt=""/>
+        <img class="pic" src="../../images/netease_music_icon.png" alt="" />
       </div>
     </div>
 
@@ -23,28 +18,28 @@
       <form class="phone" v-if="logMode === 'phone'">
         <div>
           <input
-              type="tel"
-              name="phone"
-              id="phone"
-              autocomplete="off"
-              placeholder="请输入手机号"
+            type="tel"
+            name="phone"
+            id="phone"
+            autocomplete="off"
+            placeholder="请输入手机号"
           />
         </div>
         <div class="captcha" id="captcha">
           <input
-              type="number"
-              name="captcha"
-              id=""
-              autocomplete="off"
-              placeholder="请输入验证码"
-              v-model="captcha"
-              @keydown.enter="login"
+            type="number"
+            name="captcha"
+            id=""
+            autocomplete="off"
+            placeholder="请输入验证码"
+            v-model="captcha"
+            @keydown.enter="login"
           />
           <span
-              class="send-sms primary"
-              :class="isSending ? 'container-primary' : 'primary'"
-              @click="sendSms"
-          >发送验证码</span
+            class="send-sms primary"
+            :class="isSending ? 'container-primary' : 'primary'"
+            @click="sendSms"
+            >发送验证码</span
           >
         </div>
       </form>
@@ -53,21 +48,21 @@
       <form class="password-form" v-if="logMode === 'password'">
         <div>
           <input
-              type="text"
-              name="account"
-              id="account"
-              autocomplete="off"
-              placeholder="请输入手机号或邮箱"
+            type="text"
+            name="account"
+            id="account"
+            autocomplete="off"
+            placeholder="请输入手机号或邮箱"
           />
         </div>
         <div>
           <input
-              type="password"
-              name="password"
-              id="password"
-              autocomplete="off"
-              placeholder="请输入密码"
-              @keydown.enter="login"
+            type="password"
+            name="password"
+            id="password"
+            autocomplete="off"
+            placeholder="请输入密码"
+            @keydown.enter="login"
           />
         </div>
       </form>
@@ -75,19 +70,19 @@
       <!-- 二维码登陆 -->
       <div class="qrcode" v-if="logMode === 'qr'">
         <div class="qrcode-container block" v-loading="qr.pic === null">
-          <el-image lazy class="pic" :src="qr.pic" alt=""/>
+          <el-image lazy class="pic" :src="qr.pic" alt="" />
           <!-- 提示浮层 -->
           <div
-              class="qrcode-tip"
-              :class="{ click: qr.tip.text === '二维码已过期' }"
-              v-if="qr.tip.text !== null"
-              @click="refreshQrCode"
+            class="qrcode-tip"
+            :class="{ click: qr.tip.text === '二维码已过期' }"
+            v-if="qr.tip.text !== null"
+            @click="refreshQrCode"
           >
             <svg-icon
-                class="icon"
-                :name="`round-${ qr.tip.icon }`"
-                :size="48"
-                color="#454f63"
+              class="icon"
+              :name="`round-${qr.tip.icon}`"
+              :size="48"
+              color="#454f63"
             />
             {{ qr.tip.text }}
           </div>
@@ -97,11 +92,12 @@
 
       <!-- 登陆按钮 -->
       <div
-          class="login-button primary"
-          v-if="logMode !== 'user' && logMode !== 'qr'"
-          @click="login"
+        class="login-button primary"
+        v-if="logMode !== 'user' && logMode !== 'qr'"
+        @click="login"
       >
-        <span class="material-icons-round icon"> login </span>
+        <svg-icon class="icon" :name="`round-login`" color="#fff" />
+
         登陆
       </div>
       <div class="reg-button block" v-if="logMode !== 'user'">创建账户</div>
@@ -109,47 +105,49 @@
       <!-- 搜索用户名 -->
       <form class="search-user" v-if="logMode === 'user'">
         <input
-            type="text"
-            name="search-user"
-            id="search-user"
-            autocomplete="off"
-            placeholder="请输入用户名"
-            v-model="search.user"
+          type="text"
+          name="search-user"
+          id="search-user"
+          autocomplete="off"
+          placeholder="请输入用户名"
+          v-model="search.user"
         />
         <div class="search-user-result">
           <div
-              class="search-user-item block"
-              v-for="(user, index) in search.userList"
-              :key="index"
-              @click="
+            class="search-user-item block"
+            v-for="(user, index) in search.userList"
+            :key="index"
+            @click="
               search.selectUserIndex === index
                 ? (search.selectUserIndex = -1)
                 : (search.selectUserIndex = index)
             "
-              :class="{ primary: search.selectUserIndex === index }"
+            :class="{ primary: search.selectUserIndex === index }"
           >
             <div class="avatar">
               <el-image
-                  lazy
-                  class="pic"
-                  :src="`${user.avatarUrl}?param=48y48`"
-                  alt=""
+                lazy
+                class="pic"
+                :src="`${user.avatarUrl}?param=48y48`"
+                alt=""
               />
             </div>
             <span class="name text-truncate">{{ user.nickname }}</span>
 
-
-
-            <span class="material-icons-round icon">
-              {{ search.selectUserIndex === index ? "close" : "check" }}
-            </span>
+            <svg-icon
+              class="icon"
+              :name="`round-${
+                search.selectUserIndex === index ? 'close' : 'check'
+              }`"
+              color="currentColor"
+            />
           </div>
         </div>
 
         <div
-            class="login-button primary"
-            :class="{ unable: search.selectUserIndex === -1 }"
-            @click="getUserPlaylistFn"
+          class="login-button primary"
+          :class="{ unable: search.selectUserIndex === -1 }"
+          @click="getUserPlaylistFn"
         >
           确定
         </div>
@@ -159,46 +157,74 @@
     <!-- 登陆模式切换 -->
     <ul class="login-mode">
       <li
-          class="item block"
-          :class="{ active: logMode === 'phone' }"
-          @click="logMode = 'phone'"
+        class="item block"
+        :class="{ active: logMode === 'phone' }"
+        @click="logMode = 'phone'"
       >
         <div class="inner">
-          <span class="material-icons-round icon">textsms </span>验证码登陆
+          <svg-icon
+            class="icon"
+            :name="`round-textsms`"
+            size="84"
+            color="currentColor"
+          />
+
+          验证码登陆
         </div>
       </li>
       <li
-          class="item block"
-          :class="{ active: logMode === 'password' }"
-          @click="logMode = 'password'"
+        class="item block"
+        :class="{ active: logMode === 'password' }"
+        @click="logMode = 'password'"
       >
         <div class="inner">
-          <span class="material-icons-round icon"> password </span>密码登陆
+          <svg-icon
+            class="icon"
+            :name="`round-password`"
+            size="84"
+            color="currentColor"
+          />
+
+          密码登陆
         </div>
       </li>
       <li
-          class="item block"
-          :class="{ active: logMode === 'qr' }"
-          @click="logMode = 'qr'"
+        class="item block"
+        :class="{ active: logMode === 'qr' }"
+        @click="logMode = 'qr'"
       >
         <div class="inner">
-          <span class="material-icons-round icon"> qr_code </span>二维码登陆
+          <svg-icon
+            class="icon"
+            :name="`round-qr_code`"
+            size="84"
+            color="currentColor"
+          />
+
+          二维码登陆
         </div>
       </li>
       <li
-          class="item block"
-          :class="{ active: logMode === 'user' }"
-          @click="logMode = 'user'"
+        class="item block"
+        :class="{ active: logMode === 'user' }"
+        @click="logMode = 'user'"
       >
         <div class="inner">
-          <span class="material-icons-round icon"> person </span>搜索用户名
+          <svg-icon
+            class="icon"
+            :name="`round-person`"
+            size="84"
+            color="currentColor"
+          />
+
+          搜索用户名
         </div>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import {reactive, toRefs, watch} from "vue";
+import { reactive, toRefs, watch } from "vue";
 import md5 from "crypto-js/md5";
 import {
   loginQrCodeCheck,
@@ -209,10 +235,10 @@ import {
   sendCaptcha,
   verifyCaptcha,
 } from "../../apis/login";
-import {search} from "../../apis/others";
-import {userAccount} from "../../apis/user";
-import {useStore} from "../../store";
-import {useRoute, useRouter} from "vue-router";
+import { search } from "../../apis/others";
+import { userAccount } from "../../apis/user";
+import { useStore } from "../../store";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "Login",
@@ -245,7 +271,7 @@ export default {
     // 判断是否为邮箱
     const isEmail = (str) => {
       const reg =
-          /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
+        /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/;
       return reg.test(str);
     };
 
@@ -276,12 +302,12 @@ export default {
       const timer = setInterval(() => {
         time--;
         document.getElementsByClassName("send-sms")[0].innerText =
-            "重新发送(" + time + "s)";
+          "重新发送(" + time + "s)";
         if (time === 0) {
           clearInterval(timer);
           data.isSending = false;
           document.getElementsByClassName("send-sms")[0].innerText =
-              "发送验证码";
+            "发送验证码";
         }
       }, 1000);
 
@@ -312,9 +338,9 @@ export default {
       }
 
       // 验证验证码
-      verifyCaptcha({phone, captcha: data.captcha}).then((res) => {
+      verifyCaptcha({ phone, captcha: data.captcha }).then((res) => {
         if (res.code === 200) {
-          loginWithPhone({phone, captcha: data.captcha}).then((res) => {
+          loginWithPhone({ phone, captcha: data.captcha }).then((res) => {
             if (res.code === 200) {
               initUserInfo(res);
             } else {
@@ -341,7 +367,7 @@ export default {
     const sendCaptchaFn = () => {
       const phone = document.getElementById("phone").value;
 
-      sendCaptcha({phone}).then((res) => {
+      sendCaptcha({ phone }).then((res) => {
         if (res.code === 200) {
           // 发送成功
           ElNotification({
@@ -383,53 +409,53 @@ export default {
       password = md5(password).toString();
       if (isPhone(account)) {
         // 手机号登陆
-        loginWithPhone({phone: account, md5_password: password}).then(
-            (res) => {
-              console.log(res);
-              if (res.code === 200) {
-                // 登陆成功
-                initUserInfo(res);
-              } else if (res.code === 501) {
-                addTip({
-                  parent: document.getElementById("account").parentElement,
-                  state: "error",
-                  text: "账号不存在",
-                  icon: "error",
-                });
-              } else if (res.code === 502) {
-                addTip({
-                  parent: document.getElementById("password").parentElement,
-                  state: "error",
-                  text: "密码错误",
-                  icon: "error",
-                });
-              }
+        loginWithPhone({ phone: account, md5_password: password }).then(
+          (res) => {
+            console.log(res);
+            if (res.code === 200) {
+              // 登陆成功
+              initUserInfo(res);
+            } else if (res.code === 501) {
+              addTip({
+                parent: document.getElementById("account").parentElement,
+                state: "error",
+                text: "账号不存在",
+                icon: "error",
+              });
+            } else if (res.code === 502) {
+              addTip({
+                parent: document.getElementById("password").parentElement,
+                state: "error",
+                text: "密码错误",
+                icon: "error",
+              });
             }
+          }
         );
       } else if (isEmail(account)) {
         // 邮箱登陆
-        loginWithEmail({email: account, md5_password: password}).then(
-            (res) => {
-              if (res.code === 200) {
-                // 登陆成功
-                initUserInfo(res);
-                // window.location.href = "/";
-              } else if (res.code === 501) {
-                addTip({
-                  parent: document.getElementById("account").parentElement,
-                  state: "error",
-                  text: "账号不存在",
-                  icon: "error",
-                });
-              } else if (res.code === 502) {
-                addTip({
-                  parent: document.getElementById("password").parentElement,
-                  state: "error",
-                  text: "密码错误",
-                  icon: "error",
-                });
-              }
+        loginWithEmail({ email: account, md5_password: password }).then(
+          (res) => {
+            if (res.code === 200) {
+              // 登陆成功
+              initUserInfo(res);
+              // window.location.href = "/";
+            } else if (res.code === 501) {
+              addTip({
+                parent: document.getElementById("account").parentElement,
+                state: "error",
+                text: "账号不存在",
+                icon: "error",
+              });
+            } else if (res.code === 502) {
+              addTip({
+                parent: document.getElementById("password").parentElement,
+                state: "error",
+                text: "密码错误",
+                icon: "error",
+              });
             }
+          }
         );
       }
     };
@@ -442,10 +468,10 @@ export default {
       loginQrCodeKey().then((res) => {
         data.qr.key = res.data.unikey;
         console.log(data.qr.key);
-        loginQrCodeCreate({key: res.data.unikey, qrimg: true}).then(
-            (res2) => {
-              data.qr.pic = res2.data.qrimg;
-            }
+        loginQrCodeCreate({ key: res.data.unikey, qrimg: true }).then(
+          (res2) => {
+            data.qr.pic = res2.data.qrimg;
+          }
         );
       });
     };
@@ -543,7 +569,8 @@ export default {
 
       const tip = document.createElement("div");
       tip.classList.add("tip");
-      tip.innerHTML = `<span class="material-icons-round icon"> ${param.icon} </span> ${param.text}`;
+      tip.innerHTML = `${param.text}`;
+
       tip.classList.add(param.state);
       param.parent.appendChild(tip);
       setTimeout(() => {
@@ -582,25 +609,25 @@ export default {
     };
 
     watch(
-        () => data.logMode,
-        async (val) => {
-          if (val === "qr") {
-            await checkQrCode();
-            createQrCode();
-          }
+      () => data.logMode,
+      async (val) => {
+        if (val === "qr") {
+          await checkQrCode();
+          createQrCode();
         }
+      }
     );
 
     watch(
-        () => data.search.user,
-        (val) => {
-          if (val === "") {
-            data.search.userList = [];
-            data.search.selectUserIndex = -1;
-          } else {
-            searchUser();
-          }
+      () => data.search.user,
+      (val) => {
+        if (val === "") {
+          data.search.userList = [];
+          data.search.selectUserIndex = -1;
+        } else {
+          searchUser();
         }
+      }
     );
 
     return {
@@ -691,13 +718,13 @@ export default {
 
       display: flex;
       flex-direction: column;
+      align-items: center;
 
       text-align: center;
       font-size: 16px;
       font-weight: bolder;
 
       .icon {
-        font-size: 5.25rem;
         margin-bottom: 0.5rem;
       }
     }
@@ -721,6 +748,10 @@ export default {
     &.active {
       background-color: var(--main-color);
       color: #fff;
+
+      .icon {
+        color: inherit;
+      }
     }
   }
 }
@@ -835,6 +866,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       justify-content: center;
       background-color: var(--background-color-primary);
       font-size: 24px;
@@ -900,12 +932,6 @@ export default {
         font-size: 1.25rem;
         font-weight: bolder;
         margin-left: 16px;
-      }
-
-
-      .icon {
-        flex-basis: 0;
-        font-weight: bolder;
       }
     }
   }

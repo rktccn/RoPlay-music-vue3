@@ -7,6 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-design-icons/svg": "^0.11.1",
     "axios": "^0.25.0",
     "crypto-js": "^4.1.1",
     "element-plus": "^2.2.2",
@@ -15,7 +16,6 @@
     "js-cookie": "^3.0.1",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
-    "material-icons": "^1.11.0",
     "needle": "^3.1.0",
     "pinia": "^2.0.13",
     "pinia-plugin-persist": "^1.0.0",

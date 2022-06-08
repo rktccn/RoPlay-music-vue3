@@ -2,14 +2,13 @@
 <template>
   <div class="play-now section">
     <h4 class="text-style-title" v-if="!player.isPersonalFM">当前播放</h4>
-    <TrackList
-        class="play-now-track primary"
-        :tracks="[player.currentTrack]"
-        v-if="player.currentTrack !== {} && !player.isPersonalFM"
-        :canHover="false"
-        :key="currentIndex + tracks.length"
-        scrollerSelector=".el-main"
-    ></TrackList>
+    <TrackListItem
+      class="play-now-track primary"
+      v-if="currentTrack !== {}"
+      :item="currentTrack"
+      :canHover="false"
+      :key="currentTrack.id"
+    />
   </div>
 
   <div class="current-list section">
@@ -28,12 +27,13 @@
 </template>
 <script>
 import TrackList from "../components/trackList.vue";
+import TrackListItem from "../components/trackListItem.vue";
 
-import {usePlayer} from "../store/player";
-import {onMounted, onUnmounted, reactive, toRefs, watch} from "vue";
-import {storeToRefs} from "pinia";
-import {getTrackDetail} from "../apis/track";
-import {isScrollBottom} from "../utils/common";
+import { usePlayer } from "../store/player";
+import { onMounted, onUnmounted, reactive, toRefs, watch, computed } from "vue";
+import { storeToRefs } from "pinia";
+import { getTrackDetail } from "../apis/track";
+import { isScrollBottom } from "../utils/common";
 
 export default {
   name: "currentList",
@@ -45,6 +45,8 @@ export default {
       hasMore: true,
     });
 
+    const currentTrack = computed(() => player.currentTrack);
+
     const { trackList, currentIndex } = storeToRefs(player);
     let loading = false;
 
@@ -52,7 +54,6 @@ export default {
       if (val.length !== 0) {
         getTrackDetail(val).then((res) => {
           data.tracks = data.tracks.concat(res.songs);
-          console.log(res.songs);
           if (res.songs.length < 50) {
             data.hasMore = false;
             document
@@ -100,9 +101,9 @@ export default {
       }
     );
 
-    return { ...toRefs(data), player, currentIndex };
+    return { ...toRefs(data), player, currentIndex, currentTrack };
   },
-  components: { TrackList },
+  components: { TrackList, TrackListItem },
 };
 </script>
 <style lang="scss" scoped>

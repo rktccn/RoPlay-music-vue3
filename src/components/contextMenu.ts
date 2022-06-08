@@ -1,13 +1,12 @@
 import contextMenu from "./contextMenu.vue";
-import {createApp} from "vue";
-import {usePlayer} from "../store/player";
+import { createApp } from "vue";
+import { usePlayer } from "../store/player";
 
 const ELEMENT = document.getElementsByClassName("el-main")[0];
-let ELEMENT_TOP = ELEMENT.scrollTop;
 
-const preventScroll = () => {
+const preventScroll = (event) => {
     event.preventDefault();
-    ELEMENT.scrollTop = ELEMENT_TOP
+    event.stopPropagation();
 }
 
 
@@ -16,10 +15,9 @@ const init = () => {
     document.oncontextmenu = function () {
         return false;
     };
-    ELEMENT_TOP = ELEMENT.scrollTop;
 
     // 禁用滚动事件
-    ELEMENT.addEventListener("scroll", preventScroll);
+    ELEMENT.addEventListener("wheel", preventScroll);
 };
 
 const createContextMenu = (mousePosition, id) => {
@@ -35,7 +33,7 @@ const createContextMenu = (mousePosition, id) => {
         };
         contextMenuInstance.unmount();
         document.body.removeChild(parentNode);
-        ELEMENT.removeEventListener("scroll", preventScroll);
+        ELEMENT.removeEventListener("wheel", preventScroll);
     }
 
     const contextMenuInstance = createApp(contextMenu, {
@@ -46,7 +44,7 @@ const createContextMenu = (mousePosition, id) => {
             unmount();
         },
     });
-// 挂载组件
+    // 挂载组件
     document.body.appendChild(parentNode);
     contextMenuInstance.mount(parentNode);
 }

@@ -1,40 +1,40 @@
 <template>
   <div
-    :class="[
+      :class="[
       { video: type === 'video' || type === 'mv' },
       { 'hover-show-dec': !showDec },
     ]"
-    :style="setWidth()"
-    class="card"
-    @mouseenter="isDecShow = true"
-    @mouseleave="isDecShow = showDec"
+      :style="setWidth()"
+      class="card"
+      @mouseenter="isDecShow = true"
+      @mouseleave="isDecShow = showDec"
   >
     <div class="card-inner">
       <div class="cover" :class="{ video: type === 'video' || type === 'mv' }">
         <div
-          :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
-          class="avator"
+            :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
+            class="avator"
         />
         <div class="mask" :style="setStyle()" @click.self="goTo">
           <svg-icon
-            class="icon"
-            :name="`round-play_arrow`"
-            :size="64"
-            color="#fff"
-            @click.self="playSong(id)"
+              class="icon"
+              :name="`round-play_arrow`"
+              :size="64"
+              color="#fff"
+              @click.self="playSong(id)"
           />
         </div>
       </div>
       <div
-        v-show="showDec"
-        :class="{ showDec: !showDec }"
-        :style="type === 'artist' ? { textAlign: 'center' } : ''"
-        class="dec"
+          v-show="showDec"
+          :class="{ showDec: !showDec }"
+          :style="type === 'artist' ? { textAlign: 'center' } : ''"
+          class="dec"
       >
         <div class="tit text-truncate">{{ title }}</div>
         <ArtistFormat
-          v-if="showArtist && type !== 'playlist'"
-          :artistList="artists"
+            v-if="showArtist && type !== 'playlist'"
+            :artistList="artists"
         />
         <div class="info text-truncate font-size-12" v-show="showArtist">
           {{ setInfo() }}
@@ -44,23 +44,23 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { dateFormat } from "../utils/common.js";
-import { useRouter } from "vue-router";
-import { usePlayer } from "../store/player.js";
+import {defineComponent, reactive, toRefs} from "vue";
+import {dateFormat} from "../utils/common.js";
+import {useRouter} from "vue-router";
+import {usePlayer} from "../store/player.js";
 
 import ArtistFormat from "./artistFormat.vue";
 
 export default defineComponent({
   name: "PlaylistCard",
   props: {
-    type: { type: String, required: true },
+    type: {type: String, required: true},
     // id: { type: Number, required: true },
-    size: { type: String, default: null },
-    showDec: { type: Boolean, default: true }, // 控制歌单名和描述的显示
-    showTime: { type: Boolean, default: false },
-    showArtist: { type: Boolean, default: true }, // 控制歌手和描述的显示
-    item: { type: Object, required: true },
+    size: {type: String, default: null},
+    showDec: {type: Boolean, default: true}, // 控制歌单名和描述的显示
+    showTime: {type: Boolean, default: false},
+    showArtist: {type: Boolean, default: true}, // 控制歌手和描述的显示
+    item: {type: Object, required: true},
   },
   setup(props) {
     //检查传入的参数
@@ -69,7 +69,7 @@ export default defineComponent({
     const checkProps = () => {
       if (type.indexOf(props.type) === -1) {
         console.error(
-          `type:${props.type} is not a valid type must be one of ${type} -- PlayListCard`
+            `type:${props.type} is not a valid type must be one of ${type} -- PlayListCard`
         );
       }
 
@@ -89,7 +89,8 @@ export default defineComponent({
       title: "",
       info: "",
       id: 0,
-      playSong: (id: number) => {},
+      playSong: (id: number) => {
+      },
 
       isDecShow: true,
     });
@@ -103,7 +104,7 @@ export default defineComponent({
       const video = props.item;
 
       data.imgUrl = `${
-        video?.cover || video?.coverUrl || video?.imgurl
+          video?.cover || video?.coverUrl || video?.imgurl
       }?param=480y270`;
       data.publishTime = video?.publishTime;
       data.artists = video?.artists;
@@ -114,7 +115,7 @@ export default defineComponent({
 
     const setPlayList = () => {
       const playlist = props.item;
-      data.imgUrl = `${playlist.coverImgUrl || playlist.picUrl}?param=480y480`;
+      data.imgUrl = `${playlist.coverImgUrl || playlist.picUrl}?param=360y360`;
       data.publishTime = dateFormat(playlist.createTime, false);
       data.updataTime = dateFormat(playlist.updateTime, false);
       data.artists = playlist.creator;
@@ -127,7 +128,7 @@ export default defineComponent({
     const setAlbum = () => {
       const album = props.item;
 
-      data.imgUrl = `${album.picUrl}?param=480y480`;
+      data.imgUrl = `${album.picUrl}?param=360y360`;
       data.publishTime = dateFormat(album.publishTime, false);
       data.artists = album.artists;
       data.title = album.name;
@@ -138,7 +139,7 @@ export default defineComponent({
     const setArtist = () => {
       const artist = props.item;
 
-      data.imgUrl = `${artist.picUrl}?param=480y480`;
+      data.imgUrl = `${artist.picUrl}?param=360y360`;
       data.title = artist.name;
       data.id = artist.id;
       data.playSong = player.playSongByArtist;
@@ -195,9 +196,9 @@ export default defineComponent({
       return style;
     };
 
-    return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };
+    return {...toRefs(data), setInfo, setStyle, setWidth, goTo};
   },
-  components: { ArtistFormat },
+  components: {ArtistFormat},
 });
 </script>
 <style lang="scss" scoped>

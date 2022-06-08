@@ -75,3 +75,4 @@ typings/
 dist.zip
 dist
 filetree.txt
+*.production

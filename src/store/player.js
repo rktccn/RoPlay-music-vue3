@@ -110,7 +110,6 @@ export const usePlayer = defineStore("player", {
           : this.randomIndex--;
 
         this.replaceCurrentTrack(this.randomList[this.randomIndex]);
-
         return;
       } else if (this.playMode === 1) {
         this.howler.seek(0);
@@ -122,18 +121,17 @@ export const usePlayer = defineStore("player", {
           ? (this.currentIndex = this.trackList.length - 1)
           : this.currentIndex--;
 
-        this.replaceCurrentTrack(this.randomList[this.randomIndex]);
+        this.replaceCurrentTrack(this.trackList[this.currentIndex]);
       }
     },
 
     // 下一首
     playNext() {
-      if (this.playMode === 2) {
+      if (this.playMode === 2 && !this.isPersonalFM) {
         if (!this.randomList || this.randomList.length === 0) return;
         this.randomIndex === this.randomList.length - 1
           ? (this.randomIndex = 0)
           : this.randomIndex++;
-
         this.replaceCurrentTrack(
           this.randomList[this.randomIndex],
           true,

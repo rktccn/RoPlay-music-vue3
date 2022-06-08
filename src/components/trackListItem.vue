@@ -54,9 +54,9 @@
         <div class="like" :class="{ normal: itemWidth <= 2 }">
           <svg-icon
             :class="{ fill: isLiked }"
-            :name="`round-favorite_border`"
+            :name="`round-${isLiked ? 'favorite' : 'favorite_border'}`"
             :size="24"
-            color="#454f63"
+            color="currentColor"
             @click="toggleLike"
           />
         </div>

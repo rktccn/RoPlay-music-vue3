@@ -1,6 +1,7 @@
 <script>
-import {reactive, toRefs} from "vue";
-import {getBanner} from "../../../apis/others.js";
+import { reactive, toRefs } from "vue";
+import { getBanner } from "../../../apis/others.js";
+import BannerSwiper from "./bannerSwiper.vue";
 
 export default {
   name: "exploreBanner",
@@ -31,13 +32,12 @@ export default {
         },
       ],
     });
-
     getBanner().then((res) => {
       data.bannerList = res.banners;
     });
-
-    return {...toRefs(data)};
+    return { ...toRefs(data) };
   },
+  components: { BannerSwiper },
 };
 </script>
 
@@ -46,33 +46,22 @@ export default {
   <!-- |--- 分类(歌手 排行 歌单 电台) -->
   <section class="section-focus">
     <div class="banner" id="banner-main">
-      <el-carousel :height="bannerHeight" direction="vertical" :autoplay="true">
-        <el-carousel-item v-for="(item, index) in bannerList" :key="index">
-          <div
-              class="banner-item"
-              :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
-          >
-            <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt=""/>
-            <!-- <div
-              :style="`background-image: url(${item.imageUrl}?param=756y280) `"
-            ></div> -->
-          </div>
-        </el-carousel-item>
-      </el-carousel>
+      <BannerSwiper></BannerSwiper>
     </div>
     <div class="category">
       <div
-          class="category-inner"
-          v-for="(item, index) in category"
-          :key="index"
+        class="category-inner"
+        v-for="(item, index) in category"
+        :key="index"
       >
         <router-link :to="item.path">
           <span class="category-item">
-                      <svg-icon
-                          :name="`round-${ item.iconName }`"
-                          :size="48"
-                          color="#454f63"
-                      />
+            <svg-icon
+              class="category-icon"
+              :name="`round-${item.iconName}`"
+              :size="48"
+              color="currentColor"
+            />
 
             <em>{{ item.name }}</em>
           </span>
@@ -87,54 +76,18 @@ export default {
   display: flex;
   margin-top: 8px;
 
-  @media (max-width: $lg) {
-    flex-direction: column;
+  @media screen and (max-width: $lg) {
+    display: block;
   }
 
   .banner {
     flex: 1;
     border-radius: $border-radius-default;
     overflow: hidden;
+    height: 280px;
 
-    .el-carousel {
-      .banner-item {
-        position: relative;
-        height: 100%;
-        width: 100%;
-        background-repeat: no-repeat;
-        background-size: cover;
-
-        .pic {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          height: 100%;
-        }
-      }
-
-      @media screen and (max-width: 1440px) {
-        height: 230px;
-
-        .banner-item {
-          height: 230px;
-          width: 100%;
-        }
-      }
-
-      @media screen and (max-width: $sm) {
-        height: auto;
-
-        .banner-item {
-          height: 100%;
-          width: 100%;
-
-          .pic {
-            height: auto;
-            width: 100%;
-          }
-        }
-      }
+    @media screen and(max-width:1440px) {
+      height: 230px;
     }
   }
 
@@ -176,6 +129,7 @@ export default {
         em,
         .category-icon {
           color: #fff;
+          fill: #fff;
         }
       }
     }
