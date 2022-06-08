@@ -138,11 +138,6 @@ export default defineComponent({
 
     const selectItem = (index: number) => {
       setActiveIndex(index);
-
-      clearInterval(autoScroll);
-      autoScroll = setInterval(() => {
-        next();
-      }, 3000);
     };
 
     let autoScroll = setInterval(() => {
