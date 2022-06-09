@@ -1,33 +1,33 @@
 <template>
   <div
-    class="swiper"
-    @mouseenter.stop="hover = true"
-    @mouseleave.stop="hover = false"
-    ref="swiper"
+      class="swiper"
+      @mouseenter.stop="hover = true"
+      @mouseleave.stop="hover = false"
+      ref="swiper"
+      :style="`background-image: url(${activeItem[1]?.imageUrl}?imageView&blur=40x20) `"
   >
     <div
-      class="swiper-main"
-      :style="setTransform"
-      @mousewheel.stop="rollScroll($event)"
+        class="swiper-main"
+        :style="setTransform"
+        @mousewheel.stop="rollScroll($event)"
     >
       <li v-for="item in activeItem" class="swiper-main__item" id="swiperItem">
         <div
-          class="banner-item"
-          :style="`background-image: url(${item.imageUrl}?imageView&blur=40x20) `"
+            class="banner-item"
         >
-          <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt="" />
+          <img class="pic" :src="`${item.imageUrl}?param=756y280`" alt=""/>
         </div>
       </li>
     </div>
 
     <div class="swiper-nav">
       <div
-        class="swiper-nav__item"
-        :class="{ active: currentIndex === item - 1 }"
-        :style="{ width: `${hover ? '6px' : '3px'}` }"
-        v-for="item in items.length"
-        :key="item"
-        @click="selectItem(item - 1)"
+          class="swiper-nav__item"
+          :class="{ active: currentIndex === item - 1 }"
+          :style="{ width: `${hover ? '6px' : '3px'}` }"
+          v-for="item in items.length"
+          :key="item"
+          @click="selectItem(item - 1)"
       ></div>
     </div>
   </div>
@@ -43,7 +43,7 @@ import {
   computed,
   watch,
 } from "vue";
-import { getBanner } from "../../../apis/others";
+import {getBanner} from "../../../apis/others";
 
 let HEIGHT: number;
 
@@ -61,13 +61,13 @@ export default defineComponent({
 
     const setActiveItem = () => {
       const prevIndex =
-        data.currentIndex - 1 < 0
-          ? items.value.length - 1
-          : data.currentIndex - 1;
+          data.currentIndex - 1 < 0
+              ? items.value.length - 1
+              : data.currentIndex - 1;
       const nextIndex =
-        data.currentIndex + 1 > items.value.length - 1
-          ? 0
-          : data.currentIndex + 1;
+          data.currentIndex + 1 > items.value.length - 1
+              ? 0
+              : data.currentIndex + 1;
 
       data.activeItem = [
         items.value[prevIndex],
@@ -137,7 +137,7 @@ export default defineComponent({
     });
 
     const selectItem = (index: number) => {
-      setActiveIndex(index);
+      // setActiveIndex(index);
     };
 
     let autoScroll = setInterval(() => {
@@ -164,16 +164,16 @@ export default defineComponent({
     });
 
     watch(
-      () => data.hover,
-      (val) => {
-        if (val) {
-          clearInterval(autoScroll);
-        } else {
-          autoScroll = setInterval(() => {
-            next();
-          }, 3000);
+        () => data.hover,
+        (val) => {
+          if (val) {
+            clearInterval(autoScroll);
+          } else {
+            autoScroll = setInterval(() => {
+              next();
+            }, 3000);
+          }
         }
-      }
     );
 
     return {
@@ -195,6 +195,7 @@ export default defineComponent({
   position: relative;
   height: 100%;
   overflow: hidden;
+  transition: all $transition-time-default ease;
 
   &-main {
     height: 100%;
