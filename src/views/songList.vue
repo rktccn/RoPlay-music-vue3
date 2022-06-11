@@ -1,62 +1,69 @@
 <template>
   <div class="title">
-      <span class="material-icons-round icon" v-if="type === 'SongsRecord'">
-        equalizer
-      </span>
-    <span class="material-icons-round icon" v-if="type === 'DailySongs'">
-        calendar_today
-        <span class="date">{{ getDate() }}</span></span
+    <svg-icon
+      class="icon"
+      :name="`round-equalizer`"
+      color="currentColor"
+      size="140"
+      v-if="type === 'SongsRecord'"
+    />
+
+    <span class="icon" v-if="type === 'DailySongs'">
+      <svg-icon
+        :name="`round-calendar_today`"
+        color="currentColor"
+        size="140"
+      />
+      <em class="date">{{ getDate() }}</em>
+    </span>
+
+    <svg-icon
+      class="icon favourite"
+      :name="`round-favorite`"
+      color="currentColor"
+      size="140"
+      v-if="type === 'Cloud'"
+    />
+
+    <div class="name">{{ title }}</div>
+  </div>
+  <div class="control">
+    <button class="play primary" @click="play" v-if="type !== 'Cloud'">
+      <svg-icon :name="`round-play_arrow`" color="currentColor" /> 播放
+    </button>
+
+    <!-- 最近播放控件 -->
+    <button
+      class="play record-type block"
+      @click="toggleRecord"
+      v-if="type === 'SongsRecord'"
     >
-    <span
-        class="material-icons-round icon favourite"
-        v-if="type === 'FavouriteSongs'"
-      >
-        favorite
-      </span>
-      <span class="material-icons-round icon" v-if="type === 'Cloud'">
-        cloud
-      </span>
-
-      <div class="name">{{ title }}</div>
-    </div>
-    <div class="control">
-      <button class="play primary" @click="play" v-if="type !== 'Cloud'">
-        <span class="material-icons-round">play_arrow</span>
-        播放
-      </button>
-
-      <!-- 最近播放控件 -->
-      <button
-        class="play record-type block"
-        @click="toggleRecord"
-        v-if="type === 'SongsRecord'"
-      >
-        {{ recordType === 1 ? "最近一周" : "所有时间" }}
-      </button>
-    </div>
-    <div v-loading="!songs[0] && hasMore" class="list">
-      <TrackList
-        :tracks="songs"
-        v-if="songs[0]"
-        :type="songType"
-        scrollerSelector=".el-main"
-      ></TrackList>
-      <span v-if="!songs[0] && !hasMore">暂无歌曲</span>
-    </div>
-    <p class="load-info font-size-12">
-      {{ hasMore ? "正在加载" : "已加载全部" }}
-    </p>
+      {{ recordType === 1 ? "最近一周" : "所有时间" }}
+    </button>
+  </div>
+  <div v-loading="!songs[0] && hasMore" class="list">
+    <TrackList
+      :tracks="songs"
+      v-if="songs[0]"
+      :type="songType"
+      scrollerSelector=".el-main"
+    ></TrackList>
+    <span v-if="!songs[0] && !hasMore">暂无歌曲</span>
+  </div>
+  <p class="load-info font-size-12">
+    {{ hasMore ? "正在加载" : "已加载全部" }}
+  </p>
 </template>
 <script>
-import {onMounted, onUnmounted, reactive, toRefs} from "vue";
-import {dailyRecommendTracks} from "../apis/personalized";
-import {userPlayHistory} from "../apis/user";
-import {getCloud} from "../apis/cloud";
-import {getTrackDetail} from "../apis/track";
-import {usePlayer} from "../store/player";
-import {useRoute} from "vue-router";
-import {useStore} from "../store";
-import {isScrollBottom} from "../utils/common";
+import { onMounted, onUnmounted, reactive, toRefs } from "vue";
+import { dailyRecommendTracks } from "../apis/personalized";
+import { userPlayHistory } from "../apis/user";
+import { getCloud } from "../apis/cloud";
+import { getTrackDetail } from "../apis/track";
+import { usePlayer } from "../store/player";
+import { useRoute } from "vue-router";
+import { useStore } from "../store";
+import { isScrollBottom } from "../utils/common";
 
 import TrackList from "../components/trackList.vue";
 
@@ -230,11 +237,11 @@ export default {
 
 .icon {
   position: relative;
-  font-size: 140px;
 
   &.favourite {
     color: #ea4c89;
   }
+
   .date {
     position: absolute;
     top: 60%;
@@ -247,6 +254,7 @@ export default {
 
 .control {
   display: flex;
+
   .play {
     margin-left: 12px;
     margin-bottom: 16px;
@@ -263,13 +271,13 @@ export default {
   min-height: 60px;
 }
 
-@media screen and(max-width:$lg) {
+@media screen and(max-width: $lg) {
   .title {
     transform: translateX(-32px);
   }
 }
 
-@media screen and(max-width:$md) {
+@media screen and(max-width: $md) {
   .title {
     transform: translateX(0);
 
@@ -280,6 +288,7 @@ export default {
 
     .icon {
       font-size: 120px;
+
       .date {
         font-size: 36px;
       }
@@ -287,7 +296,7 @@ export default {
   }
 }
 
-@media screen and(max-width:$md) {
+@media screen and(max-width: $md) {
   .title {
     transform: translateX(0);
     flex-direction: column;
@@ -302,6 +311,7 @@ export default {
 
     .icon {
       font-size: 96px;
+
       .date {
         font-size: 28px;
       }
