@@ -6,7 +6,7 @@
 * {
   border: none;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
-    "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+  "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
 
   margin: 0;
   padding: 0;
@@ -158,3 +158,33 @@ html {
     background: transparent;
   }
 }
+
+@mixin fontSize($s,$h) {
+  font-size: $s+px;
+  line-height: $h+px;
+}
+
+h1 {
+  @include fontSize(36, 44)
+}
+
+
+h2 {
+  @include fontSize(20, 28)
+}
+
+
+h3 {
+  @include fontSize(16, 24)
+}
+
+
+h4 {
+  @include fontSize(14, 22)
+}
+
+
+h5 {
+  @include fontSize(12, 20)
+}
+
