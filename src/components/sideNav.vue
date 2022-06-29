@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { reactive, watch } from "vue";
-import { useStore } from "../store";
+import { reactive, watch } from 'vue';
+import { useStore } from '../store';
 
 const store = useStore();
 let playlistItem = reactive({
-  listName: "我的歌单",
+  listName: '我的歌单',
   needLog: true,
-  listItem: [],
+  listItem: []
 });
 // 如果登陆，则传入四个歌单到歌单列表
 const getList = () => {
@@ -29,39 +29,39 @@ watch(
 
 const list = reactive([
   {
-    listName: "发现音乐",
+    listName: '发现音乐',
     needLog: false,
     listItem: [
       {
-        itemName: "推荐",
-        path: "/feed",
-        icon: "stream",
-        needLog: true,
+        itemName: '推荐',
+        path: '/feed',
+        icon: 'stream',
+        needLog: true
       },
-      { itemName: "探索", path: "/", icon: "music_note", needLog: false },
+      { itemName: '探索', path: '/', icon: 'music_note', needLog: false }
       // {
-      //   itemName: "视频",
-      //   path: "/video",
-      //   icon: "home",
-      //   needLog: false,
-      // },
+      //   itemName: '视频',
+      //   path: '/video',
+      //   icon: 'home',
+      //   needLog: false
+      // }
       // { itemName: "电台", path: "/radio", icon: "home", needLog: false },
-    ],
+    ]
   },
   {
-    listName: "我的音乐",
-    needLog: false,
+    listName: '我的音乐',
+    needLog: true,
     listItem: [
-      { itemName: "收藏", path: "/like", icon: "favorite", needLog: true },
+      { itemName: '收藏', path: '/like', icon: 'favorite', needLog: true },
       // {
       //   itemName: "最近播放",
       //   path: "/recent",
       //   icon: "home",
       //   needLog: false,
       // },
-      { itemName: "云盘", path: "/cloud", icon: "cloud", needLog: true },
-    ],
-  },
+      { itemName: '云盘', path: '/cloud', icon: 'cloud', needLog: true }
+    ]
+  }
 ]);
 </script>
 
@@ -95,7 +95,7 @@ const list = reactive([
           </template>
         </ul>
       </template>
-      <ul>
+      <ul v-if="playlistItem.needLog ? store.isLoggedIn !== -1 : true">
         <li class="list-title white">
           {{ playlistItem.listName }}
         </li>
@@ -179,7 +179,7 @@ const list = reactive([
       }
 
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         left: -100%;
         top: 0;
@@ -209,7 +209,7 @@ const list = reactive([
       }
 
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         right: -41px;

@@ -1,102 +1,103 @@
 <template>
   <div
-      class="track-list-item"
-      :class="{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }"
-      ref="refItem"
-      :style="setStyle()"
-      @dblclick="player.replaceCurrentTrack(id)"
-      @click.right="showContextMenu"
+    class='track-list-item'
+    :class='{ hover: canHover && canPlay !== -1, disable: canPlay === -1 }'
+    ref='refItem'
+    :style='setStyle()'
+    @dblclick='player.replaceCurrentTrack(id)'
+    @click.right='showContextMenu'
   >
-    <div class="inner">
-      <div class="inner__cover" v-if="imgUrl && showImg && type !== 'album'">
+    <div class='inner'>
+      <div class='inner__cover' v-if="imgUrl && showImg && type !== 'album'">
         <el-image
-            lazy
-            class="inner__cover__img"
-            :src="`${imgUrl}?param=64y64`"
-            alt=""
-            :class="itemWidth > 2 ? ' hide-in-sm' : ''"
+          lazy
+          class='inner__cover__img'
+          :src='`${imgUrl}?param=64y64`'
+          alt=''
+          :class="itemWidth > 2 ? ' hide-in-sm' : ''"
         />
       </div>
-      <span class="index font-size-16" v-if="type === 'album'">{{
+      <span class='index font-size-16' v-if="type === 'album'">{{
           index
         }}</span>
-      <div class="title">
-        <div class="container">
-          <div v-if="artists" class="text-truncate">{{ title }}</div>
+      <div class='title'>
+        <div class='container'>
+          <div v-if='artists' class='text-truncate'>{{ title }}</div>
           <ArtistFormat
-              :artistList="artists"
-              v-show="itemWidth >= 2"
+            :artistList='artists'
+            v-show='itemWidth >= 2'
           ></ArtistFormat>
         </div>
       </div>
-      <div class="artist-md" v-show="itemWidth <= 1 && type !== 'album'">
-        <div v-if="artists">
-          <ArtistFormat :artistList="artists"></ArtistFormat>
+      <div class='artist-md' v-show="itemWidth <= 1 && type !== 'album'">
+        <div v-if='artists'>
+          <ArtistFormat :artistList='artists'></ArtistFormat>
         </div>
       </div>
 
       <!-- 专辑 -->
-      <div class="describe" v-show="itemWidth === 0 && type !== 'album'">
+      <div class='describe' v-show="itemWidth === 0 && type !== 'album'">
         <router-link
-            :to="`/album/${describe.id}`"
-            v-if="describe"
-            class="text-truncate"
+          :to='`/album/${describe.id}`'
+          v-if='describe'
+          class='text-truncate'
         >
           {{ describe.name }}
         </router-link>
-        <div class="more">
-          <div class="duration" v-if="duration">
-          <span v-show="itemWidth <= 2">
+        <div class='more'>
+          <div class='duration' v-if='duration'>
+          <span v-show='itemWidth <= 2'>
             {{ duration }}
           </span>
           </div>
-          <div class="like" :class="{ normal: itemWidth <= 2 }">
+          <div class='like' :class='{ normal: itemWidth <= 2 }'>
             <svg-icon
-                :class="{ fill: isLiked }"
-                :name="`round-${isLiked ? 'favorite' : 'favorite_border'}`"
-                :size="24"
-                color="currentColor"
-                @click="toggleLike"
+              :class='{ fill: isLiked }'
+              :name="`round-${isLiked ? 'favorite' : 'favorite_border'}`"
+              :size='24'
+              color='currentColor'
+              @click='toggleLike'
             />
           </div>
         </div>
       </div>
 
       <svg-icon
-          class="play"
-          :name="`round-play_arrow`"
-          :size="24"
-          color="#454f63"
-          @click="player.replaceCurrentTrack(id)"
+        class='play'
+        :name='`round-play_arrow`'
+        :size='24'
+        color='#454f63'
+        @click='player.replaceCurrentTrack(id)'
       />
     </div>
   </div>
 </template>
-<script lang="ts">
+<script lang='ts'>
 import {
   defineComponent,
   onBeforeUnmount,
   onMounted,
   reactive,
   ref,
-  toRefs,
-} from "vue";
-import {timeFormat} from "../utils/common.js";
-import {usePlayer} from "../store/player.js";
-import {getMP3, likeATrack} from "../apis/track.js";
+  toRefs
+} from 'vue';
+import { timeFormat } from '../utils/common.js';
+import { usePlayer } from '../store/player.js';
+import { useStore } from '../store/index';
+import { getMP3, likeATrack } from '../apis/track.js';
 
-import ArtistFormat from "./artistFormat.vue";
-import createContextMenu from "./contextMenu";
+import ArtistFormat from './artistFormat.vue';
+import createContextMenu from './contextMenu';
 
 export default defineComponent({
-  name: "trackListItem",
+  name: 'trackListItem',
   props: {
-    item: {type: Object, required: true},
-    type: {type: String, default: "song"}, // 类型 song/album
-    height: {type: String, default: "64px"},
-    showImg: {type: Boolean, default: true},
-    canHover: {type: Boolean, default: true}, // 是否显示hover样式
-    index: {type: Number}, // 数字替代缩略图
+    item: { type: Object, required: true },
+    type: { type: String, default: 'song' }, // 类型 song/album
+    height: { type: String, default: '64px' },
+    showImg: { type: Boolean, default: true },
+    canHover: { type: Boolean, default: true }, // 是否显示hover样式
+    index: { type: Number } // 数字替代缩略图
   },
   setup(props) {
     const data = reactive({
@@ -109,12 +110,13 @@ export default defineComponent({
       isLiked: false,
       canPlay: 0, // -1:无版权 0: 免费  1: VIP 歌曲   4: 购买专辑   8: 非会员可免费播放低音质，会员可播放高音质及下载
       musicUrl: null,
-      describe: null,
+      describe: null
     });
 
     const track = props.item;
 
     const player = usePlayer();
+    const store = useStore();
 
     const refItem = ref(null);
 
@@ -132,7 +134,7 @@ export default defineComponent({
 
     const setStyle = (): object => {
       return {
-        height: props.height,
+        height: props.height
       };
     };
 
@@ -142,20 +144,20 @@ export default defineComponent({
 
     const getImgUrl = () => {
       data.imgUrl =
-          track?.al?.picUrl ??
-          track?.album?.picUrl ??
-          `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
+        track?.al?.picUrl ??
+        track?.album?.picUrl ??
+        `https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg`;
     };
 
     const getDuration = () => {
-      const dt = track?.duration ?? track?.dt ?? "null";
+      const dt = track?.duration ?? track?.dt ?? 'null';
 
       data.duration = +timeFormat(dt);
     };
 
     const getDescribe = () => {
       switch (props.type) {
-        case "song":
+        case 'song':
           data.describe = track?.album ?? track?.al;
           break;
         default:
@@ -184,7 +186,7 @@ export default defineComponent({
       data.title = track.name;
       data.id = track.id;
       getMusicUrl();
-      data.isLiked = player.likedSongIDs.includes(track.id);
+      data.isLiked = store.likedSongIDs.includes(track.id);
     };
 
     initData();
@@ -204,13 +206,13 @@ export default defineComponent({
     // 切换收藏
     const toggleLike = async () => {
       if (data.isLiked) {
-        await likeATrack({id: data.id, like: false});
+        await likeATrack({ id: data.id, like: false });
         data.isLiked = false;
-        player.likedSongIDs.splice(player.likedSongIDs.indexOf(data.id), 1);
+        store.likedSongIDs.splice(store.likedSongIDs.indexOf(data.id), 1);
       } else {
-        await likeATrack({id: data.id, like: true});
+        await likeATrack({ id: data.id, like: true });
         data.isLiked = true;
-        player.likedSongIDs.push(data.id);
+        store.likedSongIDs.push(data.id);
       }
     };
 
@@ -230,15 +232,15 @@ export default defineComponent({
       calcWidth,
       setStyle,
       showContextMenu,
-      toggleLike,
+      toggleLike
     };
   },
   components: {
-    ArtistFormat,
-  },
+    ArtistFormat
+  }
 });
 </script>
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .track-list-item {
   position: relative;
   padding: 8px;

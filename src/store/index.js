@@ -1,12 +1,12 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 import {
   getUserPlaylist,
   userLikedSongsIDs,
-  getAnonymityCookie,
-} from "../apis/user";
-import { usePlayer } from "./player";
+  getAnonymityCookie
+} from '../apis/user';
+import { usePlayer } from './player';
 
-export const useStore = defineStore("main", {
+export const useStore = defineStore('main', {
   state: () => {
     return {
       showOverlay: false,
@@ -15,11 +15,11 @@ export const useStore = defineStore("main", {
       // 登陆相关
       isLoggedIn: -1, // -1: 未登录, 1: 已登录, 2: 通过搜索用户名登陆
       userInfo: {}, // 用户信息
-      userPlaylist: null, // 用户歌单
-      likedSongIDs: null, // 喜欢的歌曲id
-      userCookie: null,
+      userPlaylist: [], // 用户歌单
+      likedSongIDs: [], // 喜欢的歌曲id
+      userCookie: '',
       // 默认cookie
-      defaultCookie: "",
+      defaultCookie: ''
     };
   },
   getters: {
@@ -28,13 +28,13 @@ export const useStore = defineStore("main", {
     },
     getOverlay(state) {
       return state.showOverlay;
-    },
+    }
   },
   actions: {
     init() {
       // 获取匿名cookie
-      if (this.defaultCookie === "") {
-        getAnonymityCookie().then((res) => {
+      if (this.defaultCookie === '') {
+        getAnonymityCookie().then(res => {
           this.defaultCookie = res.cookie;
           location.reload();
         });
@@ -51,12 +51,12 @@ export const useStore = defineStore("main", {
         player.getPersonalFM();
 
         // 获取收藏的歌曲
-        userLikedSongsIDs().then((res) => {
+        userLikedSongsIDs().then(res => {
           this.likedSongIDs = res.ids;
         });
 
         // 获取用户歌单
-        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
+        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then(res => {
           this.userPlaylist = res.playlist;
         });
       }
@@ -64,7 +64,7 @@ export const useStore = defineStore("main", {
       // 搜索用户名
       if (this.isLoggedIn === 2) {
         // 获取用户歌单
-        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then((res) => {
+        getUserPlaylist({ uid: userId, limit: 100, offset: 0 }).then(res => {
           this.userPlaylist = res.playlist;
         });
       }
@@ -89,7 +89,7 @@ export const useStore = defineStore("main", {
     // @param {Object} params.userInfo 用户信息
     // @param {Array} params.userPlaylist 用户歌单
     setUserInfo(params) {
-      if (params.logMode === "name") {
+      if (params.logMode === 'name') {
         this.isLoggedIn = 2;
         this.userInfo = params.userInfo;
       } else {
@@ -104,21 +104,27 @@ export const useStore = defineStore("main", {
       this.likedSongIDs = null;
       this.userCookie = null;
     },
+
+    // 获取歌曲是否被收藏
+    getIsSongLiked(id) {
+      console.log(this.likedSongIDs)
+      return this.likedSongIDs.includes(id);
+    }
   },
   // 开启数据缓存
   persist: {
     enabled: true,
     strategies: [
       {
-        key: "user",
+        key: 'user',
         storage: localStorage,
-        paths: ["isLoggedIn", "userInfo", "userCookie"],
+        paths: ['isLoggedIn', 'userInfo', 'userCookie']
       },
       {
-        key: "anonymityUser",
+        key: 'anonymityUser',
         storage: sessionStorage,
-        paths: ["defaultCookie"],
-      },
-    ],
-  },
+        paths: ['defaultCookie']
+      }
+    ]
+  }
 });

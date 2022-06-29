@@ -1,46 +1,45 @@
 <template>
-  <div class="artist-page">
+  <div class='artist-page'>
     <ContextInfo
-        class="section"
-        :item="item.artist"
-        :type="'artist'"
-        v-if="item"
+      class='section'
+      :item='item.artist'
+      :type="'artist'"
+      v-if='item'
     ></ContextInfo>
 
     <!-- 新专和热歌 -->
-    <div class="album-songs">
-      <div class="new-album section" v-if="albums">
-        <div class="top-title">
-          <div class="text-style-title">最新发布</div>
+    <div class='album-songs'>
+      <div class='new-album section' v-if='albums'>
+        <div class='top-title'>
+          <div class='text-style-title'>最新发布</div>
           <router-link
-            class="text-style-info more"
+            class='text-style-info more'
             :to="{ name: 'ArtistType', params: { id, type: 'albums' } }"
-            >查看更多</router-link
-          >
+          >查看更多
+          </router-link>
         </div>
-
-        <div class="inner">
-          <PlaylistCard :item="albums[0]" type="album"></PlaylistCard>
-          <PlaylistCard :item="albums[1]" type="album"></PlaylistCard>
+        <div class='inner'>
+          <PlaylistCard :item='albums[0]' type='album'></PlaylistCard>
+          <PlaylistCard :item='albums[1]' type='album'></PlaylistCard>
         </div>
       </div>
 
-      <div class="top-song section" v-if="hotSongs">
-        <div class="top-title">
-          <div class="text-style-title">热门歌曲</div>
+      <div class='top-song section' v-if='hotSongs'>
+        <div class='top-title'>
+          <div class='text-style-title'>热门歌曲</div>
           <router-link
-            class="text-style-info more"
+            class='text-style-info more'
             :to="{ name: 'ArtistType', params: { id, type: 'songs' } }"
-            >查看更多</router-link
-          >
+          >查看更多
+          </router-link>
         </div>
-        <div class="inner">
-          <CarouselList :length="hotSongs.length" :rows="4">
-            <li v-for="(song, index) in hotSongs" :key="index">
+        <div class='inner'>
+          <CarouselList :length='hotSongs.length' :rows='4'>
+            <li v-for='(song, index) in hotSongs' :key='index'>
               <TrackListItem
-                :item="song"
-                :index="index"
-                class="track-item"
+                :item='song'
+                :index='index'
+                class='track-item'
               ></TrackListItem>
             </li>
           </CarouselList>
@@ -49,22 +48,22 @@
     </div>
 
     <!-- 视频 -->
-    <div class="mvs block section" v-if="mvs.length !== 0">
-      <div class="top-title">
-        <div class="text-style-title">视频</div>
+    <div class='mvs block section' v-if='mvs.length !== 0'>
+      <div class='top-title'>
+        <div class='text-style-title'>视频</div>
         <router-link
-          class="text-style-info more"
+          class='text-style-info more'
           :to="{ name: 'ArtistType', params: { id, type: 'videos' } }"
-          >查看更多</router-link
-        >
+        >查看更多
+        </router-link>
       </div>
 
-      <CarouselList :length="mvs.length" :rows="mvs.length >= 6 ? 2 : 1">
-        <li v-for="(mv, index) in mvs" :key="index">
+      <CarouselList :length='mvs.length' :rows='mvs.length >= 6 ? 2 : 1'>
+        <li v-for='(mv, index) in mvs' :key='index'>
           <PlaylistCard
-            :item="mv"
-            :index="index"
-            class="track-item"
+            :item='mv'
+            :index='index'
+            class='track-item'
             :type="'video'"
           ></PlaylistCard>
         </li>
@@ -72,15 +71,15 @@
     </div>
 
     <!-- 相似歌手 -->
-    <div class="simi-artist section" v-if="simiArtists.length !== 0">
-      <div class="text-style-title">相似歌手</div>
+    <div class='simi-artist section' v-if='simiArtists.length !== 0'>
+      <div class='text-style-title'>相似歌手</div>
 
-      <CarouselList :length="simiArtists.length">
-        <li v-for="(artist, index) in simiArtists" :key="index">
+      <CarouselList :length='simiArtists.length'>
+        <li v-for='(artist, index) in simiArtists' :key='index'>
           <PlaylistCard
-            :item="artist"
-            :index="index"
-            class="track-item"
+            :item='artist'
+            :index='index'
+            class='track-item'
             :type="'artist'"
           ></PlaylistCard>
         </li>
@@ -89,17 +88,23 @@
   </div>
 </template>
 <script>
-import {reactive, toRefs} from "vue";
-import {getArtist, getArtistAlbum, getArtistMv, getSimilarArtists,} from "../apis/artist";
-import {useRoute} from "vue-router";
+import { reactive, toRefs } from 'vue';
+import {
+  getArtist,
+  getArtistAlbum,
+  getArtistMv,
+  getSimilarArtists
+} from '../apis/artist';
+import { useRoute } from 'vue-router';
 
-import ContextInfo from "../components/contextInfo.vue";
-import PlaylistCard from "../components/playListCard.vue";
-import CarouselList from "../components/carouselList.vue";
-import TrackListItem from "../components/trackListItem.vue";
+
+import ContextInfo from '../components/contextInfo.vue';
+import PlaylistCard from '../components/playListCard.vue';
+import CarouselList from '../components/carouselList.vue';
+import TrackListItem from '../components/trackListItem.vue';
 
 export default {
-  name: "Atrist",
+  name: 'Atrist',
   setup() {
     const data = reactive({
       item: null,
@@ -107,28 +112,28 @@ export default {
       albums: null,
       mvs: [],
       simiArtists: [],
-      id: null,
+      id: null
     });
 
     const route = useRoute();
     data.id = route.params.id;
 
-    const getData = (id) => {
-      getArtist(id).then((res) => {
+    const getData = id => {
+      getArtist(id).then(res => {
         data.item = res;
         data.hotSongs = res.hotSongs.splice(0, 20);
       });
 
-      getArtistAlbum({ id, limit: 2 }).then((res) => {
+      getArtistAlbum({ id, limit: 2 }).then(res => {
         data.albums = res.hotAlbums;
       });
 
-      getArtistMv({ id, limit: 16 }).then((res) => {
+      getArtistMv({ id, limit: 16 }).then(res => {
         console.log(res.mvs);
         data.mvs = res.mvs;
       });
 
-      getSimilarArtists(id).then((res) => {
+      getSimilarArtists(id).then(res => {
         data.simiArtists = res.artists.splice(0, 5);
       });
     };
@@ -141,12 +146,12 @@ export default {
     ContextInfo,
     CarouselList,
     PlaylistCard,
-    TrackListItem,
-  },
+    TrackListItem
+  }
 };
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 .top-title {
   display: flex;
   justify-content: space-between;
@@ -181,12 +186,14 @@ export default {
 @media screen and (max-width: $lg) {
   .album-songs {
     flex-direction: column;
+
     .new-album {
       @include calc-width(5);
     }
 
     .top-song {
       @include calc-width(5);
+
       .track-item {
         @include calc-width(4.5);
       }

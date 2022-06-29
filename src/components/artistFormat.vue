@@ -1,34 +1,34 @@
 <template>
-  <div class="artist" :style="setStyle()">
-    <template v-for="(artist, j) in artistList" :key="j">
-      <router-link :to="`/artist/${artist.id}`"> {{ artist.name }}</router-link>
-      <em v-if="artistList.length !== j + 1">/</em>
+  <div class='artist' :style='setStyle()'>
+    <template v-for='(artist, j) in artistList' :key='j'>
+      <router-link :to='`/artist/${artist.id}`'> {{ artist.name }}</router-link>
+      <em v-if='artistList.length !== j + 1'>/</em>
     </template>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang='ts'>
+import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: "artistFormat",
+  name: 'artistFormat',
   props: {
     artistList: { type: Object, require: true },
-    fontSize: { type: String, default: "12px" },
+    fontSize: { type: String, default: '12px' }
   },
   setup(props) {
-    const setStyle = (): Object => {
+    const setStyle = () => {
       return {
-        fontSize: props.fontSize,
+        fontSize: props.fontSize
       };
     };
 
     return { setStyle };
-  },
+  }
 });
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 // 歌手
 .artist {
   width: 100%;
@@ -44,6 +44,7 @@ export default defineComponent({
       opacity: 1;
     }
   }
+
   em {
     margin: 0 2px;
   }

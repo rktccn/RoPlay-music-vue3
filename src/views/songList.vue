@@ -29,7 +29,8 @@
   </div>
   <div class="control">
     <button class="play primary" @click="play" v-if="type !== 'Cloud'">
-      <svg-icon :name="`round-play_arrow`" color="currentColor" /> 播放
+      <svg-icon :name="`round-play_arrow`" color="currentColor" />
+      播放
     </button>
 
     <!-- 最近播放控件 -->
@@ -38,7 +39,7 @@
       @click="toggleRecord"
       v-if="type === 'SongsRecord'"
     >
-      {{ recordType === 1 ? "最近一周" : "所有时间" }}
+      {{ recordType === 1 ? '最近一周' : '所有时间' }}
     </button>
   </div>
   <div v-loading="!songs[0] && hasMore" class="list">
@@ -51,68 +52,68 @@
     <span v-if="!songs[0] && !hasMore">暂无歌曲</span>
   </div>
   <p class="load-info font-size-12">
-    {{ hasMore ? "正在加载" : "已加载全部" }}
+    {{ hasMore ? '正在加载' : '已加载全部' }}
   </p>
 </template>
 <script>
-import { onMounted, onUnmounted, reactive, toRefs } from "vue";
-import { dailyRecommendTracks } from "../apis/personalized";
-import { userPlayHistory } from "../apis/user";
-import { getCloud } from "../apis/cloud";
-import { getTrackDetail } from "../apis/track";
-import { usePlayer } from "../store/player";
-import { useRoute } from "vue-router";
-import { useStore } from "../store";
-import { isScrollBottom } from "../utils/common";
+import { onMounted, onUnmounted, reactive, toRefs } from 'vue';
+import { dailyRecommendTracks } from '../apis/personalized';
+import { userPlayHistory } from '../apis/user';
+import { getCloud } from '../apis/cloud';
+import { getTrackDetail } from '../apis/track';
+import { usePlayer } from '../store/player';
+import { useRoute } from 'vue-router';
+import { useStore } from '../store';
+import { isScrollBottom } from '../utils/common';
 
-import TrackList from "../components/trackList.vue";
+import TrackList from '../components/trackList.vue';
 
 export default {
-  name: "SongList",
+  name: 'SongList',
   setup() {
     const route = useRoute();
     const store = useStore();
     let name = route.name;
 
     const data = reactive({
-      type: "", // 页面类型 "DailySongs","SongsRecord","FavouriteSongs","Cloud"
-      title: "",
-      songType: "song", // 歌曲类型
+      type: '', // 页面类型 "DailySongs","SongsRecord","FavouriteSongs","Cloud"
+      title: '',
+      songType: 'song', // 歌曲类型
 
       songs: [], // 日推歌曲
       recordType: 1, // 0: 总排行, 1: 周排行
-      hasMore: true,
+      hasMore: true
     });
     const player = usePlayer();
     let loading = false;
 
     const getData = () => {
       data.type = name;
-      if (data.type === "DailySongs") {
-        data.title = "每日歌曲推荐";
+      if (data.type === 'DailySongs') {
+        data.title = '每日歌曲推荐';
         getDailtRecommend();
-        data.songType = "song";
-      }
-      if (data.type === "SongsRecord") {
-        data.title = "听歌排行";
+        data.songType = 'song';
+      }[]
+      if (data.type === 'SongsRecord') {
+        data.title = '听歌排行';
         getRecordSongList();
-        data.songType = "album";
+        data.songType = 'album';
       }
-      if (data.type === "FavouriteSongs") {
-        data.title = "我的收藏";
+      if (data.type === 'FavouriteSongs') {
+        data.title = '我的收藏';
         getLikedSong();
-        data.songType = "song";
+        data.songType = 'song';
       }
-      if (data.type === "Cloud") {
-        data.title = "云盘歌曲";
+      if (data.type === 'Cloud') {
+        data.title = '云盘歌曲';
         getCloudSong();
-        data.songType = "cloud";
+        data.songType = 'cloud';
       }
     };
 
     // 获取每日推荐歌曲
     const getDailtRecommend = () => {
-      dailyRecommendTracks().then((res) => {
+      dailyRecommendTracks().then(res => {
         data.songs = res.data.dailySongs;
         data.hasMore = false;
         loading = false;
@@ -124,9 +125,9 @@ export default {
       let key;
       data.songs = [];
       data.hasMore = true;
-      type === 1 ? (key = "weekData") : (key = "allData");
-      userPlayHistory({ uid: store.userInfo.userId, type }).then((res) => {
-        data.songs = res[key].map((item) => {
+      type === 1 ? (key = 'weekData') : (key = 'allData');
+      userPlayHistory({ uid: store.userInfo.userId, type }).then(res => {
+        data.songs = res[key].map(item => {
           return item.song;
         });
         data.hasMore = false;
@@ -138,9 +139,9 @@ export default {
     const getLikedSong = () => {
       let arr = store.likedSongIDs
         .slice(data.songs.length, data.songs.length + 50)
-        .join(",");
+        .join(',');
 
-      getTrackDetail(arr).then((res) => {
+      getTrackDetail(arr).then(res => {
         data.songs.push(...res.songs);
         if (res.songs.length < 50) {
           data.hasMore = false;
@@ -151,7 +152,7 @@ export default {
 
     // 获取云盘歌曲
     const getCloudSong = () => {
-      getCloud({ limit: 50, offset: data.songs.length }).then((res) => {
+      getCloud({ limit: 50, offset: data.songs.length }).then(res => {
         data.songs = data.songs.concat(res.data);
         loading = false;
         data.hasMore = res.hasMore;
@@ -166,9 +167,9 @@ export default {
 
     // 播放歌曲,将id传入歌曲列表
     const play = () => {
-      if (data.songs.length === 0 || data.type === "Cloud") return;
+      if (data.songs.length === 0 || data.type === 'Cloud') return;
 
-      player.trackList = data.songs.map((item) => {
+      player.trackList = data.songs.map(item => {
         return item.id;
       });
       player.replaceCurrentTrack(data.songs[0].id);
@@ -183,11 +184,11 @@ export default {
     getData();
 
     const loadMore = () => {
-      console.log("滚动");
+      console.log('滚动');
       if (!data.hasMore) {
         document
-          .getElementsByClassName("el-main")[0]
-          .removeEventListener("scroll", loadMore);
+          .getElementsByClassName('el-main')[0]
+          .removeEventListener('scroll', loadMore);
       }
 
       if (loading || !data.hasMore) return;
@@ -199,21 +200,21 @@ export default {
 
     onMounted(() => {
       document
-        .getElementsByClassName("el-main")[0]
-        .addEventListener("scroll", loadMore);
+        .getElementsByClassName('el-main')[0]
+        .addEventListener('scroll', loadMore);
     });
 
     onUnmounted(() => {
       document
-        .getElementsByClassName("el-main")[0]
-        .removeEventListener("scroll", loadMore);
+        .getElementsByClassName('el-main')[0]
+        .removeEventListener('scroll', loadMore);
     });
 
     return { ...toRefs(data), getDate, play, toggleRecord };
   },
   components: {
-    TrackList,
-  },
+    TrackList
+  }
 };
 </script>
 <style lang="scss" scoped>

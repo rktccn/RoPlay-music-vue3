@@ -1,15 +1,63 @@
-<script setup>
-import "./styles/normalize.scss";
+<template>
+  <el-container class='wrap'>
+    <el-aside width='220px' :class='{ active: store.getOverlay }'>
+      <SideNav></SideNav>
+    </el-aside>
+    <el-container>
+      <el-header v-if='showHeader()'>
+        <HeaderVue></HeaderVue>
+      </el-header>
+      <el-main>
+        <main class='main-inner'>
+          <router-view v-slot='{ Component }'>
+            <keep-alive>
+              <component
+                :is='Component'
+                v-if='$route.meta.keepAlive'
+                :key='$route.path'
+              />
+            </keep-alive>
+            <component
+              :is='Component'
+              v-if='!$route.meta.keepAlive'
+              :key='$route.path'
+            />
+          </router-view>
 
-// import player from "./utils/player";
-import SideNav from "./components/sideNav.vue";
-import HeaderVue from "./views/header.vue";
-import AudioControl from "./components/audioControl.vue";
-import LyricPage from "./views/lyricPage.vue";
+          <AudioControl class='audio-control'></AudioControl>
+          <div class='control-placeholder'></div>
+        </main>
+      </el-main>
+    </el-container>
+  </el-container>
 
-import { useRoute } from "vue-router";
-import { useStore } from "./store/index";
-import { usePlayer } from "./store/player";
+  <transition name='slide-up' mode='out-in'>
+    <LyricPage v-if='store.showLyric'></LyricPage>
+  </transition>
+
+  <teleport to='body'>
+    <transition name='fade' mode='out-in'>
+      <div
+        v-if='store.getOverlay'
+        class='overlay'
+        @click='store.setOverlay(false)'
+      ></div>
+    </transition>
+  </teleport>
+</template>
+
+<script lang='ts' setup>
+import './styles/normalize.scss';
+
+import SideNav from './components/sideNav.vue';
+import HeaderVue from './views/header.vue';
+import AudioControl from './components/audioControl.vue';
+import LyricPage from './views/lyricPage.vue';
+
+
+import { useRoute } from 'vue-router';
+import { useStore } from './store/index';
+import { usePlayer } from './store/player';
 
 const route = useRoute();
 const store = useStore();
@@ -22,64 +70,18 @@ const clientWidth = document.documentElement.clientWidth
   ? document.documentElement.clientWidth
   : document.body.clientWidth;
 
-const isSm = (width) => {
+const isSm = width => {
   return width <= 768;
 };
 
 const showHeader = () => {
   return !(route.meta.hideHeader && isSm(clientWidth));
 };
+
+
 </script>
 
-<template>
-  <el-container class="wrap">
-    <el-aside width="220px" :class="{ active: store.getOverlay }">
-      <SideNav></SideNav>
-    </el-aside>
-    <el-container>
-      <el-header v-if="showHeader()">
-        <HeaderVue></HeaderVue>
-      </el-header>
-      <el-main>
-        <main class="main-inner">
-          <router-view v-slot="{ Component }">
-            <keep-alive>
-              <component
-                :is="Component"
-                v-if="$route.meta.keepAlive"
-                :key="$route.path"
-              />
-            </keep-alive>
-            <component
-              :is="Component"
-              v-if="!$route.meta.keepAlive"
-              :key="$route.path"
-            />
-          </router-view>
-
-          <AudioControl class="audio-control"></AudioControl>
-          <div class="control-placeholder"></div>
-        </main>
-      </el-main>
-    </el-container>
-  </el-container>
-
-  <transition name="slide-up" mode="out-in">
-    <LyricPage v-if="store.showLyric"></LyricPage>
-  </transition>
-
-  <teleport to="body">
-    <transition name="fade" mode="out-in">
-      <div
-        v-if="store.getOverlay"
-        class="overlay"
-        @click="store.setOverlay(false)"
-      ></div>
-    </transition>
-  </teleport>
-</template>
-
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 @mixin display-center {
   padding: 0;
   width: var(--view-size);

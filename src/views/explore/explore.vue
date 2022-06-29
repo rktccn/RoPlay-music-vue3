@@ -1,10 +1,10 @@
 <script setup>
-import Banner from "./components/banner.vue";
-import RecomendPlaylist from "./components/recomendPlaylist.vue";
-import RecomendOther from "./components/recomendOther.vue";
-import PlayListTrack from "./components/playListTrack.vue";
-import LatestAlbum from "./components/latestAlbum.vue";
-import RecomendFM from "./components/recomendFM.vue";
+import Banner from './components/banner.vue';
+import RecomendPlaylist from './components/recomendPlaylist.vue';
+import RecomendOther from './components/recomendOther.vue';
+import PlayListTrack from './components/playListTrack.vue';
+import LatestAlbum from './components/latestAlbum.vue';
+import RecomendFM from './components/recomendFM.vue';
 </script>
 
 <template>
@@ -44,7 +44,9 @@ import RecomendFM from "./components/recomendFM.vue";
     <LatestAlbum class="section"></LatestAlbum>
 
     <!-- 推荐电台 -->
+
     <!-- <RecomendFM class="section"></RecomendFM> -->
+
   </div>
 </template>
 

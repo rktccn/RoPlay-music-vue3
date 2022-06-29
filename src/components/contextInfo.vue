@@ -41,41 +41,41 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { dateFormat } from "../utils/common";
+import { defineComponent, reactive, toRefs } from 'vue';
+import { dateFormat } from '../utils/common';
 
-import createTextModal from "./textModal";
-import ArtistFormat from "./artistFormat.vue";
-import { usePlayer } from "../store/player";
+import createTextModal from './textModal';
+import ArtistFormat from './artistFormat.vue';
+import { usePlayer } from '../store/player';
 
 export default defineComponent({
-  name: "contextInfo",
+  name: 'contextInfo',
   props: {
     item: { type: Object, required: true },
-    type: { type: String, required: true }, // playlist/album
+    type: { type: String, required: true } // playlist/album
   },
   setup(props: any) {
     const data = reactive({
       imgUrl: null,
       publishTime: null,
-      tag: "",
-      description: "",
+      tag: '',
+      description: '',
       id: null,
-      playSong: () => {},
+      playSong: () => {}
     });
-    let typeList = ["playlist", "album", "artist", "user"];
+    let typeList = ['playlist', 'album', 'artist', 'user'];
     const ITEM: any = props.item;
 
     const player = usePlayer();
 
     const initUser = () => {
-      data.tag = "用户";
-      data.description = ITEM.description || "暂无简介";
+      data.tag = '用户';
+      data.description = ITEM.description || '暂无简介';
       data.id = ITEM.userId;
     };
 
     const initPlaylist = () => {
-      data.tag = "歌单";
+      data.tag = '歌单';
       data.description = ITEM.description;
       data.id = ITEM.id;
       data.playSong = player.playSongByPlaylist;
@@ -83,14 +83,14 @@ export default defineComponent({
 
     const initAlbum = () => {
       data.publishTime = dateFormat(ITEM.publishTime);
-      data.tag = "专辑";
+      data.tag = '专辑';
       data.description = ITEM.description;
       data.id = ITEM.id;
       data.playSong = player.playSongByAlbum;
     };
 
     const initArtist = () => {
-      data.tag = "歌手";
+      data.tag = '歌手';
       data.description = ITEM.briefDesc;
       data.id = ITEM.id;
       data.playSong = player.playSongByArtist;
@@ -130,8 +130,8 @@ export default defineComponent({
     return { ...toRefs(data), player, getImgUrl, showDescribe };
   },
   components: {
-    ArtistFormat,
-  },
+    ArtistFormat
+  }
 });
 </script>
 <style lang="scss" scoped>

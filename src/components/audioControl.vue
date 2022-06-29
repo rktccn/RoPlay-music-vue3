@@ -1,133 +1,137 @@
 <template>
-  <div class="audioControl">
-    <div class="main">
-      <div class="left">
+  <div class='audioControl'>
+    <div class='main'>
+      <div class='left'>
         <el-image
           :src="`${
             currentTrack?.al?.picUrl ??
             'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
           }?param=48y48`"
-          alt=""
-          class="cover"
+          alt=''
+          class='cover'
           lazy
-          @click="store.showLyric = true"
+          @click='store.showLyric = true'
         />
-        <div class="music-info text-truncate" v-if="currentTrack">
-          <div class="title text-truncate">{{ currentTrack.name }}</div>
-          <ArtistFormat :artistList="currentTrack.ar"></ArtistFormat>
+        <div class='music-info text-truncate' v-if='currentTrack'>
+          <div class='title text-truncate'>{{ currentTrack.name }}</div>
+          <ArtistFormat :artistList='currentTrack.ar'></ArtistFormat>
         </div>
-        <ul class="left-control">
+        <ul class='left-control'>
+          <!-- 收藏 -->
           <li>
             <svg-icon
-              :class="{ fill: isLiked }"
+              :class='{ fill: isLiked }'
               :name="`round-${isLiked ? 'favorite' : 'favorite_border'}`"
-              :size="20"
-              color="currentColor"
+              :size='20'
+              color='currentColor'
+              @click='toggleLike'
             />
           </li>
-          <li class="add-to-playlist">
-            <svg-icon name="round-playlist_add" :size="20" color="#454f63" />
+          <li class='add-to-playlist'>
+            <svg-icon name='round-playlist_add' :size='20' color='#454f63' />
           </li>
-          <li class="show-lyric-page" @click="store.showLyric = true">
-            <svg-icon name="round-open_in_full" :size="20" color="#454f63" />
+          <li class='show-lyric-page' @click='store.showLyric = true'>
+            <svg-icon name='round-open_in_full' :size='20' color='#454f63' />
           </li>
-          <li class="more">
-            <svg-icon :name="`round-more_horiz`" :size="20" color="#454f63" />
+          <li class='more'>
+            <svg-icon :name='`round-more_horiz`' :size='20' color='#454f63' />
           </li>
         </ul>
       </div>
-      <ul class="control">
-        <li class="play-mode" @click="player.changePlayMode()">
-          <svg-icon :name="`round-${playMode}`" :size="20" color="#454f63" />
+      <ul class='control'>
+        <li class='play-mode' @click='player.changePlayMode()'>
+          <svg-icon :name='`round-${playMode}`' :size='20' color='#454f63' />
         </li>
-        <li class="play-prev" @click="player.playPrev()">
-          <svg-icon :name="`round-skip_previous`" :size="32" color="#454f63" />
+        <li class='play-prev' @click='player.playPrev()'>
+          <svg-icon :name='`round-skip_previous`' :size='32' color='#454f63' />
         </li>
-        <li class="play-or-pause" @click="player.playOrPause()">
+        <li class='play-or-pause' @click='player.playOrPause()'>
           <svg-icon
             :name="`round-${player.isPlaying ? 'pause' : 'play_arrow'}`"
-            :size="38"
-            color="#fff"
+            :size='38'
+            color='#fff'
           />
         </li>
-        <li class="play-next" @click="player.playNext()">
-          <svg-icon :name="`round-skip_next`" :size="32" color="#454f63" />
+        <li class='play-next' @click='player.playNext()'>
+          <svg-icon :name='`round-skip_next`' :size='32' color='#454f63' />
         </li>
-        <li class="volume" ref="volumeBar">
-          <span @click="showVolume = !showVolume">
+        <li class='volume' ref='volumeBar'>
+          <span @click='showVolume = !showVolume'>
             <svg-icon
-              :name="`round-${setVolumeIcon()}`"
-              :size="20"
-              color="#454f63"
+              :name='`round-${setVolumeIcon()}`'
+              :size='20'
+              color='#454f63'
             />
           </span>
-          <div class="volume-bar" v-show="showVolume">
+          <div class='volume-bar' v-show='showVolume'>
             <vue-slider
-              v-model="volume"
-              :height="64"
-              :interval="0.1"
-              :max="1"
-              :min="0"
-              direction="btt"
-              dotSize="6"
-              tooltip="none"
+              v-model='volume'
+              :height='64'
+              :interval='0.1'
+              :max='1'
+              :min='0'
+              direction='btt'
+              dotSize='6'
+              tooltip='none'
             ></vue-slider>
           </div>
         </li>
       </ul>
-      <div class="right">
-        <p class="font-size-12" v-if="currentTrack?.fee === 1">
+      <div class='right'>
+        <p class='font-size-12' v-if='currentTrack?.fee === 1'>
           当前歌曲可试听30秒
         </p>
-        <span class="show-trackList" @click="goCurrentList">
-          <svg-icon :name="`round-queue_music`" :size="24" color="#454f63" />
+        <span class='show-trackList' @click='goCurrentList'>
+          <svg-icon :name='`round-queue_music`' :size='24' color='#454f63' />
         </span>
       </div>
     </div>
-    <div class="progress">
-      <em class="time-current font-size-12">{{ timeFormat(progress) }}</em>
+    <div class='progress'>
+      <em class='time-current font-size-12'>{{ timeFormat(progress) }}</em>
       <vue-slider
-        v-model="progress"
-        :dragOnClick="true"
-        :lazy="true"
-        :max="currentTrack?.dt"
-        :min="0"
-        :tooltip-formatter="timeFormat"
-        class="progress-slider"
-        dotSize="6"
-        height="2px"
-        tooltip="hover"
+        v-model='progress'
+        :dragOnClick='true'
+        :lazy='true'
+        :max='currentTrack?.dt'
+        :min='0'
+        :tooltip-formatter='timeFormat'
+        class='progress-slider'
+        dotSize='6'
+        height='2px'
+        tooltip='hover'
       />
-      <em class="time-duration font-size-12">{{
-        player.getCurrentDuration
-      }}</em>
+      <em class='time-duration font-size-12'>{{
+          player.getCurrentDuration
+        }}</em>
     </div>
   </div>
 </template>
-<script lang="ts">
-import { computed, defineComponent, reactive, ref, toRefs, watch } from "vue";
-import { timeFormat } from "../utils/common";
-import { usePlayer } from "../store/player";
-import { useRoute, useRouter } from "vue-router";
-import { useStore } from "../store";
+<script lang='ts'>
+import { computed, defineComponent, reactive, ref, toRefs, watch } from 'vue';
+import { timeFormat } from '../utils/common';
+import { usePlayer } from '../store/player';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from '../store';
+import { likeATrack } from '../apis/track';
 
-import ArtistFormat from "./artistFormat.vue";
-import VueSlider from "vue-slider-component";
+import ArtistFormat from './artistFormat.vue';
+import VueSlider from 'vue-slider-component';
+import { log } from 'util';
 
 export default defineComponent({
-  name: "audioControl",
+  name: 'audioControl',
   setup() {
     const data = reactive({
-      imgUrl: null,
-      artists: null,
-      name: null,
-      id: null,
+      imgUrl: '',
+      artists: [],
+      name: '',
+      id: 0,
       duration: 0,
-      isLiked: false,
+      // isLiked: false,
       canPlay: 0,
       trackUrl: null,
       rate: 0, // 播放进度 0-100
-      showVolume: false,
+      showVolume: false
     });
 
     const player = usePlayer();
@@ -139,28 +143,28 @@ export default defineComponent({
 
     const progress = computed({
       get: () => player.getProgress,
-      set: (val) => {
+      set: val => {
         player.setProgress(val);
-      },
+      }
     });
 
     const volume = computed({
       get: () => player.getVolume,
-      set: (val) => {
+      set: val => {
         player.setVolume(val);
-      },
+      }
     });
 
     // 音量图标随音量变化
     const setVolumeIcon = (): String => {
       if (volume.value === 0) {
-        return "volume_off";
+        return 'volume_off';
       } else if (volume.value > 0.7) {
-        return "volume_up";
+        return 'volume_up';
       } else if (volume.value < 0.3) {
-        return "volume_mute";
+        return 'volume_mute';
       } else {
-        return "volume_down";
+        return 'volume_down';
       }
     };
 
@@ -176,7 +180,7 @@ export default defineComponent({
       const goBack = () => {
         window.history.state.back ? router.go(-1) : router.push(`/`);
       };
-      route.path === "/currentList" ? goBack() : router.push(`/currentList`);
+      route.path === '/currentList' ? goBack() : router.push(`/currentList`);
     };
 
     // 设置移动端进度条
@@ -190,32 +194,53 @@ export default defineComponent({
       rate = rate * 100;
 
       let style = {
-        background: "",
+        background: ''
       };
 
       style.background = `linear-gradient(90deg ,rgba(23, 125, 176) ${rate}%, #fff ${rate}%)`;
       return style;
     };
 
+
+    const isLiked = computed(() => {
+      return store.likedSongIDs.includes(player.currentTrack.id);
+    });
+
+    // 切换收藏
+    const toggleLike = async () => {
+      // console.log(isLiked);
+      // if (isLiked) {
+      //
+      //   await likeATrack({ id: player.currentTrack.id, like: false });
+      //   store.likedSongIDs.splice(
+      //     store.likedSongIDs.indexOf(player.currentTrack.id),
+      //     1
+      //   );
+      // } else {
+      //   await likeATrack({ id: player.currentTrack.id, like: true });
+      //   store.likedSongIDs.push(player.currentTrack.id);
+      // }
+    };
+
     // 播放模式
     const playMode = computed(() => {
       const MODE = player.getPlayMode;
-      if (MODE === "loop") {
-        return "repeat";
-      } else if (MODE === "random") {
-        return "shuffle";
+      if (MODE === 'loop') {
+        return 'repeat';
+      } else if (MODE === 'random') {
+        return 'shuffle';
       } else {
-        return "repeat_one";
+        return 'repeat_one';
       }
     });
 
     watch(
       () => data.showVolume,
-      (val) => {
+      val => {
         if (val) {
-          document.addEventListener("mousedown", handleClick);
+          document.addEventListener('mousedown', handleClick);
         } else {
-          document.removeEventListener("mousedown", handleClick);
+          document.removeEventListener('mousedown', handleClick);
         }
       }
     );
@@ -229,16 +254,21 @@ export default defineComponent({
       volume,
       volumeBar,
       timeFormat,
+      isLiked,
       setVolumeIcon,
       goCurrentList,
       setProgressStyle,
-      playMode,
+      toggleLike,
+      playMode
     };
   },
-  components: { ArtistFormat, VueSlider },
+  components: {
+    ArtistFormat,
+    VueSlider
+  }
 });
 </script>
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .audioControl {
   padding: 12px 2%;
   @include calc-width(10);

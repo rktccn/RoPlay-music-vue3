@@ -2,7 +2,7 @@
   <div
     :class="[
       { video: type === 'video' || type === 'mv' },
-      { 'hover-show-dec': !showDec },
+      { 'hover-show-dec': !showDec }
     ]"
     :style="setWidth()"
     class="card"
@@ -14,7 +14,7 @@
         <div
           :style="[{ backgroundImage: `url(${imgUrl})` }, setStyle()]"
           class="avator"
-        />
+        ></div>
         <div class="mask" :style="setStyle()" @click.self="goTo">
           <svg-icon
             class="icon"
@@ -44,15 +44,15 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { dateFormat } from "../utils/common.js";
-import { useRouter } from "vue-router";
-import { usePlayer } from "../store/player.js";
+import { defineComponent, reactive, toRefs } from 'vue';
+import { dateFormat } from '../utils/common.js';
+import { useRouter } from 'vue-router';
+import { usePlayer } from '../store/player.js';
 
-import ArtistFormat from "./artistFormat.vue";
+import ArtistFormat from './artistFormat.vue';
 
 export default defineComponent({
-  name: "PlaylistCard",
+  name: 'PlaylistCard',
   props: {
     type: { type: String, required: true },
     // id: { type: Number, required: true },
@@ -60,11 +60,11 @@ export default defineComponent({
     showDec: { type: Boolean, default: true }, // 控制歌单名和描述的显示
     showTime: { type: Boolean, default: false },
     showArtist: { type: Boolean, default: true }, // 控制歌手和描述的显示
-    item: { type: Object, required: true },
+    item: { type: Object, required: true }
   },
   setup(props) {
     //检查传入的参数
-    const type = ["playlist", "album", "artist", "video", "mv"];
+    const type = ['playlist', 'album', 'artist', 'video', 'mv'];
 
     const checkProps = () => {
       if (type.indexOf(props.type) === -1) {
@@ -82,16 +82,16 @@ export default defineComponent({
 
     const router = useRouter();
     const data = reactive({
-      imgUrl: "",
-      publishTime: "",
-      updataTime: "",
-      artists: null,
-      title: "",
-      info: "",
+      imgUrl: '',
+      publishTime: '',
+      updataTime: '',
+      artists: [],
+      title: '',
+      info: '',
       id: 0,
       playSong: (id: number) => {},
 
-      isDecShow: true,
+      isDecShow: true
     });
     const player = usePlayer();
 
@@ -121,7 +121,6 @@ export default defineComponent({
       data.title = playlist.name;
       data.info = playlist.description;
       data.id = playlist.id;
-      console.log(data.id);
       data.playSong = player.playSongByPlaylist;
     };
 
@@ -146,19 +145,19 @@ export default defineComponent({
     };
 
     switch (props.type) {
-      case "playlist":
+      case 'playlist':
         setPlayList();
         break;
-      case "album":
+      case 'album':
         setAlbum();
         break;
-      case "video":
+      case 'video':
         setVideo();
         break;
-      case "mv":
+      case 'mv':
         setVideo();
         break;
-      case "artist":
+      case 'artist':
         setArtist();
         break;
       default:
@@ -168,25 +167,25 @@ export default defineComponent({
     data.isDecShow = props.showDec;
 
     function setInfo() {
-      if (props.type === "playlist" && props.showTime)
+      if (props.type === 'playlist' && props.showTime)
         return `${data.updataTime}更新`;
-      if (props.type === "playlist") return data.info;
-      if (props.type === "album" && props.showTime) return data.publishTime;
+      if (props.type === 'playlist') return data.info;
+      if (props.type === 'album' && props.showTime) return data.publishTime;
     }
 
     const setStyle = () => {
       let style = {
-        borderRadius: "",
+        borderRadius: ''
       };
 
-      props.type === "artist" ? (style.borderRadius = "50%") : ""; // 显示音乐人时修改为圆形
+      props.type === 'artist' ? (style.borderRadius = '50%') : ''; // 显示音乐人时修改为圆形
       return style;
     };
 
     const setWidth = () => {
       let style = {
-        width: "",
-        maxWidth: "",
+        width: '',
+        maxWidth: ''
       };
       if (props.size) {
         style.width = props.size;
@@ -198,7 +197,7 @@ export default defineComponent({
 
     return { ...toRefs(data), setInfo, setStyle, setWidth, goTo };
   },
-  components: { ArtistFormat },
+  components: { ArtistFormat }
 });
 </script>
 <style lang="scss" scoped>

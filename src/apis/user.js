@@ -1,5 +1,5 @@
-import req from "../utils/http";
-import { useStore } from "../store/index";
+import req from '../utils/http';
+import { useStore } from '../store/index';
 
 /**
  * 获取用户详情
@@ -9,12 +9,12 @@ import { useStore } from "../store/index";
  */
 export function userDetail(uid) {
   return req
-    .get("/user/detial", {
+    .get('/user/detial', {
       params: {
-        uid,
-      },
+        uid
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -23,10 +23,10 @@ export function userDetail(uid) {
  */
 export function userAccount() {
   return req
-    .get("/user/account", {
-      params: {},
+    .get('/user/account', {
+      params: {}
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -37,12 +37,13 @@ export function userAccount() {
  */
 export function userLikedSongsIDs(uid) {
   return req
-    .get("/likelist", {
+    .get('/likelist', {
       params: {
         uid,
-      },
+        timestamp: new Date().getTime()
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -53,12 +54,12 @@ export function userLikedSongsIDs(uid) {
  */
 export function dailySignin(type = 0) {
   return req
-    .get("/daily_signin", {
+    .get('/daily_signin', {
       params: {
-        type,
-      },
+        type
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -72,12 +73,12 @@ export function dailySignin(type = 0) {
  */
 export function likedAlbums(params) {
   return req
-    .get("/album/sublist", {
+    .get('/album/sublist', {
       params: {
-        limit: params.limit,
-      },
+        limit: params.limit
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -86,12 +87,12 @@ export function likedAlbums(params) {
  */
 export function likedArtists(params) {
   return req
-    .get("/artist/sublist", {
+    .get('/artist/sublist', {
       params: {
-        limit: params.limit,
-      },
+        limit: params.limit
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -100,12 +101,12 @@ export function likedArtists(params) {
  */
 export function likedMVs(params) {
   return req
-    .get("/mv/sublist", {
+    .get('/mv/sublist', {
       params: {
-        limit: params.limit,
-      },
+        limit: params.limit
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -113,17 +114,17 @@ export function likedMVs(params) {
  */
 export function uploadSong(file) {
   let formData = new FormData();
-  formData.append("songFile", file);
+  formData.append('songFile', file);
 
   return req({
-    url: "/cloud",
-    method: "post",
+    url: '/cloud',
+    method: 'post',
     params: {},
     data: formData,
     headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  }).then((res) => res);
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(res => res);
 }
 
 /**
@@ -137,22 +138,22 @@ export function uploadSong(file) {
  */
 export function cloudDisk(params = {}) {
   return req
-    .get("/user/cloud", {
+    .get('/user/cloud', {
       params: {
-        ...params,
-      },
+        ...params
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
  * 获取云盘歌曲详情（需要登录）
  */
 export function cloudDiskTrackDetail(id) {
-  return req.get("/user/cloud/detial", {
+  return req.get('/user/cloud/detial', {
     params: {
-      id,
-    },
+      id
+    }
   });
 }
 
@@ -162,12 +163,12 @@ export function cloudDiskTrackDetail(id) {
  */
 export function cloudDiskTrackDelete(id) {
   return req
-    .get("/user/cloud/del", {
+    .get('/user/cloud/del', {
       params: {
-        id,
-      },
+        id
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -183,12 +184,13 @@ export function cloudDiskTrackDelete(id) {
  */
 export function getUserPlaylist(params) {
   return req
-    .get("/user/playlist", {
+    .get('/user/playlist', {
       params: {
         ...params,
-      },
+        timestamp: new Date().getTime()
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -199,12 +201,12 @@ export function getUserPlaylist(params) {
  */
 export function getUserDj(uid) {
   return req
-    .get("/user/dj", {
+    .get('/user/dj', {
       params: {
-        uid,
-      },
+        uid
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -220,12 +222,12 @@ export function getUserDj(uid) {
  */
 export function getUserFollows(params) {
   return req
-    .get("/user/follows", {
+    .get('/user/follows', {
       params: {
-        ...params,
-      },
+        ...params
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -241,12 +243,12 @@ export function getUserFollows(params) {
  */
 export function getUserFans(params) {
   return req
-    .get("/user/followeds", {
+    .get('/user/followeds', {
       params: {
-        ...params,
-      },
+        ...params
+      }
     })
-    .then((res) => res);
+    .then(res => res);
 }
 
 /**
@@ -261,8 +263,8 @@ export function getUserFans(params) {
 export function userPlayHistory(params) {
   return req({
     url: `/user/record`,
-    method: "get",
-    params,
+    method: 'get',
+    params
   });
 }
 
@@ -270,6 +272,6 @@ export function userPlayHistory(params) {
 export function getAnonymityCookie() {
   return req({
     url: `/register/anonimous`,
-    method: "get",
+    method: 'get'
   });
 }
